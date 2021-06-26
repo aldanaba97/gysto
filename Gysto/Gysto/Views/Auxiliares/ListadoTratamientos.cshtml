@@ -1,0 +1,50 @@
+﻿@model IEnumerable<Gysto.Models.Tratamiento>
+@{
+    ViewBag.Title = "Listado";
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <div>
+            <h1>
+                Todos los tratamientos
+            </h1>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="row">
+    <div class="col-sm-6">
+        <table class="table">
+        
+            <tbody>
+                @foreach (var t in Model)
+                {
+                    if (t.estado == true)
+                    {
+                        <tr class="text-center">
+                            <td>
+                                @t.nombre
+
+                            </td>
+                            <td>
+                                | <a href="@Url.Action("MTratamientoS", "Auxiliares", new { idTratamiento = t.id_tratamiento })">  Seleccionar  </a>|
+                                @*<a href="@Url.Action("BTratamientos", "Auxiliares", new { idTratamiento = t.id_tratamiento})"><ion-icon style="color: black; font-size: 20px"name="close-outline"></ion-icon></a>*@
+
+
+                            </td>
+                        </tr>
+                    }
+
+
+                }
+
+            </tbody>
+        </table>
+
+
+    </div>
+</div>
+<script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>

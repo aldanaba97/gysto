@@ -1,0 +1,57 @@
+﻿@model IEnumerable<Gysto.Models.Enfermedad>
+@{
+    ViewBag.Title = "Listado";
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <div>
+            <h1>
+                Todas las enfermededades
+            </h1>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="row">
+    <div class="col-sm-6">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th class="text-center">
+                        nombre
+                    </th>
+                    <th class="text-center">
+                        Acciones
+                    </th>
+                </tr>
+
+            </thead>
+            <tbody>
+                @foreach (var enfermedad in Model)
+                {
+                    if (enfermedad.estado == true)
+                    {
+                        <tr class="text-center">
+                            <td>
+                                @enfermedad.nombreEnfermedad
+
+                            </td>
+                            <td>
+                                <a href="@Url.Action("MEnfermedad", "Auxiliares", new { idEnfermedad = enfermedad.id_enfe })" class="btn btn-warning"> Cambiar nombre</a>
+                                <a href="@Url.Action("BEnfermedad", "Auxiliares", new {idEnfermedad = enfermedad.id_enfe})" class="btn btn-danger"> Eliminar</a>
+                            </td>
+                        </tr>
+                    }
+
+
+                }
+
+            </tbody>
+        </table>
+
+
+    </div>
+</div>

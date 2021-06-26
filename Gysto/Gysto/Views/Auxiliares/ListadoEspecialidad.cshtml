@@ -1,0 +1,38 @@
+﻿@model IEnumerable<Gysto.Models.Especialidad>
+@{
+    ViewBag.Title = "ListadoEspecialidad";
+}
+
+<h2>ListadoEspecialidad</h2>
+<div class="row">
+    @foreach (var e in Model)
+    {
+        if (e.estado == true)
+        {
+    <div class="col-md-4">
+        <h2>@e.nombre</h2>
+        <p>
+            <img src="~/imagenes/@e.imagen" width="300" height="150" />
+        <p>
+            <a class="btn btn-primary" href="@Url.Action("MEspecialidad", "Auxiliares", new {idEspecialidad = e.id_especialidad})">Modificar &raquo;</a>
+            <a class="btn btn-primary" onclick="return  alerta()" href="@Url.Action("BEspecialidad", "Auxiliares", new {idEspecialidad = e.id_especialidad})">Eliminar &raquo;</a>
+        </p>
+    </div>
+                }
+         }
+
+
+    </div>
+<script type="text/javascript">
+    function alerta() {
+        var mensaje = "";
+        var opcion = confirm("Clicka en Aceptar o Cancelar");
+        if (opcion == true) {
+            mensaje = "Has clickado OK";
+
+        } else {
+            mensaje = "Has clickado Cancelar";
+        }
+        
+    }
+</script>
