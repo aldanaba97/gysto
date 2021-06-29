@@ -126,11 +126,13 @@
     <Compile Include="Controllers\AuxiliaresController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
+    <Compile Include="Controllers\TransaccionesController.cs" />
     <Compile Include="Controllers\UsuarioController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Administrador.cs" />
+    <Compile Include="Models\internacion.cs" />
     <Compile Include="Models\director_medico.cs" />
     <Compile Include="Models\Enfermedad.cs" />
     <Compile Include="Models\Enfermero.cs" />
@@ -202,6 +204,7 @@
     <Content Include="Views\Roles\Tecnico.cshtml" />
     <Content Include="Views\Roles\DirectorMedico.cshtml" />
     <Content Include="Views\Roles\Enfermero.cshtml" />
+    <Content Include="Views\Transacciones\Internacion.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
