@@ -9,7 +9,7 @@ namespace Gysto.Models
     {
         public int id_enfermero { get; set;  }
 
-        public int matricula { get; set;  }
+        public string matricula { get; set;  }
 
     }
 }

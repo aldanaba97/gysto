@@ -1,4 +1,5 @@
 ﻿using Gysto.Models;
+using Gysto.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -200,6 +201,56 @@ namespace Gysto.AccesoDatos
                 cmd.ExecuteNonQuery();
 
                 resultado = true;
+
+            }
+            catch (Exception)
+            {
+                throw;
+
+            }
+            finally
+            {
+                cn.Close();
+            }
+
+            return resultado;
+        }
+        public static List<comboEnfermero> ListadoEnfermero()
+        {
+            List<comboEnfermero> resultado = new List<comboEnfermero>();
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = "select nombre + ' ' + apellido nombreCompleto, id_enfermero " +
+                    "from personas join Enfermeros on personas.id_persona = Enfermeros.id_persona";
+                cmd.Parameters.Clear();
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = consulta;
+                cn.Open();
+
+                cmd.Connection = cn;
+
+
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                if (dr != null)
+                {
+                    while (dr.Read())
+                    {
+
+                        comboEnfermero e = new comboEnfermero();                       
+                        e.id = int.Parse(dr["id_enfermero"].ToString());             
+                        e.nombre = dr["nombreCompleto"].ToString();
+
+                        resultado.Add(e);
+                    }
+                }
 
             }
             catch (Exception)
