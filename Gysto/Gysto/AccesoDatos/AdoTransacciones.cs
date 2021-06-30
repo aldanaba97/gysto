@@ -55,6 +55,112 @@ namespace Gysto.AccesoDatos
 
             return resultado;
         }
+        public static internacion obtenerInternacion(int idInternacion)
+        {
+            internacion resultado = new internacion();
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = "select * from internacion where id_internacion = @id";
+                cmd.Parameters.Clear();
+                cmd.Parameters.AddWithValue("@id", idInternacion);
+
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = consulta;
+                cn.Open();
+                cmd.Connection = cn;
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                if (dr != null)
+                {
+                    while (dr.Read())
+                    {
+
+                        resultado.id_internacion = int.Parse(dr["id_internacion"].ToString());
+                        resultado.motivo = dr["motivo"].ToString();
+                        resultado.fecha_ingreso = DateTime.Parse( dr["fecha_ingreso"].ToString());
+                        resultado.fecha_egreso = DateTime.Parse(dr["fecha_egreso"].ToString());
+                        resultado.temperatura =float.Parse( dr["telefono"].ToString());
+                        resultado.tension= float.Parse(dr["tension"].ToString());
+                        resultado.frecuencia_c = float.Parse(dr["frecuencia_C"].ToString());
+                        resultado.frecuencia_respiratoria = float.Parse(dr["frecuencia_r"].ToString());
+                        resultado.enfermero = int.Parse(dr["enfermero"].ToString());
+                        
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+
+            }
+            finally
+            {
+                cn.Close();
+            }
+            return resultado;
+        }
+        public static List<internacion> ListadoInternacion()
+        {
+            List<internacion> resultado = new List<internacion>();
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = "SELECT * FROM internacion where fecha_egreso is null";
+                cmd.Parameters.Clear();
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = consulta;
+                cn.Open();
+
+                cmd.Connection = cn;
+
+
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                if (dr != null)
+                {
+                    while (dr.Read())
+                    {
+
+                        internacion i = new internacion();
+                        i.id_internacion = int.Parse(dr["id_internacion"].ToString());
+                        i.motivo = dr["motivo"].ToString();
+                        i.fecha_ingreso = DateTime.Parse(dr["fecha_ingreso"].ToString());
+                        i.fecha_egreso = DateTime.Parse(dr["fecha_egreso"].ToString());
+                        i.temperatura = float.Parse(dr["telefono"].ToString());
+                        i.tension = float.Parse(dr["tension"].ToString());
+                        i.frecuencia_c = float.Parse(dr["frecuencia_C"].ToString());
+                        i.frecuencia_respiratoria = float.Parse(dr["frecuencia_r"].ToString());
+                        i.enfermero = int.Parse(dr["enfermero"].ToString());
+                        resultado.Add(i);
+                    }
+                }
+
+            }
+            catch (Exception)
+            {
+                throw;
+
+            }
+            finally
+            {
+                cn.Close();
+            }
+
+            return resultado;
+        }
 
     }
 }

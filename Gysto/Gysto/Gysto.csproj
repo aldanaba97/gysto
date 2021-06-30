@@ -207,6 +207,8 @@
     <Content Include="Views\Roles\DirectorMedico.cshtml" />
     <Content Include="Views\Roles\Enfermero.cshtml" />
     <Content Include="Views\Transacciones\Internacion.cshtml" />
+    <Content Include="Views\Transacciones\obtenerInternacion.cshtml" />
+    <Content Include="Views\Transacciones\ListadoInternacion.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

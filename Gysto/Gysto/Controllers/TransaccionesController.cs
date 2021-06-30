@@ -52,5 +52,36 @@ namespace Gysto.Controllers
             }
 
         }
+        public ActionResult ObtenerDatos (int idInternacion)
+        {
+            List<comboEnfermero> listaRol = AdoRoles.ListadoEnfermero();
+            List<SelectListItem> Items = listaRol.ConvertAll(d =>
+            {
+                return new SelectListItem()
+                {
+                    Text = d.nombre,
+                    Value = d.id.ToString(),
+                    Selected = false
+
+                };
+            });
+            ViewBag.items = Items;
+            internacion resultado = AdoTransacciones.obtenerInternacion(idInternacion);
+            foreach (var item in Items)
+            {
+                if (item.Value.Equals(resultado.enfermero.ToString()))
+                {
+                    item.Selected = true;
+                    break;
+                }
+            }
+            return View(resultado); 
+
+        }
+        public ActionResult ListadoInternacion()
+        {
+            List<internacion> lista = AdoTransacciones.ListadoInternacion(); 
+            return View(lista);
+        }
     }
 }
