@@ -187,7 +187,7 @@ namespace Gysto.AccesoDatos
 
                 SqlCommand cmd = new SqlCommand();
 
-                string consulta = "insert into pacientes ( id_paciente, id_persona) values (IDENT_CURRENT('Personas'))";
+                string consulta = "insert into pacientes ( id_persona) values (IDENT_CURRENT('Personas'))";
                 cmd.Parameters.Clear();
 
     
@@ -247,6 +247,55 @@ namespace Gysto.AccesoDatos
                         comboEnfermero e = new comboEnfermero();                       
                         e.id = int.Parse(dr["id_enfermero"].ToString());             
                         e.nombre = dr["nombreCompleto"].ToString();
+
+                        resultado.Add(e);
+                    }
+                }
+
+            }
+            catch (Exception)
+            {
+                throw;
+
+            }
+            finally
+            {
+                cn.Close();
+            }
+
+            return resultado;
+        }
+        public static List<comboPaciente> ListadoPaciente()
+        {
+            List<comboPaciente> resultado = new List<comboPaciente>();
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = "select id_paciente,  apellido + ' , ' +  nombre nombrecto from personas p join Pacientes pa on p.id_persona = pa.id_persona";
+                cmd.Parameters.Clear();
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = consulta;
+                cn.Open();
+
+                cmd.Connection = cn;
+
+
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                if (dr != null)
+                {
+                    while (dr.Read())
+                    {
+
+                        comboPaciente e = new comboPaciente();
+                        e.id = int.Parse(dr["id_paciente"].ToString());
+                        e.nombre = dr["nombrecto"].ToString();
 
                         resultado.Add(e);
                     }

@@ -26,8 +26,19 @@ namespace Gysto.Controllers
 
                 };
             });
-            ViewBag.items = Items;
+            List<comboPaciente> listaPacient = AdoRoles.ListadoPaciente();
+            List<SelectListItem> ItemsPaciente = listaRol.ConvertAll(d =>
+            {
+                return new SelectListItem()
+                {
+                    Text = d.nombre,
+                    Value = d.id.ToString(),
+                    Selected = false
 
+                };
+            });
+            ViewBag.items = Items;
+            ViewBag.item = ItemsPaciente; 
             return View(); 
         }
         [HttpPost]
@@ -52,7 +63,40 @@ namespace Gysto.Controllers
             }
 
         }
-        public ActionResult ObtenerDatos (int idInternacion)
+        public ActionResult obtenerInternacion  (int idInternacion)
+        {
+            internacion resultado = AdoTransacciones.obtenerInternacion(idInternacion);
+            return View(resultado); 
+
+        }
+
+        [HttpPost]
+        public ActionResult obtenerInternacion(internacion model)
+        {
+            if (ModelState.IsValid)
+            {
+                bool resultado = AdoTransacciones.ActualizarFecha(model);
+                if (resultado)
+                {
+                    return RedirectToAction("ListadoInternacion", "Transacciones");
+                }
+                else
+                {
+                    return View(model);
+                }
+            }
+            else
+            {
+                return View();
+            }
+
+        }
+        public ActionResult ListadoInternacion()
+        {
+            List<listadoInternaciones> lista = AdoTransacciones.ListadoInternacion(); 
+            return View(lista);
+        }
+        public ActionResult editarInternacion(int idInternacion)
         {
             List<comboEnfermero> listaRol = AdoRoles.ListadoEnfermero();
             List<SelectListItem> Items = listaRol.ConvertAll(d =>
@@ -65,8 +109,19 @@ namespace Gysto.Controllers
 
                 };
             });
-            ViewBag.items = Items;
-            internacion resultado = AdoTransacciones.obtenerInternacion(idInternacion);
+            List<comboPaciente> listaPacient = AdoRoles.ListadoPaciente();
+            List<SelectListItem> ItemsPaciente = listaRol.ConvertAll(d =>
+            {
+                return new SelectListItem()
+                {
+                    Text = d.nombre,
+                    Value = d.id.ToString(),
+                    Selected = false
+
+                };
+            });
+           
+            internacion resultado = AdoTransacciones.ObtenerDatosInternacion(idInternacion);
             foreach (var item in Items)
             {
                 if (item.Value.Equals(resultado.enfermero.ToString()))
@@ -75,12 +130,43 @@ namespace Gysto.Controllers
                     break;
                 }
             }
-            return View(resultado); 
+            foreach (var item in ItemsPaciente)
+            {
+                if (item.Value.Equals(resultado.paciente.ToString()))
+                {
+                    item.Selected = true;
+                    break;
+                }
+            }
+            ViewBag.items = Items;
+            ViewBag.item = ItemsPaciente;
+            return View(resultado);
 
         }
-        public ActionResult ListadoInternacion()
+        [HttpPost]
+        public ActionResult editarInternacion(internacion model)
         {
-            List<internacion> lista = AdoTransacciones.ListadoInternacion(); 
+            if (ModelState.IsValid)
+            {
+                bool resultado = AdoTransacciones.ActualizarInternacion(model);
+                if (resultado)
+                {
+                    return RedirectToAction("TodasInternaciones", "Transacciones");
+                }
+                else
+                {
+                    return View(model);
+                }
+            }
+            else
+            {
+                return View();
+            }
+
+        }
+        public ActionResult TodasInternaciones()
+        {
+            List<listadoInternaciones> lista = AdoTransacciones.ListadoInternacion();
             return View(lista);
         }
     }

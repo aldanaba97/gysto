@@ -145,7 +145,9 @@
     <Compile Include="Models\Usuario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\comboEnfermero.cs" />
+    <Compile Include="ViewModels\comboPaciente.cs" />
     <Compile Include="ViewModels\listado.cs" />
+    <Compile Include="ViewModels\listadoInternaciones.cs" />
     <Compile Include="ViewModels\localidad.cs" />
     <Compile Include="ViewModels\Rol.cs" />
     <Compile Include="ViewModels\tipoDNI.cs" />
@@ -209,6 +211,8 @@
     <Content Include="Views\Transacciones\Internacion.cshtml" />
     <Content Include="Views\Transacciones\obtenerInternacion.cshtml" />
     <Content Include="Views\Transacciones\ListadoInternacion.cshtml" />
+    <Content Include="Views\Transacciones\editarInternacion.cshtml" />
+    <Content Include="Views\Transacciones\TodasInternaciones.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

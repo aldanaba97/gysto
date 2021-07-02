@@ -1,6 +1,6 @@
 ﻿@model Gysto.Models.internacion
 @{
-    ViewBag.Title = "Alta internacion";
+    ViewBag.Title = "Editar internacion";
     List<SelectListItem> ItemsEnfermero = (List<SelectListItem>)ViewBag.items;
     List<SelectListItem> ItemsPaciente = (List<SelectListItem>)ViewBag.item;
 
@@ -10,13 +10,14 @@
 <div class="row">
     <div class="col-sm-12">
         <div>
-            <h1>Crear un nuevo usuario </h1>
+            <h1>Editar internacion de @ViewBag.nombre </h1>
         </div>
     </div>
 </div>
 @using (Html.BeginForm())
 
 {
+    @Html.HiddenFor(model => model.id_internacion)
     <div class="row">
         <div class="col-lg-6">
             <div class="form-horizontal">
@@ -32,7 +33,7 @@
                         @Html.TextBoxFor(model => model.fecha_ingreso, htmlAttributes: new { @class = "form control", @id = "txtApellido", @type = "date" })
                     </div>
                 </div>
-              
+
 
                 <div class="form-group">
                     <label class="col-sm-6 control-label">Temperatura: </label>
@@ -85,6 +86,7 @@
 
 
 }
+
 
 
 
