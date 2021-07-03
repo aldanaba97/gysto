@@ -146,28 +146,85 @@ namespace Gysto.Controllers
         [HttpPost]
         public ActionResult editarInternacion(internacion model)
         {
+
             if (ModelState.IsValid)
             {
-                bool resultado = AdoTransacciones.ActualizarInternacion(model);
+                string si_button = Request.Form["button"].ToString();
+                switch (si_button)
+                {
+                    case "Eliminar":
+                        bool resultado = AdoTransacciones.eliminarInternacion(model);
+                        if (resultado)
+                        {                           
+                            return RedirectToAction("TodasInternaciones", "Transacciones");
+                        }
+                        break;
+                    case "Actualizar":
+                        bool resultado2 = AdoTransacciones.ActualizarInternacion(model); 
+                        if (resultado2)
+                        {                            
+                            return RedirectToAction("TodasInternaciones", "Transacciones");
+                        }
+                        break;
+                }
+            }           
+                return View();
+          
+        }
+        public ActionResult TodasInternaciones()
+        {
+            List<listadoInternaciones> lista = AdoTransacciones.ListadoTodasInternaciones();
+            return View(lista);
+        }
+        public ActionResult Internacion()
+        {
+            List<comboEnfermero> listaRol = AdoRoles.ListadoEnfermero();
+            List<SelectListItem> Items = listaRol.ConvertAll(d =>
+            {
+                return new SelectListItem()
+                {
+                    Text = d.nombre,
+                    Value = d.id.ToString(),
+                    Selected = false
+
+                };
+            });
+            List<comboPaciente> listaPacient = AdoRoles.ListadoPaciente();
+            List<SelectListItem> ItemsPaciente = listaRol.ConvertAll(d =>
+            {
+                return new SelectListItem()
+                {
+                    Text = d.nombre,
+                    Value = d.id.ToString(),
+                    Selected = false
+
+                };
+            });
+            ViewBag.items = Items;
+            ViewBag.item = ItemsPaciente;
+            return View();
+        }
+        [HttpPost]
+        public ActionResult Consulta (internacion model)
+        {
+            if (ModelState.IsValid)
+            {
+                bool resultado = AdoTransacciones.InsertarTransacciones(model);
                 if (resultado)
                 {
-                    return RedirectToAction("TodasInternaciones", "Transacciones");
+                    return RedirectToAction("Index", "Home");
                 }
                 else
                 {
                     return View(model);
                 }
+
             }
             else
             {
-                return View();
+                return View(model);
             }
 
-        }
-        public ActionResult TodasInternaciones()
-        {
-            List<listadoInternaciones> lista = AdoTransacciones.ListadoInternacion();
-            return View(lista);
         }
     }
 }

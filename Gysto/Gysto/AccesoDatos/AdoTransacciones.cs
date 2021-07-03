@@ -57,6 +57,53 @@ namespace Gysto.AccesoDatos
 
             return resultado;
         }
+        public static bool InsertarConsulta(consulta i)
+        {
+            bool resultado = false;
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = "insert into Internaciones (motivo, Fecha_ingreso, Fecha_egreso, Temperatura, tension, Frecuencia_cardiaca, Frecuencia_Respiratoria, id_enfermero, paciente) values ( @1, @2, null, @4, @5, @6, @7, @8, @9)";
+                cmd.Parameters.Clear();
+
+                cmd.Parameters.AddWithValue("@1", i.motivo);
+                cmd.Parameters.AddWithValue("@2", i.fecha_ingreso);
+
+                cmd.Parameters.AddWithValue("@4", i.temperatura);
+                cmd.Parameters.AddWithValue("@5", i.tension);
+                cmd.Parameters.AddWithValue("@6", i.frecuencia_c);
+                cmd.Parameters.AddWithValue("@7", i.frecuencia_respiratoria);
+                cmd.Parameters.AddWithValue("@8", i.enfermero);
+                cmd.Parameters.AddWithValue("@9", i.paciente);
+
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = consulta;
+                cn.Open();
+                cmd.Connection = cn;
+                cmd.ExecuteNonQuery();
+
+                resultado = true;
+
+            }
+            catch (Exception)
+            {
+                throw;
+
+            }
+            finally
+            {
+                cn.Close();
+            }
+
+            return resultado;
+        }
         public static internacion obtenerInternacion(int idInternacion)
         {
             internacion resultado = new internacion();
@@ -234,9 +281,6 @@ namespace Gysto.AccesoDatos
                         resultado.enfermero = int.Parse(dr["id_enfermero"].ToString());
                         resultado.paciente = int.Parse(dr["paciente"].ToString());
 
-
-
-
                     }
                 }
             }
@@ -276,6 +320,95 @@ namespace Gysto.AccesoDatos
                 cmd.Parameters.AddWithValue("@7", i.frecuencia_respiratoria);
                 cmd.Parameters.AddWithValue("@8", i.enfermero);
                 cmd.Parameters.AddWithValue("@9", i.paciente);                
+                cmd.Parameters.AddWithValue("@id",i.id_internacion);
+
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                cmd.CommandText = consulta;
+
+
+                cn.Open();
+
+                cmd.Connection = cn;
+                cmd.ExecuteNonQuery();
+                resultado = true;
+            }
+            catch (Exception)
+            {
+                throw;
+
+            }
+            finally
+            {
+                cn.Close();
+            }
+            return resultado;
+        }
+        public static List<listadoInternaciones> ListadoTodasInternaciones()
+        {
+            List<listadoInternaciones> resultado = new List<listadoInternaciones>();
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = "select apellido +' , ' + nombre nombrecto, Fecha_ingreso, motivo, id_internacion from Pacientes p inner join Internaciones i on i.paciente = p.id_paciente inner join personas pe on pe.id_persona = p.id_persona where fecha_egreso is not null";
+                cmd.Parameters.Clear();
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = consulta;
+                cn.Open();
+
+                cmd.Connection = cn;
+
+
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                if (dr != null)
+                {
+                    while (dr.Read())
+                    {
+
+                        listadoInternaciones i = new listadoInternaciones();
+                        i.nombrecto = dr["nombrecto"].ToString();
+                        i.motivo = dr["motivo"].ToString();
+                        i.fecha = DateTime.Parse(dr["fecha_ingreso"].ToString());
+                        i.id = int.Parse(dr["id_internacion"].ToString());
+                        resultado.Add(i);
+                    }
+                }
+
+            }
+            catch (Exception)
+            {
+                throw;
+
+            }
+            finally
+            {
+                cn.Close();
+            }
+
+            return resultado;
+        }
+        public static bool eliminarInternacion(internacion i)
+        {
+            bool resultado = false;
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = "update Internaciones set estado= false where id_internacion = @id";
+                cmd.Parameters.Clear();
+
                 cmd.Parameters.AddWithValue("@id", i.id_internacion);
 
                 cmd.CommandType = System.Data.CommandType.Text;
