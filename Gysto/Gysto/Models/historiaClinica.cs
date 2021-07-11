@@ -12,7 +12,7 @@ namespace Gysto.Models
         public int paciente { get; set; }
         public int enfermedad { get; set;  }
         public int consultas { get; set;  }
-        public int enfermedad { get; set;  } 
+        //public int enfermedad { get; set;  } 
 
 
     }

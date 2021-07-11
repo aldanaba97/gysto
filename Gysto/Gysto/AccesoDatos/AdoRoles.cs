@@ -314,5 +314,54 @@ namespace Gysto.AccesoDatos
 
             return resultado;
         }
+        public static List<comboMedico> ListadoMedico()
+        {
+            List<comboMedico> resultado = new List<comboMedico>();
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = " apellido + ' , ' +  nombre nombrecto, e.nombre espe from personas p join Pacientes pa on p.id_persona = pa.id_persona join especialidades e on medicos.id_espe = e.id_espe";
+                cmd.Parameters.Clear();
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = consulta;
+                cn.Open();
+
+                cmd.Connection = cn;
+
+
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                if (dr != null)
+                {
+                    while (dr.Read())
+                    {
+
+                        comboMedico e = new comboMedico();
+                        e.nombreCompleto = dr["nombrecto"].ToString();
+                        e.espe = dr["espe"].ToString();
+
+                        resultado.Add(e);
+                    }
+                }
+
+            }
+            catch (Exception)
+            {
+                throw;
+
+            }
+            finally
+            {
+                cn.Close();
+            }
+
+            return resultado;
+        }
     }
 }

@@ -57,53 +57,53 @@ namespace Gysto.AccesoDatos
 
             return resultado;
         }
-        public static bool InsertarConsulta(consulta i)
-        {
-            bool resultado = false;
-            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+        //public static bool InsertarConsulta(consulta i)
+        //{
+        //    bool resultado = false;
+        //    string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
 
-            SqlConnection cn = new SqlConnection(cadenaConexion);
+        //    SqlConnection cn = new SqlConnection(cadenaConexion);
 
-            try
-            {
+        //    try
+        //    {
 
-                SqlCommand cmd = new SqlCommand();
+        //        SqlCommand cmd = new SqlCommand();
 
-                string consulta = "insert into Internaciones (motivo, Fecha_ingreso, Fecha_egreso, Temperatura, tension, Frecuencia_cardiaca, Frecuencia_Respiratoria, id_enfermero, paciente) values ( @1, @2, null, @4, @5, @6, @7, @8, @9)";
-                cmd.Parameters.Clear();
+        //        string consulta = "insert into Internaciones (motivo, Fecha_ingreso, Fecha_egreso, Temperatura, tension, Frecuencia_cardiaca, Frecuencia_Respiratoria, id_enfermero, paciente) values ( @1, @2, null, @4, @5, @6, @7, @8, @9)";
+        //        cmd.Parameters.Clear();
 
-                cmd.Parameters.AddWithValue("@1", i.motivo);
-                cmd.Parameters.AddWithValue("@2", i.fecha_ingreso);
+        //        cmd.Parameters.AddWithValue("@1", i.motivo);
+        //        cmd.Parameters.AddWithValue("@2", i.fecha_ingreso);
 
-                cmd.Parameters.AddWithValue("@4", i.temperatura);
-                cmd.Parameters.AddWithValue("@5", i.tension);
-                cmd.Parameters.AddWithValue("@6", i.frecuencia_c);
-                cmd.Parameters.AddWithValue("@7", i.frecuencia_respiratoria);
-                cmd.Parameters.AddWithValue("@8", i.enfermero);
-                cmd.Parameters.AddWithValue("@9", i.paciente);
+        //        cmd.Parameters.AddWithValue("@4", i.temperatura);
+        //        cmd.Parameters.AddWithValue("@5", i.tension);
+        //        cmd.Parameters.AddWithValue("@6", i.frecuencia_c);
+        //        cmd.Parameters.AddWithValue("@7", i.frecuencia_respiratoria);
+        //        cmd.Parameters.AddWithValue("@8", i.enfermero);
+        //        cmd.Parameters.AddWithValue("@9", i.paciente);
 
 
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = consulta;
-                cn.Open();
-                cmd.Connection = cn;
-                cmd.ExecuteNonQuery();
+        //        cmd.CommandType = System.Data.CommandType.Text;
+        //        cmd.CommandText = consulta;
+        //        cn.Open();
+        //        cmd.Connection = cn;
+        //        cmd.ExecuteNonQuery();
 
-                resultado = true;
+        //        resultado = true;
 
-            }
-            catch (Exception)
-            {
-                throw;
+        //    }
+        //    catch (Exception)
+        //    {
+        //        throw;
 
-            }
-            finally
-            {
-                cn.Close();
-            }
+        //    }
+        //    finally
+        //    {
+        //        cn.Close();
+        //    }
 
-            return resultado;
-        }
+        //    return resultado;
+        //}
         public static internacion obtenerInternacion(int idInternacion)
         {
             internacion resultado = new internacion();

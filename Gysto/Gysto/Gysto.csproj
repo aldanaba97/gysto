@@ -148,11 +148,14 @@
     <Compile Include="Models\Usuario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\comboEnfermero.cs" />
+    <Compile Include="ViewModels\comboMedico.cs" />
     <Compile Include="ViewModels\comboPaciente.cs" />
     <Compile Include="ViewModels\listado.cs" />
     <Compile Include="ViewModels\listadoInternaciones.cs" />
+    <Compile Include="ViewModels\listadoTurnos.cs" />
     <Compile Include="ViewModels\localidad.cs" />
     <Compile Include="ViewModels\Rol.cs" />
+    <Compile Include="ViewModels\SacarTurno.cs" />
     <Compile Include="ViewModels\tipoDNI.cs" />
   </ItemGroup>
   <ItemGroup>
