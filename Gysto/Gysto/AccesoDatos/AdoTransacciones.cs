@@ -433,5 +433,332 @@ namespace Gysto.AccesoDatos
             }
             return resultado;
         }
+        public static bool InsertarTurno(turno i)
+        {
+            bool resultado = false;
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = "insert into Turnos (fecha , hora, id_medico, paciente, disponibilidad) values ( @1, @2,@3, null, 1)";
+                cmd.Parameters.Clear();
+
+                cmd.Parameters.AddWithValue("@1", i.fecha);
+                cmd.Parameters.AddWithValue("@2", i.hora);
+                cmd.Parameters.AddWithValue("@3", i.medico);
+
+
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = consulta;
+                cn.Open();
+                cmd.Connection = cn;
+                cmd.ExecuteNonQuery();
+
+                resultado = true;
+
+            }
+            catch (Exception)
+            {
+                throw;
+
+            }
+            finally
+            {
+                cn.Close();
+            }
+
+            return resultado;
+        }
+        public static List<listadoTurnos> ListadoTurno()
+        {
+            List<listadoTurnos> resultado = new List<listadoTurnos>();
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = "select id_turno,  hora, fecha, apellido + ' , '  + nombre medico from Turnos join Medicos on Turnos.id_medico = Medicos.id_medico join personas on personas.id_persona = Medicos.id_persona";
+
+                cmd.Parameters.Clear();
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = consulta;
+                cn.Open();
+
+                cmd.Connection = cn;
+
+
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                if (dr != null)
+                {
+                    while (dr.Read())
+                    {
+
+                        listadoTurnos i = new listadoTurnos();
+                        i.id = int.Parse(dr["id_turno"].ToString());
+                        i.hora = dr["hora"].ToString();
+                        i.fecha = dr["fecha"].ToString();
+                        i.medico = dr["medico"].ToString();
+                        resultado.Add(i);
+                    }
+                }
+
+            }
+            catch (Exception)
+            {
+                throw;
+
+            }
+            finally
+            {
+                cn.Close();
+            }
+
+            return resultado;
+        }
+        public static turno ObtenerTurno(int idTurno)
+        {
+            turno resultado = new turno();
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = "select * from Turnos where id_turno = @id";
+                cmd.Parameters.Clear();
+                cmd.Parameters.AddWithValue("@id", idTurno);
+
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = consulta;
+                cn.Open();
+                cmd.Connection = cn;
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                if (dr != null)
+                {
+                    while (dr.Read())
+                    {
+
+                        resultado.fecha = DateTime.Parse(dr["fecha"].ToString());
+                        resultado.hora = TimeSpan.Parse(dr["hora"].ToString());
+                        resultado.medico = int.Parse(dr["id_medico"].ToString());
+                        resultado.id_turno = int.Parse(dr["id_turno"].ToString());
+
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+
+            }
+            finally
+            {
+                cn.Close();
+            }
+            return resultado;
+        }
+        public static bool ActualizarTurno(turno t)
+        {
+            bool resultado = false;
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = "update Turnos set fecha= @1, hora = @2, id_medico = @3 where id_turno = @id";
+                cmd.Parameters.Clear();
+
+
+                cmd.Parameters.AddWithValue("@1", t.fecha);
+                cmd.Parameters.AddWithValue("@2", t.hora);
+                cmd.Parameters.AddWithValue("@3", t.medico);
+                cmd.Parameters.AddWithValue("@id", t.id_turno);
+
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                cmd.CommandText = consulta;
+
+
+                cn.Open();
+
+                cmd.Connection = cn;
+                cmd.ExecuteNonQuery();
+                resultado = true;
+            }
+            catch (Exception)
+            {
+                throw;
+
+            }
+            finally
+            {
+                cn.Close();
+            }
+            return resultado;
+        }
+        public static bool eliminarTurno(turno i)
+        {
+            bool resultado = false;
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = "delete Turno where id_turno = @id";
+                cmd.Parameters.Clear();
+
+                cmd.Parameters.AddWithValue("@id", i.id_turno);
+
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                cmd.CommandText = consulta;
+
+
+                cn.Open();
+
+                cmd.Connection = cn;
+                cmd.ExecuteNonQuery();
+                resultado = true;
+            }
+            catch (Exception)
+            {
+                throw;
+
+            }
+            finally
+            {
+                cn.Close();
+            }
+            return resultado;
+        }
+        public static List<turno> ListadoTurnosDisponibles()
+        {
+            List<turno> resultado = new List<turno>();
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = "select hora, fecha, id_turno, disponibilidad from Turnos";
+
+                cmd.Parameters.Clear();
+                //cmd.Parameters.AddWithValue("@id", id);
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = consulta;
+                cn.Open();
+
+                cmd.Connection = cn;
+
+
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                if (dr != null)
+                {
+                    while (dr.Read())
+                    {
+
+                        turno i = new turno();
+                        //  i.id_turno = int.Parse(dr["id_turno"].ToString());
+                        i.hora = TimeSpan.Parse(dr["hora"].ToString());
+                        i.fecha = DateTime.Parse(dr["fecha"].ToString());
+                        i.id_turno = int.Parse(dr["id_turno"].ToString());
+                        i.disponibilidad = Boolean.Parse(dr["disponibilidad"].ToString());
+
+                        resultado.Add(i);
+                    }
+                }
+
+            }
+            catch (Exception)
+            {
+                throw;
+
+            }
+            finally
+            {
+                cn.Close();
+            }
+
+            return resultado;
+        }
+        public static List<turno> ListadoxOrden(int id)
+        {
+            List<turno> resultado = new List<turno>();
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = "select hora, fecha, id_turno, disponibilidad from Turnos where id_medico = @id";
+
+                cmd.Parameters.Clear();
+                cmd.Parameters.AddWithValue("@id", id);
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = consulta;
+                cn.Open();
+
+                cmd.Connection = cn;
+
+
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                if (dr != null)
+                {
+                    while (dr.Read())
+                    {
+
+                        turno i = new turno();
+                        //  i.id_turno = int.Parse(dr["id_turno"].ToString());
+                        i.hora = TimeSpan.Parse(dr["hora"].ToString());
+                        i.fecha = DateTime.Parse(dr["fecha"].ToString());
+                        i.id_turno = int.Parse(dr["id_turno"].ToString());
+                        i.disponibilidad = Boolean.Parse(dr["disponibilidad"].ToString());
+
+                        resultado.Add(i);
+                    }
+                }
+
+            }
+            catch (Exception)
+            {
+                throw;
+
+            }
+            finally
+            {
+                cn.Close();
+            }
+
+            return resultado;
+        }
     }
 }

@@ -216,6 +216,12 @@
     <Content Include="Views\Transacciones\ListadoInternacion.cshtml" />
     <Content Include="Views\Transacciones\editarInternacion.cshtml" />
     <Content Include="Views\Transacciones\TodasInternaciones.cshtml" />
+    <Content Include="Views\Transacciones\Consulta.cshtml" />
+    <Content Include="Views\Transacciones\ListadoTurno.cshtml" />
+    <Content Include="Views\Transacciones\obtenerTurno.cshtml" />
+    <Content Include="Views\Transacciones\TodosTurnos.cshtml" />
+    <Content Include="Views\Transacciones\Turno.cshtml" />
+    <Content Include="Views\Transacciones\TurnoSacado.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
