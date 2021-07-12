@@ -133,6 +133,8 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Administrador.cs" />
+    <Compile Include="Models\historiaClinica.cs" />
+    <Compile Include="Models\Consulta.cs" />
     <Compile Include="Models\internacion.cs" />
     <Compile Include="Models\director_medico.cs" />
     <Compile Include="Models\Enfermedad.cs" />
@@ -142,12 +144,18 @@
     <Compile Include="Models\paciente.cs" />
     <Compile Include="Models\Persona.cs" />
     <Compile Include="Models\Tratamiento.cs" />
+    <Compile Include="Models\turno.cs" />
     <Compile Include="Models\Usuario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\comboEnfermero.cs" />
+    <Compile Include="ViewModels\comboMedico.cs" />
+    <Compile Include="ViewModels\comboPaciente.cs" />
     <Compile Include="ViewModels\listado.cs" />
+    <Compile Include="ViewModels\listadoInternaciones.cs" />
+    <Compile Include="ViewModels\listadoTurnos.cs" />
     <Compile Include="ViewModels\localidad.cs" />
     <Compile Include="ViewModels\Rol.cs" />
+    <Compile Include="ViewModels\SacarTurno.cs" />
     <Compile Include="ViewModels\tipoDNI.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -209,6 +217,14 @@
     <Content Include="Views\Transacciones\Internacion.cshtml" />
     <Content Include="Views\Transacciones\obtenerInternacion.cshtml" />
     <Content Include="Views\Transacciones\ListadoInternacion.cshtml" />
+    <Content Include="Views\Transacciones\editarInternacion.cshtml" />
+    <Content Include="Views\Transacciones\TodasInternaciones.cshtml" />
+    <Content Include="Views\Transacciones\Consulta.cshtml" />
+    <Content Include="Views\Transacciones\ListadoTurno.cshtml" />
+    <Content Include="Views\Transacciones\obtenerTurno.cshtml" />
+    <Content Include="Views\Transacciones\TodosTurnos.cshtml" />
+    <Content Include="Views\Transacciones\Turno.cshtml" />
+    <Content Include="Views\Transacciones\TurnoSacado.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

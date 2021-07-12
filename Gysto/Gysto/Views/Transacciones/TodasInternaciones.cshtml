@@ -7,7 +7,7 @@
     <div class="col-sm-12">
         <div>
             <h1>
-                Internacion sin cerrar 
+                Todas las internaciones cargadas
             </h1>
         </div>
     </div>
@@ -40,34 +40,32 @@
                 @foreach (var i in Model)
                 {
 
-                <tr class="text-center">
-                    <td>
-                        @i.nombrecto
+                    <tr class="text-center">
+                        <td>
+                            @i.nombrecto
 
-                    </td>
-                    <td>
-                        @i.fecha
+                        </td>
+                        <td>
+                            @i.fecha
 
-                    </td>
-                    <td>
-                        @i.motivo
-                    </td>
-                    <td>
-                        | <a href="@Url.Action("obtenerInternacion", "Transacciones", new { idInternacion = i.id })">  Seleccionar  </a>|
-                       
-
+                        </td>
+                        <td>
+                            @i.motivo
+                        </td>
+                        <td>
+                            | <a href="@Url.Action("editarInternacion", "Transacciones", new { idInternacion = i.id })">  Seleccionar  </a>|
 
 
-                    </td>
-                </tr>
+
+                        </td>
+                    </tr>
                 }
 
 
-                
+
             </tbody>
         </table>
 
 
     </div>
 </div>
-

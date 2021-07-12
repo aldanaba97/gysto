@@ -15,7 +15,8 @@ namespace Gysto.Models
         public float tension { get; set; }
         public float frecuencia_c { get; set; }
         public float frecuencia_respiratoria { get; set; }
-        public int enfermero { get; set;  }
+        public int enfermero { get; set;  } 
+        public int paciente { get; set;  }
 
 
     }

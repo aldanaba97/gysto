@@ -1,14 +1,14 @@
 ﻿@model Gysto.Models.internacion
 @{
     ViewBag.Title = "Alta internacion";
-    List<SelectListItem> ItemsEnfermero = (List<SelectListItem>)ViewBag.items;
+    
 
 }
 
 <div class="row">
     <div class="col-sm-12">
         <div>
-            <h1>Crear un nuevo usuario </h1>
+            <h1>Alta medica </h1>
         </div>
     </div>
 </div>
@@ -19,54 +19,11 @@
     <div class="row">
         <div class="col-lg-6">
             <div class="form-horizontal">
-                <div class="form-group">
-                    <label class="col-sm-6 control-label">Motivo: </label>
-                    <div class="col-sm-6">
-                        @Html.TextBoxFor(model => model.motivo, htmlAttributes: new { @class = "form control", @id = "txtNombre" })
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-6 control-label">Fecha de ingreso: </label>
-                    <div class="col-sm-6">
-                        @Html.TextBoxFor(model => model.fecha_ingreso, htmlAttributes: new { @class = "form control", @id = "txtApellido", @type = "date" })
-                    </div>
-                </div>
+               
                 <div class="form-group">
                     <label class="col-sm-6 control-label">Fecha de alta: </label>
                     <div class="col-sm-6">
                         @Html.TextBoxFor(model => model.fecha_egreso, htmlAttributes: new { @class = "form control", @id = "txtApellido", @type = "date" })
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="col-sm-6 control-label">Temperatura: </label>
-                    <div class="col-sm-6">
-                        @Html.TextBoxFor(model => model.temperatura, htmlAttributes: new { @class = "form control", @id = "txtNombre" })
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-6 control-label">Tension: </label>
-                    <div class="col-sm-6">
-                        @Html.TextBoxFor(model => model.tension, htmlAttributes: new { @class = "form control", @id = "txtNombre" })
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-6 control-label">Frecuencia cardiaca: </label>
-                    <div class="col-sm-6">
-                        @Html.TextBoxFor(model => model.frecuencia_c, htmlAttributes: new { @class = "form control", @id = "txtNombre" })
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-6 control-label">Frecuencia respiratoria: </label>
-                    <div class="col-sm-6">
-                        @Html.TextBoxFor(model => model.frecuencia_respiratoria, htmlAttributes: new { @class = "form control", @id = "txtNombre" })
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="col-sm-6 control-label">Enfermero </label>
-                    <div class="col-sm-6">
-                        @Html.DropDownList("enfermero", ItemsEnfermero, "Seleccione un rol", htmlAttributes: new { @class = "form-control" })
                     </div>
                 </div>
                 <div class="form-group text-right">
