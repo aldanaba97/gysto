@@ -270,37 +270,7 @@ namespace Gysto.Controllers
             List<listadoTurnos> lista = AdoTransacciones.ListadoTurno();
             return View(lista);
         }
-
-
-        [HttpPost]
-
-        public ActionResult obtenerTurno(turno model)
-        {
-
-            if (ModelState.IsValid)
-            {
-                string si_button = Request.Form["button"].ToString();
-                switch (si_button)
-                {
-                    case "eliminar":
-                        bool resultado = AdoTransacciones.eliminarTurno(model);
-                        if (resultado)
-                        {
-                            return RedirectToAction("ListadoTurno", "Transacciones");
-                        }
-                        break;
-                    case "actualizar":
-                        bool resultado2 = AdoTransacciones.ActualizarTurno(model);
-                        if (resultado2)
-                        {
-                            return RedirectToAction("ListadoTurno", "Transacciones");
-                        }
-                        break;
-                }
-            }
-            return View();
-
-        }
+            
         public ActionResult obtenerTurno(int idTurno)
         {
             List<comboMedico> listaRol = AdoRoles.ListadoMedico();
@@ -330,6 +300,37 @@ namespace Gysto.Controllers
             return View(resultado);
 
         }
+
+       
+         //[HttpPost]
+        //public ActionResult obtenerTurno(turno model)
+        //{
+
+        //    if (ModelState.IsValid)
+        //    {
+        //        string si_button = Request.Form["button"].ToString();
+        //        switch (si_button)
+        //        {
+        //            case "eliminar":
+        //                bool resultado = AdoTransacciones.eliminarTurno(model);
+        //                if (resultado)
+        //                {
+        //                    return RedirectToAction("ListadoTurno", "Transacciones");
+        //                }
+        //                break;
+        //            case "actualizar":
+        //                bool resultado2 = AdoTransacciones.ActualizarTurno(model);
+        //                if (resultado2)
+        //                {
+        //                    return RedirectToAction("ListadoTurno", "Transacciones");
+        //                }
+        //                break;
+        //        }
+        //    }
+        //    return View();
+
+        //}
+       
         public ActionResult TodosTurnos()
         {
             List<comboMedico> listaRol = AdoRoles.ListadoMedico();
@@ -372,26 +373,47 @@ namespace Gysto.Controllers
         {
             return View();
         }
-        [HttpPost]
-        public ActionResult TurnoSacado(string dni)
+        //[HttpPost]
+        //public ActionResult TurnoSacado(string dni)
+        //{
+        //    /*ist<turno> lista = AdoTransacciones.ListadoxOrden();*/
+        //    return View();
+        //}
+        public ActionResult Datosxdni(string dni)
         {
-            List<comboMedico> listaRol = AdoRoles.ListadoMedico();
-            List<SelectListItem> Items = listaRol.ConvertAll(d =>
-            {
-                return new SelectListItem()
-                {
-                    Text = d.nombreCompleto,
-                    Value = d.id_med.ToString(),
-                    Selected = false
+            paciente resultado = AdoTransacciones.listadoxDni(dni);
+            turno i  = AdoTransacciones.listadoxDniTurno(dni);
 
-                };
-            });
-            ViewBag.items = Items;
 
-            List<turno> lista = AdoTransacciones.ListadoxOrden();
-            return View(lista);
+            SacarTurno st = new SacarTurno();
+            st.turno = i;
+            st.p = resultado; 
+            return View(st);
         }
+        [HttpPost]
+        public ActionResult Datosxdni(turno model )
+        {
+            if (ModelState.IsValid)
+            {
 
+                bool resultado2 = AdoTransacciones.ConfirmarTurno(model); 
+                if (resultado2)
+                {
+                    return RedirectToAction("TodosTurnos", "Transacciones");
+                }
+
+                else
+                {
+                    return View(model);
+                }
+
+            }
+            else
+            {
+                  return View(model);
+            }
+           
+        }
 
     }
 }

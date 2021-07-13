@@ -84,6 +84,7 @@ C:\Users\Aldana\source\repos\Gysto\Gysto\bin\es\System.Web.WebPages.Razor.resour
 C:\Users\Aldana\source\repos\Gysto\Gysto\obj\Debug\Gysto.csproj.CopyComplete
 C:\Users\Aldana\source\repos\Gysto\Gysto\obj\Debug\Gysto.dll
 C:\Users\Aldana\source\repos\Gysto\Gysto\obj\Debug\Gysto.pdb
+C:\Users\Aldana\Documents\GitHub\gysto\Gysto\Gysto\obj\Debug\Gysto.csproj.CoreCompileInputs.cache
 C:\Users\Aldana\OneDrive\Documentos\GitHub\gysto\Gysto\Gysto\bin\Gysto.dll.config
 C:\Users\Aldana\OneDrive\Documentos\GitHub\gysto\Gysto\Gysto\bin\Gysto.dll
 C:\Users\Aldana\OneDrive\Documentos\GitHub\gysto\Gysto\Gysto\bin\Gysto.pdb
@@ -165,9 +166,8 @@ C:\Users\Aldana\OneDrive\Documentos\GitHub\gysto\Gysto\Gysto\bin\es\System.Web.R
 C:\Users\Aldana\OneDrive\Documentos\GitHub\gysto\Gysto\Gysto\bin\es\System.Web.WebPages.resources.dll
 C:\Users\Aldana\OneDrive\Documentos\GitHub\gysto\Gysto\Gysto\bin\es\System.Web.WebPages.Deployment.resources.dll
 C:\Users\Aldana\OneDrive\Documentos\GitHub\gysto\Gysto\Gysto\bin\es\System.Web.WebPages.Razor.resources.dll
-C:\Users\Aldana\OneDrive\Documentos\GitHub\gysto\Gysto\Gysto\obj\Debug\Gysto.csprojAssemblyReference.cache
 C:\Users\Aldana\OneDrive\Documentos\GitHub\gysto\Gysto\Gysto\obj\Debug\Gysto.csproj.CoreCompileInputs.cache
 C:\Users\Aldana\OneDrive\Documentos\GitHub\gysto\Gysto\Gysto\obj\Debug\Gysto.csproj.CopyComplete
 C:\Users\Aldana\OneDrive\Documentos\GitHub\gysto\Gysto\Gysto\obj\Debug\Gysto.dll
 C:\Users\Aldana\OneDrive\Documentos\GitHub\gysto\Gysto\Gysto\obj\Debug\Gysto.pdb
-C:\Users\Aldana\Documents\GitHub\gysto\Gysto\Gysto\obj\Debug\Gysto.csproj.CoreCompileInputs.cache
+C:\Users\Aldana\OneDrive\Documentos\GitHub\gysto\Gysto\Gysto\obj\Debug\Gysto.csprojAssemblyReference.cache

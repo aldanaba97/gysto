@@ -225,6 +225,7 @@
     <Content Include="Views\Transacciones\TodosTurnos.cshtml" />
     <Content Include="Views\Transacciones\Turno.cshtml" />
     <Content Include="Views\Transacciones\TurnoSacado.cshtml" />
+    <Content Include="Views\Transacciones\DatosxDni.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

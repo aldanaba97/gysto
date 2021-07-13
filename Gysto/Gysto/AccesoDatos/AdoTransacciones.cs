@@ -760,5 +760,145 @@ namespace Gysto.AccesoDatos
 
             return resultado;
         }
+        public static paciente listadoxDni (string dni)
+        {
+            paciente resultado = new paciente();
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = "select nombre, apellido, telefono, id_paciente, numero_dni from Turnos join Pacientes on Turnos.paciente = Pacientes.id_paciente join personas p on Pacientes.id_persona = p.id_persona where numero_dni = @dni";
+
+                cmd.Parameters.Clear();
+                cmd.Parameters.AddWithValue("@dni", dni);
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = consulta;
+                cn.Open();
+
+                cmd.Connection = cn;
+
+
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                if (dr != null)
+                {
+                    while (dr.Read())
+                    {
+
+                     
+                        //resultado.id_turno = int.Parse(dr["id_turno"].ToString());  
+                        resultado.nombre = dr["nombre"].ToString();
+                        resultado.apellido = dr["apellido"].ToString();                 
+                        resultado.telefono = dr["telefono"].ToString();
+                        resultado.id_paciente= int.Parse(dr["id_paciente"].ToString());
+                        resultado.dni = int.Parse(dr["numero_dni"].ToString());
+                    }
+                }
+
+            }
+            catch (Exception)
+            {
+                throw;
+
+            }
+            finally
+            {
+                cn.Close();
+            }
+
+            return resultado;
+        }
+        public static turno listadoxDniTurno(string dni)
+        {
+            turno resultado = new turno(); 
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = "select id_turno, paciente from Turnos join Pacientes on Turnos.paciente = Pacientes.id_paciente join personas p on Pacientes.id_persona = p.id_persona where numero_dni = @dni";
+
+                cmd.Parameters.Clear();
+                cmd.Parameters.AddWithValue("@dni", dni);
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = consulta;
+                cn.Open();
+
+                cmd.Connection = cn;
+
+
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                if (dr != null)
+                {
+                    while (dr.Read())
+                    {
+                        
+                        resultado.id_turno = int.Parse(dr["id_turno"].ToString());
+                        resultado.paciente = int.Parse(dr["paciente"].ToString());
+                    }
+                }
+
+            }
+            catch (Exception)
+            {
+                throw;
+
+            }
+            finally
+            {
+                cn.Close();
+            }
+
+            return resultado;
+        }
+        public static bool ConfirmarTurno(turno t)
+        {
+            bool resultado = false;
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = "update Turnos set paciente= @1 where id_turno = @id";
+                cmd.Parameters.Clear();
+
+
+                cmd.Parameters.AddWithValue("@1", t.paciente);
+                cmd.Parameters.AddWithValue("@id", t.id_turno);
+
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                cmd.CommandText = consulta;
+
+
+                cn.Open();
+
+                cmd.Connection = cn;
+                cmd.ExecuteNonQuery();
+                resultado = true;
+            }
+            catch (Exception)
+            {
+                throw;
+
+            }
+            finally
+            {
+                cn.Close();
+            }
+            return resultado;
+        }
     }
 }

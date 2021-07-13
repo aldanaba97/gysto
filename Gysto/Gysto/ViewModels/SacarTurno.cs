@@ -9,7 +9,7 @@ namespace Gysto.ViewModels
     public class SacarTurno
     {
         public paciente p { get; set; }
-        public int id_turno { get; set; }
+        public turno turno { get; set; }
         
     }
 }
