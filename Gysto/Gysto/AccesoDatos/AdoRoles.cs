@@ -363,5 +363,54 @@ namespace Gysto.AccesoDatos
 
             return resultado;
         }
+        public static List<comboAdministrativo> ListadoAdministrativo()
+        {
+            List<comboAdministrativo> resultado = new List<comboAdministrativo>();
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = "select apellido + ' , ' +  p.nombre nombrecto, id_administrativos from personas p join Administrativos m on p.id_persona = m.id_persona";
+                cmd.Parameters.Clear();
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = consulta;
+                cn.Open();
+
+                cmd.Connection = cn;
+
+
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                if (dr != null)
+                {
+                    while (dr.Read())
+                    {
+
+                        comboAdministrativo e = new comboAdministrativo();
+                        e.nombre = dr["nombrecto"].ToString();
+                        e.id = int.Parse(dr["id_administrativos"].ToString());
+
+                        resultado.Add(e);
+                    }
+                }
+
+            }
+            catch (Exception)
+            {
+                throw;
+
+            }
+            finally
+            {
+                cn.Close();
+            }
+
+            return resultado;
+        }
     }
 }

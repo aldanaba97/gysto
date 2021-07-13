@@ -178,7 +178,7 @@ namespace Gysto.Controllers
         }
         public ActionResult Consulta()
         {
-            List<comboEnfermero> listaRol = AdoRoles.ListadoEnfermero();
+            List<comboAdministrativo> listaRol = AdoRoles.ListadoAdministrativo();
             List<SelectListItem> Items = listaRol.ConvertAll(d =>
             {
                 return new SelectListItem()
@@ -190,7 +190,7 @@ namespace Gysto.Controllers
                 };
             });
             List<comboPaciente> listaPacient = AdoRoles.ListadoPaciente();
-            List<SelectListItem> ItemsPaciente = listaRol.ConvertAll(d =>
+            List<SelectListItem> ItemsPaciente = listaPacient.ConvertAll(d =>
             {
                 return new SelectListItem()
                 {
@@ -200,16 +200,41 @@ namespace Gysto.Controllers
 
                 };
             });
-            ViewBag.items = Items;
-            ViewBag.item = ItemsPaciente;
+            List<Tratamiento> trata = Ado.ComboboxTratamiento();
+            List<SelectListItem> ItemsTratamiento = trata.ConvertAll(d =>
+            {
+                return new SelectListItem()
+                {
+                    Text = d.nombre,
+                    Value = d.id_tratamiento.ToString(),
+                    Selected = false
+
+                };
+            });
+            List<comboMedico> listame = AdoRoles.ListadoMedico();
+            List<SelectListItem> ItemsM = listame.ConvertAll(d =>
+            {
+                return new SelectListItem()
+                {
+                    Text = d.nombreCompleto + " - " + d.espe,
+                    Value = d.id_med.ToString(),
+                    Selected = false
+
+                };
+            });
+
+            ViewBag.itemsM = ItemsM;
+            ViewBag.itemsA = Items;
+            ViewBag.itemsP = ItemsPaciente;
+            ViewBag.itemsT = ItemsTratamiento; 
             return View();
         }
         [HttpPost]
-        public ActionResult Consulta (internacion model)
+        public ActionResult Consulta (Consulta model)
         {
             if (ModelState.IsValid)
             {
-                bool resultado = AdoTransacciones.InsertarTransacciones(model);
+                bool resultado = AdoTransacciones.InsertarConsulta(model);
                 if (resultado)
                 {
                     return RedirectToAction("Index", "Home");

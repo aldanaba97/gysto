@@ -147,6 +147,7 @@
     <Compile Include="Models\turno.cs" />
     <Compile Include="Models\Usuario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\comboAdministrativo.cs" />
     <Compile Include="ViewModels\comboEnfermero.cs" />
     <Compile Include="ViewModels\comboMedico.cs" />
     <Compile Include="ViewModels\comboPaciente.cs" />
