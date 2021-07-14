@@ -171,3 +171,4 @@ C:\Users\Aldana\OneDrive\Documentos\GitHub\gysto\Gysto\Gysto\obj\Debug\Gysto.csp
 C:\Users\Aldana\OneDrive\Documentos\GitHub\gysto\Gysto\Gysto\obj\Debug\Gysto.dll
 C:\Users\Aldana\OneDrive\Documentos\GitHub\gysto\Gysto\Gysto\obj\Debug\Gysto.pdb
 C:\Users\Aldana\Documents\GitHub\gysto\Gysto\Gysto\obj\Debug\Gysto.csproj.CoreCompileInputs.cache
+C:\Users\Aldana\Documents\GitHub\gysto\Gysto\Gysto\obj\Debug\Gysto.csproj.AssemblyReference.cache
