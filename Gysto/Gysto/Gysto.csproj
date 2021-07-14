@@ -147,6 +147,7 @@
     <Compile Include="Models\turno.cs" />
     <Compile Include="Models\Usuario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\comboAdministrativo.cs" />
     <Compile Include="ViewModels\comboEnfermero.cs" />
     <Compile Include="ViewModels\comboMedico.cs" />
     <Compile Include="ViewModels\comboPaciente.cs" />
@@ -225,6 +226,7 @@
     <Content Include="Views\Transacciones\TodosTurnos.cshtml" />
     <Content Include="Views\Transacciones\Turno.cshtml" />
     <Content Include="Views\Transacciones\TurnoSacado.cshtml" />
+    <Content Include="Views\Transacciones\DatosxDni.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
