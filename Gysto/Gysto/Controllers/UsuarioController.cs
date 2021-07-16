@@ -177,7 +177,7 @@ namespace Gysto.Controllers
         }
 
         [HttpPost]
-        public ActionResult ModificarUsuario(Persona model)
+        public ActionResult ModificarUsuario(Persona model, string rol )
         {
 
             if (ModelState.IsValid)
@@ -194,10 +194,26 @@ namespace Gysto.Controllers
                         }
                         break;
                     case "actualizar":
+
                         bool resultado2 = AdoUsuarios.ActualizarDatosPersona(model);
                         if (resultado2)
                         {
-                            return RedirectToAction("ListadoUsuario", "Usuario");
+                                switch (rol)
+                                {
+                                    case "1":
+                                        return RedirectToAction("ModificarMedico", "Roles");
+                                    case "2":
+                                        return RedirectToAction("ModificarDirectorMedico", "Roles");
+                                    case "3":
+                                        return RedirectToAction("ModificarAdministrador", "Roles");
+                                    //case "4":
+                                    //    return RedirectToAction("ModificarTecnico", "Usuario");
+                                    case "5":
+                                        return RedirectToAction("ModificarEnfermero", "Roles");
+                                    case "1002":
+                                        return RedirectToAction("ModificarPaciente", "Roles");
+                                }
+                          
                         }
                         break;
 

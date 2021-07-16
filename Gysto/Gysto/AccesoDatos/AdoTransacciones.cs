@@ -897,5 +897,338 @@ namespace Gysto.AccesoDatos
             }
             return resultado;
         }
+        public static List<ListadoConsulta> ListadoConsultas()
+        {
+            List<ListadoConsulta> resultado = new List<ListadoConsulta>();
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = "select hora, fecha,  pe.apellido +' , ' + pe.nombre nombreMedico, (select nombre + ', ' + apellido from pacientes join personas on pacientes.id_persona = personas.id_persona) nombrePaciente, id_consulta from consultas c inner join Medicos m on m.id_medico = c.medico inner join personas pe on pe.id_persona = m.id_persona inner join Administrativos a on a.id_administrativos = c.id_admnistrativo";
+                cmd.Parameters.Clear();
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = consulta;
+                cn.Open();
+
+                cmd.Connection = cn;
+
+
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                if (dr != null)
+                {
+                    while (dr.Read())
+                    {
+
+                        ListadoConsulta i = new ListadoConsulta();
+                        i.hora = dr["hora"].ToString();
+                        i.fecha = dr["fecha"].ToString();
+                        i.NombreMedico = dr["NombreMedico"].ToString();
+                        i.NombrePaciente = dr["nombrePaciente"].ToString();
+                        i.id = int.Parse(dr["id_consulta"].ToString());
+                        resultado.Add(i);
+                    }
+                }
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                cn.Close();
+            }
+
+            return resultado;
+        }
+        public static List<ListadoConsulta> ListadoConsultasCerradas()
+        {
+            List<ListadoConsulta> resultado = new List<ListadoConsulta>();
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = "select hora, fecha,  pe.apellido +' , ' + pe.nombre nombreMedico, (select nombre + ', ' + apellido from pacientes join personas on pacientes.id_persona = personas.id_persona) nombrePaciente,  diagnostico_final from consultas c inner join Medicos m on m.id_medico = c.medico inner join personas pe on pe.id_persona = m.id_persona inner join Administrativos a on a.id_administrativos = c.id_admnistrativo where diagnostico_final is not null";
+                cmd.Parameters.Clear();
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = consulta;
+                cn.Open();
+
+                cmd.Connection = cn;
+
+
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                if (dr != null)
+                {
+                    while (dr.Read())
+                    {
+
+                        ListadoConsulta i = new ListadoConsulta();
+                        i.hora = dr["hora"].ToString();
+                        i.fecha = dr["fecha"].ToString();
+                        i.NombreMedico = dr["NombreMedico"].ToString();
+                        i.NombrePaciente = dr["nombrePaciente"].ToString();
+                        i.diagnostico = dr["diagnostico_final"].ToString();
+                        resultado.Add(i);
+                    }
+                }
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                cn.Close();
+            }
+
+            return resultado;
+        }
+        public static Consulta ObtenerConsulta(int idConsulta)
+        {
+            Consulta resultado = new Consulta();
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = "select hora, id_consulta, medico, id_paciente, id_admnistrativo, diagnostico from Consultas where id_consulta = @id";
+                cmd.Parameters.Clear();
+                cmd.Parameters.AddWithValue("@id", idConsulta);
+
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = consulta;
+                cn.Open();
+                cmd.Connection = cn;
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                if (dr != null)
+                {
+                    while (dr.Read())
+                    {
+
+                        resultado.hora = TimeSpan.Parse(dr["hora"].ToString());
+                        resultado.id_consulta = int.Parse(dr["id_consulta"].ToString());
+                        resultado.medico = int.Parse(dr["medico"].ToString());
+                        resultado.id_paciente = int.Parse(dr["id_paciente"].ToString());
+                        resultado.id_administracion = int.Parse(dr["id_admnistrativo"].ToString());
+                        resultado.prediagnostico = dr["diagnostico"].ToString();
+
+                    
+                        
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+
+            }
+            finally
+            {
+                cn.Close();
+            }
+            return resultado;
+        }
+        public static bool ActualizarConsulta(Consulta i)
+        {
+            bool resultado = false;
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = "update consultas set hora = @hora,  medico = @medico, id_paciente = @idpaciente, id_admnistrativo = @administrativo , diagnostico = @diag where id_consulta = @consulta";
+                cmd.Parameters.Clear();
+
+                cmd.Parameters.AddWithValue("@hora", i.hora);
+                cmd.Parameters.AddWithValue("@medico", i.medico);
+                cmd.Parameters.AddWithValue("@id_paciente", i.id_paciente); 
+                cmd.Parameters.AddWithValue("@id_administrativo", i.id_administracion);
+                cmd.Parameters.AddWithValue("@diag", i.prediagnostico);
+                cmd.Parameters.AddWithValue("@consulta", i.id_consulta);
+
+
+
+
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                cmd.CommandText = consulta;
+
+
+                cn.Open();
+
+                cmd.Connection = cn;
+                cmd.ExecuteNonQuery();
+                resultado = true;
+            }
+            catch (Exception)
+            {
+                throw;
+
+            }
+            finally
+            {
+                cn.Close();
+            }
+            return resultado;
+        }
+        public static bool eliminarConsulta(Consulta i)
+        {
+            bool resultado = false;
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = "delete Consultas where id_consulta = @id";
+                cmd.Parameters.Clear();
+
+                cmd.Parameters.AddWithValue("@id", i.id_consulta);
+
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                cmd.CommandText = consulta;
+
+
+                cn.Open();
+
+                cmd.Connection = cn;
+                cmd.ExecuteNonQuery();
+                resultado = true;
+            }
+            catch (Exception)
+            {
+                throw;
+
+            }
+            finally
+            {
+                cn.Close();
+            }
+            return resultado;
+        }
+        public static bool CerrarConsulta(Consulta i)
+        {
+            bool resultado = false;
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = "update consultas set diagnostico_final = @1,  observaciones = @2, id_tratamiento = @3 where id_consulta = @consulta";
+                cmd.Parameters.Clear();
+
+                cmd.Parameters.AddWithValue("@1", i.diagnostico);
+                cmd.Parameters.AddWithValue("@2", i.observaciones);
+                cmd.Parameters.AddWithValue("@3", i.tratamiento);
+                cmd.Parameters.AddWithValue("@consulta", i.id_consulta);
+
+
+
+
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                cmd.CommandText = consulta;
+
+
+                cn.Open();
+
+                cmd.Connection = cn;
+                cmd.ExecuteNonQuery();
+                resultado = true;
+            }
+            catch (Exception)
+            {
+                throw;
+
+            }
+            finally
+            {
+                cn.Close();
+            }
+            return resultado;
+        }
+        public static Consulta ObtenerConsultaParaCerrar(int idConsulta)
+        {
+            Consulta resultado = new Consulta();
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = "select hora, id_consulta, medico, id_paciente, id_admnistrativo, diagnostico from Consultas where id_consulta = @id";
+                cmd.Parameters.Clear();
+                cmd.Parameters.AddWithValue("@id", idConsulta);
+
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = consulta;
+                cn.Open();
+                cmd.Connection = cn;
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                if (dr != null)
+                {
+                    while (dr.Read())
+                    {
+                        resultado.hora = TimeSpan.Parse(dr["hora"].ToString());
+                        resultado.id_consulta = int.Parse(dr["id_consulta"].ToString());
+                        resultado.medico = int.Parse(dr["medico"].ToString());
+                        resultado.id_paciente = int.Parse(dr["id_paciente"].ToString());
+                        resultado.id_administracion = int.Parse(dr["id_admnistrativo"].ToString());
+                        resultado.prediagnostico = dr["diagnostico"].ToString();
+                        //resultado.observaciones = dr["observaciones"].ToString();
+                        //resultado.tratamiento = int.Parse(dr["id_tratamiento"].ToString());
+                        //resultado.diagnostico = dr["diagnostico_final"].ToString();
+                        
+
+
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+
+            }
+            finally
+            {
+                cn.Close();
+            }
+            return resultado;
+        }
     }
 }

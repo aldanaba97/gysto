@@ -274,11 +274,11 @@ namespace Gysto.AccesoDatos
 
                 SqlCommand cmd = new SqlCommand();
 
-                string consulta = "exec ActualizarUsuario1 @contraseña, @usuario, @rol, @email, @dni, @direccion, @localidad, @telefono , @nombre , @apellido , @fecha_nac , @numero_dni , @id_usu , @id_perso ";
+                string consulta = "exec ActualizarUsuario1 @contraseña, @usuario, @email, @dni, @direccion, @localidad, @telefono , @nombre , @apellido , @fecha_nac , @numero_dni , @id_usu , @id_perso ";
                 cmd.Parameters.Clear();
                 cmd.Parameters.AddWithValue("@contraseña", p.contraseña);
                 cmd.Parameters.AddWithValue("@usuario", p.nombreUsuario);
-                cmd.Parameters.AddWithValue("@rol", p.rol);
+                
                 cmd.Parameters.AddWithValue("@email", p.email);
                 
                 cmd.Parameters.AddWithValue("@dni", p.id_dni);

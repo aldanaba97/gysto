@@ -1,0 +1,58 @@
+﻿@model IEnumerable<Gysto.ViewModels.ListadoConsulta>
+
+@{
+    ViewBag.Title = "Consultas sin cerrar";
+}
+
+<h2>Consultas Sin Cerrar</h2>
+
+<p>
+    @Html.ActionLink("Consulta", "Transacciones")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            Hora
+        </th>
+        <th>
+            Fecha 
+        </th>
+        <th>
+           Medico 
+        </th>
+        <th>
+            Paciente
+        </th>
+        <th>
+            Diagnostico 
+        </th>
+      
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @item.hora
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fecha)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NombreMedico)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NombrePaciente)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.diagnostico)
+        </td>
+       
+        <td>
+        
+            @Html.ActionLink("DetalleConsulta", "Transacciones", new {  idConsulta=item.id}) |
+        
+        </td>
+    </tr>
+}
+
+</table>

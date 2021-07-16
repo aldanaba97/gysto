@@ -133,6 +133,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Administrador.cs" />
+    <Compile Include="Models\detalleHistoriaClinica.cs" />
     <Compile Include="Models\historiaClinica.cs" />
     <Compile Include="Models\Consulta.cs" />
     <Compile Include="Models\internacion.cs" />
@@ -152,6 +153,7 @@
     <Compile Include="ViewModels\comboMedico.cs" />
     <Compile Include="ViewModels\comboPaciente.cs" />
     <Compile Include="ViewModels\listado.cs" />
+    <Compile Include="ViewModels\ListadoConsulta.cs" />
     <Compile Include="ViewModels\listadoInternaciones.cs" />
     <Compile Include="ViewModels\listadoTurnos.cs" />
     <Compile Include="ViewModels\localidad.cs" />
@@ -227,6 +229,19 @@
     <Content Include="Views\Transacciones\Turno.cshtml" />
     <Content Include="Views\Transacciones\TurnoSacado.cshtml" />
     <Content Include="Views\Transacciones\DatosxDni.cshtml" />
+    <Content Include="Views\Transacciones\ListadoConsulta.cshtml" />
+    <Content Include="Views\Transacciones\obtenerConsulta.cshtml" />
+    <Content Include="Views\Transacciones\ListadoHC.cshtml" />
+    <Content Include="Views\Roles\ModficarAdministrador.cshtml" />
+    <Content Include="Views\Roles\ModificarDirectorMedico.cshtml" />
+    <Content Include="Views\Roles\ModificarEnfermero.cshtml" />
+    <Content Include="Views\Roles\ModificarMedico.cshtml" />
+    <Content Include="Views\Roles\ModificarPaciente.cshtml" />
+    <Content Include="Views\Roles\ModificarTecnico.cshtml" />
+    <Content Include="Views\Transacciones\ConsultaCerradas.cshtml" />
+    <Content Include="Views\Transacciones\ModificarConsultaDx.cshtml" />
+    <Content Include="Views\Transacciones\HistoriaClinica.cshtml" />
+    <Content Include="Views\Transacciones\CrearHC.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
