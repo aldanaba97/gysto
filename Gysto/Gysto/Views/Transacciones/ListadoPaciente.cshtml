@@ -1,0 +1,75 @@
+﻿@model Gysto.Models.paciente
+@{
+    ViewBag.Title = "Datos";
+
+
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <div>
+            <h1>
+               Desea Crear una historia clinica para? 
+            </h1>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-lg-3">
+        <table class="table table-dark table-striped">
+
+            <tbody>
+                <tr>
+                </tr>
+                <tr class="text-center" style="background-color:red">
+
+                    @*<td class="">
+            @Model.p.id_paciente
+
+        </td>*@
+                    <td>
+                        @Model.nombre + @Model.apellido
+                    </td>
+                
+
+                    <td>
+            <a href="@Url.Action("HistoriaClinica", "Transacciones" , new { idPaciente = Model.id_paciente })">  Seleccionar  </a>|
+            @*<button class="btn btn-primary" type="submit">
+                Buscar
+            </button>*@
+        </td>
+
+                </tr>
+
+
+            </tbody>
+        </table>
+        @*@using (Html.BeginForm("DatosxDni", "Transacciones", FormMethod.Post))
+        {
+            @Html.HiddenFor(model => model.turno.id_turno)
+            @Html.HiddenFor(model => model.turno.paciente)
+            <div class="col-md-6">
+                    @Html.TextBoxFor(model => model.p.dni, htmlAttributes: new { @class = "form control", @id = "txtNombre" @readonly = "readonly" })
+                </div>
+            <div class="col-md-6">
+                    <div class="col-lg-6">
+                        <button class="btn btn-primary" type="submit">
+                            Buscar
+                        </button>
+                    </div>
+
+                </div>
+            <div class="form-group text-right">
+                <div class="col-xs-12">
+                    <button class="btn btn-primary" type="submit">
+                        Confirmar
+                    </button>
+                </div>
+            </div>
+        }*@
+
+
+    </div>
+</div>
