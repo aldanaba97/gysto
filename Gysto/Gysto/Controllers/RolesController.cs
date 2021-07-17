@@ -152,5 +152,10 @@ namespace Gysto.Controllers
             }
 
         }
+        public ActionResult ListadoPaciente(string dni)
+        {
+            paciente r = AdoTransacciones.listadoxDni(dni);
+            return View(r);
+        }
     }
 }

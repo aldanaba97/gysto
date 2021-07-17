@@ -412,6 +412,58 @@ namespace Gysto.AccesoDatos
 
             return resultado;
         }
+        //public static buscaPaciente pacientesxdni(int dni)
+        //{
+        //    buscaPaciente resultado = new buscaPaciente();
+        //    string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+        //    SqlConnection cn = new SqlConnection(cadenaConexion);
+
+        //    try
+        //    {
+
+        //        SqlCommand cmd = new SqlCommand();
+
+        //        string consulta = "select id_paciente, nombre + ', ' + apellido nombrec, numero_dni from Pacientes join personas on Pacientes.id_persona = personas.id_persona where numero_dni = @id ";
+
+        //        cmd.Parameters.Clear();
+        //        cmd.Parameters.AddWithValue("@dni", dni);
+        //        cmd.CommandType = System.Data.CommandType.Text;
+        //        cmd.CommandText = consulta;
+        //        cn.Open();
+
+        //        cmd.Connection = cn;
+
+
+        //        SqlDataReader dr = cmd.ExecuteReader();
+
+        //        if (dr != null)
+        //        {
+        //            while (dr.Read())
+        //            {
+
+
+        //                //resultado.id_turno = int.Parse(dr["id_turno"].ToString());  
+        //                resultado.nombreC = dr["nombrec"].ToString();
+                       
+        //                resultado.paciente= int.Parse(dr["id_paciente"].ToString());
+        //                resultado.dni = int.Parse(dr["id_paciente"].ToString());
+                        
+        //            }
+        //        }
+
+        //    }
+        //    catch (Exception)
+        //    {
+        //        throw;
+
+        //    }
+        //    finally
+        //    {
+        //        cn.Close();
+        //    }
+
+        //    return resultado;
+        //}
 
     }
 }

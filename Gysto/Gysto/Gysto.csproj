@@ -242,6 +242,7 @@
     <Content Include="Views\Transacciones\ModificarConsultaDx.cshtml" />
     <Content Include="Views\Transacciones\HistoriaClinica.cshtml" />
     <Content Include="Views\Transacciones\CrearHC.cshtml" />
+    <Content Include="Views\Transacciones\ListadoPaciente.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

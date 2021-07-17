@@ -662,6 +662,21 @@ namespace Gysto.Controllers
             }
            
         }
+        public ActionResult CrearHC()
+        {
+            return View();
+        }
+        public ActionResult ListadoPaciente(string dni)
+        {
+            paciente r = AdoTransacciones.listadoxDni(dni);
+            return View(r);
+        }
+        public ActionResult HistoriaClinica( int idPaciente)
+        {
+            int id = idPaciente;
+            ViewBag.id = id;
+            return View(); 
+        }
 
     }
 }
