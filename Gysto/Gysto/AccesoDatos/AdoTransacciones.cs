@@ -57,6 +57,47 @@ namespace Gysto.AccesoDatos
 
             return resultado;
         }
+        public static bool InsertarHistoriaClinica(historiaClinica i)
+        {
+            bool resultado = false;
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = "insert into HistoriaClinica (medicacion, id_paciente, fecha_creacion, grupo_sanguineo) values ( @1, @2, getdate(), @4)";
+                cmd.Parameters.Clear();
+
+                cmd.Parameters.AddWithValue("@1", i.Medicacion);              
+                cmd.Parameters.AddWithValue("@2", i.paciente);
+                cmd.Parameters.AddWithValue("@4", i.grupo_sanguineo);
+                
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = consulta;
+                cn.Open();
+                cmd.Connection = cn;
+                cmd.ExecuteNonQuery();
+
+                resultado = true;
+
+            }
+            catch (Exception)
+            {
+                throw;
+
+            }
+            finally
+            {
+                cn.Close();
+            }
+
+            return resultado;
+        }
         public static bool InsertarConsulta(Consulta i)
         {
             bool resultado = false;
@@ -1230,5 +1271,415 @@ namespace Gysto.AccesoDatos
             }
             return resultado;
         }
+        public static bool InsertarDetalleHistoria(detalleHistoriaClinica i)
+        {
+            bool resultado = false;
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = "insert into detalle_hc (id_enfermedad, id_hc, observaciones, alergia, detalles_alergia) values ( @1, IDENT_CURRENT('HistoriaClinica'), @2, @3, @4)";
+                cmd.Parameters.Clear();
+
+                cmd.Parameters.AddWithValue("@1", i.enfermedades);
+                cmd.Parameters.AddWithValue("@2", i.observaciones);
+                cmd.Parameters.AddWithValue("@3", i.alergia);
+                cmd.Parameters.AddWithValue("@4", i.detalle_alergia);
+
+
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = consulta;
+                cn.Open();
+                cmd.Connection = cn;
+                cmd.ExecuteNonQuery();
+
+                resultado = true;
+
+            }
+            catch (Exception)
+            {
+                throw;
+
+            }
+            finally
+            {
+                cn.Close();
+            }
+
+            return resultado;
+        }
+        public static List<listadoHistoriaClinica> ListadoHistorias()
+        {
+            List<listadoHistoriaClinica> resultado = new List<listadoHistoriaClinica>();
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = "select pe.apellido + ' , ' + pe.nombre nombreC, pe.numero_dni, h.id_historia  from Pacientes p join HistoriaClinica h on p.id_paciente = h.id_paciente join personas pe on pe.id_persona = p.id_persona";
+                cmd.Parameters.Clear();
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = consulta;
+                cn.Open();
+
+                cmd.Connection = cn;
+
+
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                if (dr != null)
+                {
+                    while (dr.Read())
+                    {
+
+                        listadoHistoriaClinica i = new listadoHistoriaClinica();
+                        i.nombreC = dr["nombreC"].ToString();
+                        i.dni = dr["numero_dni"].ToString();
+                        i.id_historia = int.Parse(dr["id_historia"].ToString());                        
+
+
+                        resultado.Add(i);
+                    }
+                }
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                cn.Close();
+            }
+
+            return resultado;
+        }
+        public static historiaClinica ObtenerHC(int idHistoriaClinica)
+        {
+            historiaClinica resultado = new historiaClinica(); 
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = "select id_historia, medicacion, id_paciente, grupo_sanguineo from historiaClinica where id_historia = @id";
+                cmd.Parameters.Clear();
+                cmd.Parameters.AddWithValue("@id", idHistoriaClinica);
+
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = consulta;
+                cn.Open();
+                cmd.Connection = cn;
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                if (dr != null)
+                {
+                    while (dr.Read())
+                    {
+
+                        resultado.id_hc = int.Parse(dr["id_historia"].ToString());
+                        resultado.Medicacion = dr["medicacion"].ToString();
+                        resultado.paciente = int.Parse(dr["id_paciente"].ToString());
+                        resultado.grupo_sanguineo = dr["grupo_sanguineo"].ToString();
+                        
+
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+
+            }
+            finally
+            {
+                cn.Close();
+            }
+            return resultado;
+        }
+        public static List<detalleHistoriaClinica> listadoDetalle(int id)
+        {
+            List<detalleHistoriaClinica> resultado = new List<detalleHistoriaClinica>();
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = "select * from detalle_hc where id_hc = @id";
+
+                cmd.Parameters.Clear();
+                cmd.Parameters.AddWithValue("@id", id);
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = consulta;
+                cn.Open();
+
+                cmd.Connection = cn;
+
+
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                if (dr != null)
+                {
+                    while (dr.Read())
+                    {
+
+                        detalleHistoriaClinica i = new detalleHistoriaClinica();                       
+                        i.id_detalle= int.Parse(dr["id_detalle"].ToString());
+                        i.enfermedades = int.Parse(dr["id_enfermedad"].ToString());
+                        i.hc = int.Parse(dr["id_hc"].ToString());
+                        i.observaciones = dr["observaciones"].ToString();
+                        i.alergia = Boolean.Parse(dr["alergia"].ToString());
+                        i.detalle_alergia = dr["detalles_alergia"].ToString();
+
+                        resultado.Add(i);
+                    }
+                }
+
+            }
+            catch (Exception)
+            {
+                throw;
+
+            }
+            finally
+            {
+                cn.Close();
+            }
+
+            return resultado;
+        }
+        public static bool eliminarDetalle(int id )
+        {
+            bool resultado = false;
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = "delete detalle_hc where id_detalle = @id";
+                cmd.Parameters.Clear();
+
+                cmd.Parameters.AddWithValue("@id", id);
+
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                cmd.CommandText = consulta;
+
+
+                cn.Open();
+
+                cmd.Connection = cn;
+                cmd.ExecuteNonQuery();
+                resultado = true;
+            }
+            catch (Exception)
+            {
+                throw;
+
+            }
+            finally
+            {
+                cn.Close();
+            }
+            return resultado;
+        }
+        public static bool ActualizarHC(DatosHistoriaClinica i)
+        {
+
+            bool resultado = false;
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = "update HistoriaClinica set medicacion = @1 , id_paciente = @2 , grupo_sanguineo = @3 where id_historia = @id";
+                cmd.Parameters.Clear();
+
+                cmd.Parameters.AddWithValue("@1", i.hc.Medicacion);
+                cmd.Parameters.AddWithValue("@2", i.hc.paciente);
+                cmd.Parameters.AddWithValue("@3", i.hc.grupo_sanguineo);
+                cmd.Parameters.AddWithValue("@id", i.hc.id_hc);
+                
+                
+
+
+
+
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                cmd.CommandText = consulta;
+
+
+                cn.Open();
+
+                cmd.Connection = cn;
+                cmd.ExecuteNonQuery();
+                resultado = true;
+            }
+            catch (Exception)
+            {
+                throw;
+
+            }
+            finally
+            {
+                cn.Close();
+            }
+            return resultado;
+        }
+        public static bool ActualizarDetalle(detalleHistoriaClinica i)
+        {
+            bool resultado = false;
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = "update detalle_hc set id_enfermedad = @1, observaciones = @2, alergia = @3, detalles_alergia = @4 where id_hc = @id";
+                cmd.Parameters.Clear();
+
+                cmd.Parameters.AddWithValue("@1", i.enfermedades);
+                cmd.Parameters.AddWithValue("@2", i.observaciones);
+                cmd.Parameters.AddWithValue("@3", i.alergia);
+                cmd.Parameters.AddWithValue("@4", i.detalle_alergia);
+                cmd.Parameters.AddWithValue("@id", i.id_detalle);
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = consulta;
+                cn.Open();
+
+                cmd.Connection = cn;
+                cmd.ExecuteNonQuery();
+                resultado = true;
+            }
+            catch (Exception)
+            {
+                throw;
+
+            }
+            finally
+            {
+                cn.Close();
+            }
+            return resultado;
+        }
+        public static detalleHistoriaClinica ObtenerDetalle(int idDetalle)
+        {
+            detalleHistoriaClinica resultado = new detalleHistoriaClinica();
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = "select id_enfermedad, observaciones, alergia, detalles_alergia, id_detalle, id_hc from detalle_hc where id_detalle = @id";
+                cmd.Parameters.Clear();
+                cmd.Parameters.AddWithValue("@id", idDetalle);
+
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = consulta;
+                cn.Open();
+                cmd.Connection = cn;
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                if (dr != null)
+                {
+                    while (dr.Read())
+                    {
+                        resultado.enfermedades = int.Parse(dr["id_enfermedad"].ToString());
+                        resultado.observaciones = dr["observaciones"].ToString();
+                        resultado.alergia = Boolean.Parse(dr["alergia"].ToString());
+                        resultado.detalle_alergia = dr["detalles_alergia"].ToString();
+                        resultado.id_detalle = int.Parse(dr["id_detalle"].ToString());
+                        resultado.hc= int.Parse(dr["id_hc"].ToString());
+
+
+
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+
+            }
+            finally
+            {
+                cn.Close();
+            }
+            return resultado;
+        }
+        public static bool eliminarHC(DatosHistoriaClinica i)
+        {
+            bool resultado = false;
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = "delete HistoriaClinica where id_historia = @id";
+                cmd.Parameters.Clear();
+
+                cmd.Parameters.AddWithValue("@id", i.hc.id_hc);
+
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                cmd.CommandText = consulta;
+
+
+                cn.Open();
+
+                cmd.Connection = cn;
+                cmd.ExecuteNonQuery();
+                resultado = true;
+            }
+            catch (Exception)
+            {
+                throw;
+
+            }
+            finally
+            {
+                cn.Close();
+            }
+            return resultado;
+        }
+
     }
 }

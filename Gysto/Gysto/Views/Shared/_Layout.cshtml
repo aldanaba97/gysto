@@ -29,6 +29,10 @@
                     <li>@Html.ActionLink("Internaciones", "ListadoInternacion", "Transacciones")</li>
                     <li>@Html.ActionLink("Turnos", "TodosTurnos", "Transacciones")</li>
                     <li>@Html.ActionLink("Usuarios", "ListadoUsuario", "Usuario")</li>
+                    @if (User.Identity.IsAuthenticated)
+            {
+                <li>@Html.ActionLink("Cerrar sesion", "Logout", "Home") </li>
+            }
                     
 
 

@@ -1,1 +1,45 @@
-﻿
+﻿@model IEnumerable<Gysto.ViewModels.listadoHistoriaClinica>
+
+@{
+    ViewBag.Title = "ListadoHC";
+}
+
+<h2>ListadoHC</h2>
+
+<p>
+    @Html.ActionLink("Nueva historia clinica", "HistoriaClinica")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.nombreC)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.dni)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.id_historia)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.nombreC)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.dni)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.id_historia)
+        </td>
+        <td>
+            @Html.ActionLink("Editar", "EditarHC", new { id = item.id_historia  }) |
+            @Html.ActionLink("Detalle", "DetalleHC", new {  id=item.id_historia}) |
+            @Html.ActionLink("Eliminar", "EliminarHC", new { id=item.id_historia }) 
+        </td>
+    </tr>
+}
+
+</table>

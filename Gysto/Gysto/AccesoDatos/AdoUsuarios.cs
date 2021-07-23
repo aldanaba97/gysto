@@ -59,23 +59,23 @@ namespace Gysto.AccesoDatos
         {
             List<Rol> resultado = new List<Rol>();
             string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
-           
+
             SqlConnection cn = new SqlConnection(cadenaConexion);
 
             try
             {
-                
+
                 SqlCommand cmd = new SqlCommand();
 
                 string consulta = "SELECT * FROM Roles";
-                cmd.Parameters.Clear();  
- 
-                cmd.CommandType = System.Data.CommandType.Text;        
-              cmd.CommandText = consulta;
-                
-             cn.Open();
-            
-             cmd.Connection = cn;            
+                cmd.Parameters.Clear();
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = consulta;
+
+                cn.Open();
+
+                cmd.Connection = cn;
                 SqlDataReader dr = cmd.ExecuteReader();
 
 
@@ -137,7 +137,7 @@ namespace Gysto.AccesoDatos
                 cmd.Parameters.AddWithValue("@apellido", p.apellido);
                 cmd.Parameters.AddWithValue("@fecha_nac", p.fecha_nac);
                 cmd.Parameters.AddWithValue("@numero_dni", p.dni);
-                
+
 
 
 
@@ -240,7 +240,7 @@ namespace Gysto.AccesoDatos
                 {
                     while (dr.Read())
                     {
-                        localidad l  = new localidad();
+                        localidad l = new localidad();
                         l.id = int.Parse(dr["id_ciudad"].ToString());
                         l.nombre = dr["nombre"].ToString();
 
@@ -262,7 +262,7 @@ namespace Gysto.AccesoDatos
 
             return resultado;
         }
-        public static bool ActualizarDatosPersona(Persona p )
+        public static bool ActualizarDatosPersona(Persona p)
         {
             bool resultado = false;
             string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
@@ -278,9 +278,9 @@ namespace Gysto.AccesoDatos
                 cmd.Parameters.Clear();
                 cmd.Parameters.AddWithValue("@contraseña", p.contraseña);
                 cmd.Parameters.AddWithValue("@usuario", p.nombreUsuario);
-                
+
                 cmd.Parameters.AddWithValue("@email", p.email);
-                
+
                 cmd.Parameters.AddWithValue("@dni", p.id_dni);
                 cmd.Parameters.AddWithValue("@direccion", p.direccion);
                 cmd.Parameters.AddWithValue("@localidad", p.localidad);
@@ -290,7 +290,7 @@ namespace Gysto.AccesoDatos
                 cmd.Parameters.AddWithValue("@fecha_nac", p.fecha_nac);
                 cmd.Parameters.AddWithValue("@numero_dni", p.dni);
                 cmd.Parameters.AddWithValue("@id_usu", p.id);
-                cmd.Parameters.AddWithValue("@id_perso", p.id_persona); 
+                cmd.Parameters.AddWithValue("@id_perso", p.id_persona);
 
 
 
@@ -336,7 +336,7 @@ namespace Gysto.AccesoDatos
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = consulta;
                 cn.Open();
-             cmd.Connection = cn;
+                cmd.Connection = cn;
                 SqlDataReader dr = cmd.ExecuteReader();
 
                 if (dr != null)
@@ -351,14 +351,14 @@ namespace Gysto.AccesoDatos
                         resultado.telefono = dr["telefono"].ToString();
                         resultado.nombre = dr["nombre"].ToString();
                         resultado.apellido = dr["apellido"].ToString();
-                        resultado.fecha_nac = DateTime.Parse(dr["fecha_nac"].ToString());                               
+                        resultado.fecha_nac = DateTime.Parse(dr["fecha_nac"].ToString());
                         resultado.dni = int.Parse(dr["numero_dni"].ToString());
                         resultado.id = int.Parse(dr["id_usuario"].ToString());
                         resultado.contraseña = dr["contraseña"].ToString();
                         resultado.nombreUsuario = dr["nombre"].ToString();
                         resultado.rol = int.Parse(dr["id_rol"].ToString());
                         resultado.email = dr["email"].ToString();
-                       
+
                     }
                 }
             }
@@ -402,8 +402,8 @@ namespace Gysto.AccesoDatos
                     {
 
                         listado e = new listado();
-                        e.id= int.Parse(dr["id_persona"].ToString());
-                        e.nombreCompleto = dr["nombreCompleto"].ToString();                        
+                        e.id = int.Parse(dr["id_persona"].ToString());
+                        e.nombreCompleto = dr["nombreCompleto"].ToString();
                         e.email = dr["email"].ToString();
                         e.usuario = dr["name"].ToString();
 
@@ -461,6 +461,49 @@ namespace Gysto.AccesoDatos
                 cn.Close();
             }
 
+            return resultado;
+        }
+
+        public static bool AccederLogin(string usuario, string contra, int rol)
+        {
+            bool resultado = false;
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = "select nombre, contraseña, id_rol from usuarios where nombre = '@1' and contraseña = '@2' and id_rol = @3 ";
+                cmd.Parameters.Clear();
+                cmd.Parameters.AddWithValue("@1", usuario);
+                cmd.Parameters.AddWithValue("@2", contra);
+                cmd.Parameters.AddWithValue("@3", rol);
+                
+
+
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = consulta;
+
+
+                cn.Open();
+                cmd.Connection = cn;
+                cmd.ExecuteNonQuery();
+
+                resultado = true;
+
+            }
+            catch (Exception)
+            {
+                throw;
+
+            }
+            finally
+            {
+                cn.Close();
+            }
             return resultado;
         }
     }
