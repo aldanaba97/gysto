@@ -1,0 +1,65 @@
+﻿@model Gysto.Models.detalleHistoriaClinica
+
+@{
+    ViewBag.Title = "EditarDetalle";
+
+}
+
+<h2>EditarDetalle</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    @Html.HiddenFor(model => model.id_detalle)
+    @Html.HiddenFor(model => model.hc)
+    <div class="form-horizontal">
+        <h4>Detalles de historia clinica</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+      
+        <div class="form-group">
+            @Html.LabelFor(model => model.alergia, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.alergia)
+                    @Html.ValidationMessageFor(model => model.alergia, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.enfermedades, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.enfermedades, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.enfermedades, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.observaciones, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.observaciones, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.observaciones, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.detalle_alergia, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.detalle_alergia, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.detalle_alergia, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Guardar" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("ListadoHC", "Index")
+</div>

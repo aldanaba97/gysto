@@ -662,21 +662,206 @@ namespace Gysto.Controllers
             }
            
         }
-        public ActionResult CrearHC()
+       
+       
+        public ActionResult HistoriaClinica()
         {
-            return View();
-        }
-        public ActionResult ListadoPaciente(string dni)
-        {
-            paciente r = AdoTransacciones.listadoxDni(dni);
-            return View(r);
-        }
-        public ActionResult HistoriaClinica( int idPaciente)
-        {
-            int id = idPaciente;
-            ViewBag.id = id;
+            List<comboPaciente> listaPacient = AdoRoles.ListadoPaciente();
+            List<SelectListItem> ItemsPaciente = listaPacient.ConvertAll(d =>
+            {
+                return new SelectListItem()
+                {
+                    Text = d.nombre,
+                    Value = d.id.ToString(),
+                    Selected = false
+
+                };
+            });
+
+            ViewBag.items = ItemsPaciente;
             return View(); 
         }
+        [HttpPost]
+        public ActionResult HistoriaClinica(historiaClinica model)
+        {
+            if (ModelState.IsValid)
+            {
+                bool resultado = AdoTransacciones.InsertarHistoriaClinica(model);
+                if (resultado)
+                {
+                    return RedirectToAction("DetalleHC", "Transacciones");
+                }
+                else
+                {
+                    return View(model);
+                }
 
+            }
+            else
+            {
+                return View(model);
+            }
+
+        }
+        public ActionResult DetalleHC() {
+            List<Enfermedad> listaE = Ado.Combobox();
+            List<SelectListItem> ItemsEnfermedad = listaE.ConvertAll(d =>
+            {
+                return new SelectListItem()
+                {
+                    Text = d.nombreEnfermedad,
+                    Value = d.id_enfe.ToString(),
+                    Selected = false
+
+                };
+            });
+            ViewBag.itemsE = ItemsEnfermedad; 
+            return View(); 
+        }
+        [HttpPost]
+        public ActionResult DetalleHC(detalleHistoriaClinica model)
+        {
+            if (ModelState.IsValid)
+            {
+                bool resultado = AdoTransacciones.InsertarDetalleHistoria(model);
+                if (resultado)
+                {
+                    return RedirectToAction("DetalleHC", "Transacciones");
+                }
+                else
+                {
+                    return View(model);
+                }
+
+            }
+            else
+            {
+                return View(model);
+            }
+
+        }
+        public ActionResult ListadoHC()
+        {
+            List<listadoHistoriaClinica> lista = AdoTransacciones.ListadoHistorias();
+            return View(lista);
+        }
+        public ActionResult EditarHC(int id)
+        {
+            List<comboPaciente> listaPacient = AdoRoles.ListadoPaciente();
+            List<SelectListItem> ItemsPaciente = listaPacient.ConvertAll(dd =>
+            {
+                return new SelectListItem()
+                {
+                    Text = dd.nombre,
+                    Value = dd.id.ToString(),
+                    Selected = false
+
+                };
+            });
+
+            ViewBag.items = ItemsPaciente;
+            historiaClinica hc = AdoTransacciones.ObtenerHC(id);
+            List<detalleHistoriaClinica> d = AdoTransacciones.listadoDetalle(id);
+
+            foreach (var item in ItemsPaciente)
+            {
+                if (item.Value.Equals(hc.paciente.ToString()))
+                {
+                    item.Selected = true;
+                    break;
+                }
+            }
+
+            DatosHistoriaClinica da = new DatosHistoriaClinica();
+            da.hc = hc;
+            da.detalle = d; 
+            return View(da);
+
+        }
+        [HttpPost]
+        public ActionResult EditarHC(DatosHistoriaClinica model)
+        {
+
+            if (ModelState.IsValid)
+            {
+                string si_button = Request.Form["button"].ToString();
+                switch (si_button)
+                {
+                    case "eliminar":
+                        bool resultado = AdoTransacciones.eliminarHC(model);
+                        if (resultado)
+                        {
+                            return RedirectToAction("ListadoHC", "Transacciones");
+                        }
+                        break;
+                    case "actualizar":
+                       
+                        bool resultado2 = AdoTransacciones.ActualizarHC(model);
+                        if (resultado2)
+                        {
+                            return RedirectToAction("ListadoHC", "Transacciones");
+                        }
+                        break;
+                }
+            }
+            return View();
+
+        }
+
+        public ActionResult EditarDetalle(int idDetalle)
+        {
+            List<Enfermedad> listaE = Ado.Combobox();
+            List<SelectListItem> ItemsEnfermedad = listaE.ConvertAll(d =>
+            {
+                return new SelectListItem()
+                {
+                    Text = d.nombreEnfermedad,
+                    Value = d.id_enfe.ToString(),
+                    Selected = false
+
+                };
+            });
+            ViewBag.itemsE = ItemsEnfermedad;
+
+            detalleHistoriaClinica de = AdoTransacciones.ObtenerDetalle(idDetalle);
+
+            return View(de);
+
+        }
+        [HttpPost]
+        public ActionResult EditarDetalle(detalleHistoriaClinica model)
+        {
+
+            if (ModelState.IsValid)
+            {
+             
+                        bool resultado2 = AdoTransacciones.ActualizarDetalle(model);
+                        if (resultado2)
+                        {
+                            return RedirectToAction("ListadoHC", "Transacciones");
+                        }
+                else
+                {
+                    return View(); 
+                }          
+               
+            }
+
+            return View();
+
+        }
+        [HttpPost]
+        public ActionResult eliminarDetalle(int id)
+        {
+            bool resultado = AdoTransacciones.eliminarDetalle(id);
+            if (resultado)
+            {
+                return Content("1");
+            }
+
+            return Content("1");
+        }  
+        
     }
+
 }

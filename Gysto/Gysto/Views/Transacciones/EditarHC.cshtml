@@ -1,0 +1,115 @@
+﻿@model Gysto.ViewModels.DatosHistoriaClinica
+
+@{
+    ViewBag.Title = "Editar historia clinica";
+    List<SelectListItem> ItemsPaciente = (List<SelectListItem>)ViewBag.items;
+}
+
+<h2>Editar historia clinica</h2>
+
+@using (Html.BeginForm("EditarHC", "Transacciones", FormMethod.Post))
+{
+
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.hc.id_hc)
+    <div class="form-horizontal">
+        <h4>historiaClinica</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.hc, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.hc.Medicacion, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.hc.Medicacion, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.Label("paciente", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("hc.paciente", ItemsPaciente, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.hc.paciente, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.hc.grupo_sanguineo, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.hc.grupo_sanguineo, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.hc.grupo_sanguineo, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="actualizar" class="btn btn-default" name="button" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="eliminar" class="btn btn-default" name="button" />
+            </div>
+        </div>
+    </div>
+}
+<table class="table">
+    <tr>
+        <th>
+            Enfermedad
+        </th>
+        <th>
+            Observaciones
+        </th>
+        <th>
+            Alergia
+        </th>
+        <th>
+            ¿Cual?
+        </th>
+    </tr>
+
+    @foreach (var item in Model.detalle)
+    {
+        @Html.HiddenFor(modelItem => item.id_detalle)
+        @Html.HiddenFor(modelItem => item.hc)
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.enfermedades)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.observaciones)
+            </td>
+            <td>
+                @item.alergia
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.detalle_alergia)
+            </td>
+            <td>
+                <a href="@Url.Action("EditarDetalle", "Transacciones", new { idDetalle = item.id_detalle})">  Seleccionar  </a>|
+               <button class="btn bg-danger" onclick="jsDelete(@item.id_detalle, @item.hc)">Eliminar</button>
+            </td>
+        </tr>
+    }
+</table>
+
+
+
+<script>
+    function jsDelete(id, idH) {
+        if (confirm("Estas seguro de eliminar")) {
+        url = "@Url.Content("~/Transacciones/eliminarDetalle")" +"/"+ id;
+
+            $.post(url, function (data)
+        {
+            if (data == "1") {
+                document.location.href = "@Url.Content("~/Transacciones/EditarHC")" + "/" + idH; 
+         }
+            else {
+                alert("ocurrio un problema");
+            }
+        })
+
+        }
+
+    }
+</script>

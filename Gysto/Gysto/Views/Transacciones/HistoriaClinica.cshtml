@@ -2,6 +2,8 @@
 
 @{
     ViewBag.Title = "HistoriaClinica";
+    List<SelectListItem> ItemsPaciente = (List<SelectListItem>)ViewBag.items;
+    //List<SelectListItem> ItemsMedico = (List<SelectListItem>)ViewBag.itemsM;
 }
 
 <h2>Historia Clinica</h2>
@@ -25,13 +27,13 @@
             </div>
         </div>
 
-        <div class="form-group">
+        @*<div class="form-group">
             @Html.LabelFor(model => model.fecha, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.fecha, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.fecha, "", new { @class = "text-danger" })
             </div>
-        </div>
+        </div>*@
 
         <div class="form-group">
             @Html.LabelFor(model => model.grupo_sanguineo, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -44,7 +46,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.paciente, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.paciente, new { htmlAttributes = new { @class = "form-control" , @value = ViewBag.id, @type= "hidden"} })
+                @Html.DropDownList("paciente", ItemsPaciente, new { htmlAttributes = new { @class = "form-control"} })
                 @Html.ValidationMessageFor(model => model.paciente, "", new { @class = "text-danger" })
             </div>
         </div>
