@@ -51,8 +51,8 @@ namespace Gysto.Controllers
             [HttpPost]
             public ActionResult Login(string nombreUsuario, string contraseña, int rol)
             {
-                if (!string.IsNullOrEmpty(nombreUsuario) && !string.IsNullOrEmpty(contraseña))
-                {   
+                if (ModelState.IsValid)
+                {
                 bool exist = AdoUsuarios.AccederLogin(nombreUsuario, contraseña, rol);
                     if(exist){
                         FormsAuthentication.SetAuthCookie(nombreUsuario, true);

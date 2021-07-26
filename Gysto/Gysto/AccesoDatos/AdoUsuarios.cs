@@ -480,10 +480,6 @@ namespace Gysto.AccesoDatos
                 cmd.Parameters.AddWithValue("@1", usuario);
                 cmd.Parameters.AddWithValue("@2", contra);
                 cmd.Parameters.AddWithValue("@3", rol);
-                
-
-
-
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = consulta;
 
@@ -493,6 +489,7 @@ namespace Gysto.AccesoDatos
                 cmd.ExecuteNonQuery();
 
                 resultado = true;
+
 
             }
             catch (Exception)
