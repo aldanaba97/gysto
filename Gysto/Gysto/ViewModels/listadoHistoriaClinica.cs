@@ -10,6 +10,8 @@ namespace Gysto.ViewModels
         public string nombreC { get; set; }
         public string dni { get; set; }
         public int id_historia { get; set;  }
+        public int paciente { get; set;  }
+
 
     }
 }

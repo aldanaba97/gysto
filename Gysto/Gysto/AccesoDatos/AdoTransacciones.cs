@@ -949,7 +949,7 @@ namespace Gysto.AccesoDatos
 
                 SqlCommand cmd = new SqlCommand();
 
-                string consulta = "select hora, fecha,  pe.apellido +' , ' + pe.nombre nombreMedico, (select nombre + ', ' + apellido from pacientes join personas on pacientes.id_persona = personas.id_persona) nombrePaciente, id_consulta from consultas c inner join Medicos m on m.id_medico = c.medico inner join personas pe on pe.id_persona = m.id_persona inner join Administrativos a on a.id_administrativos = c.id_admnistrativo";
+                string consulta = "select hora, fecha,  pe.apellido +' , ' + pe.nombre nombreMedico, (select nombre + ', ' + apellido from pacientes join personas on pacientes.id_persona = personas.id_persona join consultas c on pacientes.id_paciente = c.id_paciente) nombrePaciente, id_consulta from consultas c inner join Medicos m on m.id_medico = c.medico inner join personas pe on pe.id_persona = m.id_persona inner join Administrativos a on a.id_administrativos = c.id_admnistrativo";
                 cmd.Parameters.Clear();
 
                 cmd.CommandType = System.Data.CommandType.Text;
@@ -1325,7 +1325,7 @@ namespace Gysto.AccesoDatos
 
                 SqlCommand cmd = new SqlCommand();
 
-                string consulta = "select pe.apellido + ' , ' + pe.nombre nombreC, pe.numero_dni, h.id_historia  from Pacientes p join HistoriaClinica h on p.id_paciente = h.id_paciente join personas pe on pe.id_persona = p.id_persona";
+                string consulta = "select pe.apellido + ' , ' + pe.nombre nombreC, pe.numero_dni, h.id_historia, h.id_paciente  from Pacientes p join HistoriaClinica h on p.id_paciente = h.id_paciente join personas pe on pe.id_persona = p.id_persona";
                 cmd.Parameters.Clear();
 
                 cmd.CommandType = System.Data.CommandType.Text;
@@ -1345,7 +1345,8 @@ namespace Gysto.AccesoDatos
                         listadoHistoriaClinica i = new listadoHistoriaClinica();
                         i.nombreC = dr["nombreC"].ToString();
                         i.dni = dr["numero_dni"].ToString();
-                        i.id_historia = int.Parse(dr["id_historia"].ToString());                        
+                        i.id_historia = int.Parse(dr["id_historia"].ToString());
+                        i.paciente = int.Parse(dr["id_paciente"].ToString());
 
 
                         resultado.Add(i);
@@ -1678,6 +1679,327 @@ namespace Gysto.AccesoDatos
             {
                 cn.Close();
             }
+            return resultado;
+        }
+        public static List<ConsultaxHistoria> listadoConsultaxHistoria(int id)
+        {
+            List<ConsultaxHistoria> resultado = new List<ConsultaxHistoria>();
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = "select apellido  + ' , ' + p.nombre nombremedico, diagnostico, fecha, hora, e.nombre especialidad from Consultas c join Medicos m on c.medico = m.id_medico join personas p on p.id_persona = m.id_persona join especialidades e on e.id_espe = m.id_espe where id_paciente = @id";
+
+                cmd.Parameters.Clear();
+                cmd.Parameters.AddWithValue("@id", id);
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = consulta;
+                cn.Open();
+
+                cmd.Connection = cn;
+
+
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                if (dr != null)
+                {
+                    while (dr.Read())
+                    {
+
+                        ConsultaxHistoria i = new ConsultaxHistoria();
+                        i.medico = dr["nombremedico"].ToString();
+                        i.diagnostico = dr["diagnostico"].ToString();
+                        i.fecha = DateTime.Parse(dr["fecha"].ToString());
+                        //i.hora = TimeSpan.Parse(dr["hora"].ToString());
+                        i.especialidad = dr["especialidad"].ToString();
+                        
+
+                        resultado.Add(i);
+                    }
+                }
+
+            }
+            catch (Exception)
+            {
+                throw;
+
+            }
+            finally
+            {
+                cn.Close();
+            }
+
+            return resultado;
+        }
+        public static List<InternacionxHistoria> ListadoInternacionxHistoria(int id)
+        {
+            List<InternacionxHistoria> resultado = new List<InternacionxHistoria>();
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = "select fecha_ingreso, Fecha_egreso, nombre + ' , ' + apellido nombreEnfermero from Internaciones i join Enfermeros enfe on i.id_enfermero = enfe.id_enfermero join personas perso on enfe.id_persona = perso.id_persona where paciente = @id";
+
+                cmd.Parameters.Clear();
+                cmd.Parameters.AddWithValue("@id", id);
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = consulta;
+                cn.Open();
+
+                cmd.Connection = cn;
+
+
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                if (dr != null)
+                {
+                    while (dr.Read())
+                    {
+
+                        InternacionxHistoria i = new InternacionxHistoria();
+                        i.fecha_ingreso = dr["fecha_ingreso"].ToString();
+                        i.fecha_alta = dr["fecha_egreso"].ToString();
+                   
+                        i.enfermero = dr["nombreEnfermero"].ToString();
+                        
+
+                        resultado.Add(i);
+                    }
+                }
+
+            }
+            catch (Exception)
+            {
+                throw;
+
+            }
+            finally
+            {
+                cn.Close();
+            }
+
+            return resultado;
+        }
+
+        public static perfilHistoriaClinica ObtenerPerfilHC(int id)
+        {
+            perfilHistoriaClinica resultado = new perfilHistoriaClinica();
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = "select pe.apellido + ' , ' + pe.nombre nombrecompleto , telefono, pe.numero_dni, pe.direccion, pe.fecha_nac, c.nombre ciudad, hc.id_paciente from HistoriaClinica hc join Pacientes pa on hc.id_paciente = pa.id_paciente join personas pe on pa.id_persona = pe.id_persona join Ciudades c on c.id_ciudad = pe.localidad_id where hc.id_paciente = @id";
+                cmd.Parameters.Clear();
+                cmd.Parameters.AddWithValue("@id", id);
+
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = consulta;
+                cn.Open();
+                cmd.Connection = cn;
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                if (dr != null)
+                {
+                    while (dr.Read())
+                    {
+
+                        resultado.nombreCto = dr["nombrecompleto"].ToString();
+                        resultado.telefono = dr["telefono"].ToString();
+                        resultado.dni = int.Parse(dr["numero_dni"].ToString());
+                        resultado.direccion = dr["direccion"].ToString();
+                        resultado.fecha = DateTime.Parse(dr["fecha_nac"].ToString());
+                        resultado.nombre_c = dr["ciudad"].ToString();
+                        resultado.paciente = int.Parse(dr["id_paciente"].ToString());
+
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+
+            }
+            finally
+            {
+                cn.Close();
+            }
+            return resultado;
+        }
+        public static List<ConsultaxHistoria> FiltroConsultaxMedico(int idPaciente, int idMedico)
+        {
+            List<ConsultaxHistoria> resultado = new List<ConsultaxHistoria>();
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+
+                SqlCommand cmd = new SqlCommand();
+               string consulta = "select apellido  + ' , ' + p.nombre nombremedico, diagnostico, fecha, hora, e.nombre especialidad  from Consultas c join Medicos m on c.medico = m.id_medico join personas p on p.id_persona = m.id_persona join especialidades e on e.id_espe = m.id_espe where id_paciente = @idpaciente and c.medico = @idmedico";
+
+                cmd.Parameters.Clear();
+                cmd.Parameters.AddWithValue("@idpaciente", idPaciente);
+                cmd.Parameters.AddWithValue("@idmedico", idMedico);
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = consulta;
+                cn.Open();
+
+                cmd.Connection = cn;
+
+
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                if (dr != null)
+                {
+                    while (dr.Read())
+                    {
+                        ConsultaxHistoria i = new ConsultaxHistoria();
+                        i.medico = dr["nombremedico"].ToString();
+                        i.diagnostico = dr["diagnostico"].ToString();
+                        i.fecha = DateTime.Parse(dr["fecha"].ToString());
+                        //i.hora = TimeSpan.Parse(dr["hora"].ToString());
+                        i.especialidad = dr["especialidad"].ToString();
+
+
+                        resultado.Add(i);
+
+                    }
+                }
+
+            }
+            catch (Exception)
+            {
+                throw;
+
+            }
+            finally
+            {
+                cn.Close();
+            }
+
+            return resultado;
+        }
+        public static List<ConsultaxHistoria> FiltroConsultaxEspe(int idPaciente, int idEspe)
+        {
+            List<ConsultaxHistoria> resultado = new List<ConsultaxHistoria>();
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+
+                SqlCommand cmd = new SqlCommand();
+                string consulta = "select apellido  + ' , ' + p.nombre nombremedico, diagnostico, fecha, hora, e.nombre especialidad  from Consultas c join Medicos m on c.medico = m.id_medico join personas p on p.id_persona = m.id_persona join especialidades e on e.id_espe = m.id_espe where id_paciente = @idpaciente and m.id_espe = @idespe";
+
+                cmd.Parameters.Clear();
+                cmd.Parameters.AddWithValue("@idpaciente", idPaciente);
+                cmd.Parameters.AddWithValue("@idespe", idEspe);
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = consulta;
+                cn.Open();
+
+                cmd.Connection = cn;
+
+
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                if (dr != null)
+                {
+                    while (dr.Read())
+                    {
+                        ConsultaxHistoria i = new ConsultaxHistoria();
+                        i.medico = dr["nombremedico"].ToString();
+                        i.diagnostico = dr["diagnostico"].ToString();
+                        i.fecha = DateTime.Parse(dr["fecha"].ToString());
+                        //i.hora = TimeSpan.Parse(dr["hora"].ToString());
+                        i.especialidad = dr["especialidad"].ToString();
+
+
+                        resultado.Add(i);
+
+                    }
+                }
+
+            }
+            catch (Exception)
+            {
+                throw;
+
+            }
+            finally
+           {
+                cn.Close();
+            }
+
+            return resultado;
+        }
+        public static List<ConsultaxHistoria> FiltroConsultaxFecha(int idPaciente, string fecha1, string fecha2)
+        {
+            List<ConsultaxHistoria> resultado = new List<ConsultaxHistoria>();
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+
+                SqlCommand cmd = new SqlCommand();
+                string consulta = "select apellido  + ' , ' + p.nombre nombremedico, diagnostico, fecha, hora, e.nombre especialidad from Consultas c join Medicos m on c.medico = m.id_medico join personas p on p.id_persona = m.id_persona join especialidades e on e.id_espe = m.id_espe where id_paciente = 1 and fecha between @fecha1 and @fecha2";
+
+                cmd.Parameters.Clear();
+                cmd.Parameters.AddWithValue("@idpaciente", idPaciente);
+                cmd.Parameters.AddWithValue("@fecha1", fecha1);
+                                cmd.Parameters.AddWithValue("@fecha1", fecha1);
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = consulta;
+                cn.Open();
+
+                cmd.Connection = cn;
+
+
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                if (dr != null)
+                {
+                    while (dr.Read())
+                    {
+                        ConsultaxHistoria i = new ConsultaxHistoria();
+                        i.medico = dr["nombremedico"].ToString();
+                        i.diagnostico = dr["diagnostico"].ToString();
+                        i.fecha = DateTime.Parse(dr["fecha"].ToString());
+                        //i.hora = TimeSpan.Parse(dr["hora"].ToString());
+                        i.especialidad = dr["especialidad"].ToString();
+
+
+                        resultado.Add(i);
+
+                    }
+                }
+
+            }
+            catch (Exception)
+            {
+                throw;
+
+            }
+            finally
+            {
+                cn.Close();
+            }
+
             return resultado;
         }
 

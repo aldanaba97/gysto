@@ -54,6 +54,7 @@ namespace Gysto.Controllers
                 if (!string.IsNullOrEmpty(nombreUsuario) && !string.IsNullOrEmpty(contraseña))
                 {   
                 bool exist = AdoUsuarios.AccederLogin(nombreUsuario, contraseña, rol);
+
                     if(exist){
                         FormsAuthentication.SetAuthCookie(nombreUsuario, true);
                          return RedirectToAction("contact","home");

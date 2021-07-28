@@ -1,0 +1,193 @@
+﻿@model Gysto.ViewModels.historiaCta
+
+@{
+    ViewBag.Title = "View";
+    List<SelectListItem> ItemsMedico = (List<SelectListItem>)ViewBag.items;
+    List<SelectListItem> Itemsespe = (List<SelectListItem>)ViewBag.itemsespe;
+    //int paciente = ViewBag.paciente;
+}
+
+<h2>View</h2>
+
+<div>
+    <h4> Historia clinica</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.perfil.nombreCto)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.perfil.nombreCto)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.perfil.telefono)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.perfil.telefono)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.perfil.dni)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.perfil.dni)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.perfil.direccion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.perfil.direccion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.perfil.fecha)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.perfil.fecha)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.perfil.nombre_c)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.perfil.nombre_c)
+        </dd>
+        <dd>
+            @Html.HiddenFor(model => model.perfil.paciente)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
+@using (Html.BeginForm())
+{
+    @Html.HiddenFor( Model=> Model.perfil.paciente)
+    <div class="col-md-6">
+        @Html.DropDownList("medico", ItemsMedico, "Seleccione un medico", htmlAttributes: new { @class = "form-control" })
+   </div>
+        @*<div class="col-sm-6">
+            @Html.DropDownList("id_espe", Itemsespe, "Seleccione especialidad", htmlAttributes: new { @class = "form-control" })
+        </div>*@
+        @*<div class="col-md-6">
+            <input name="fecha1" type="calendar"/>
+        </div>
+        <div class="col-md-6">
+            <input name="fecha2" type="calendar" />
+        </div>*@
+        <div class="col-md-6">
+            <div class="col-lg-6">
+                <button class="btn btn-primary" type="submit">
+                    Buscar
+                </button>
+            </div>
+
+        </div>
+        }
+
+        <h2 class="">Todas las consultas</h2>
+
+
+        <table class="table">
+            <tr>
+                <th>
+                    Medico
+                </th>
+                <th>
+                    Diagnostico
+                </th>
+                <th>
+                    Fecha
+                </th>
+                <th>
+                    Hora
+                </th>
+                <th>
+                    Especialidad
+                </th>
+                <th>
+
+                </th>
+            </tr>
+
+            @foreach (var item in Model.consulta)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.medico)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.diagnostico)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.fecha)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.hora)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.especialidad)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Editar", "EditarHC", new { id = item }) |
+                        @Html.ActionLink("Detalle", "DetalleHC", new { id = item }) |
+                        @Html.ActionLink("Eliminar", "EliminarHC", new { id = item })
+                    </td>
+                </tr>
+            }
+
+        </table>
+
+        <h2>Todas las internaciones</h2>
+
+        <table class="table">
+            <tr>
+                <th>
+                    Fecha ingreso
+                </th>
+                <th>
+                    Fecha de alta
+                </th>
+
+                <th>
+                    Enfermero
+                </th>
+
+                <th>
+
+                </th>
+            </tr>
+
+            @foreach (var item in Model.internacion)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.fecha_ingreso)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.fecha_alta)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.enfermero)
+                    </td>
+
+                    <td>
+                        @Html.ActionLink("Editar", "EditarHC", new { id = item }) |
+                        @Html.ActionLink("Detalle", "DetalleHC", new { id = item }) |
+                        @Html.ActionLink("Eliminar", "EliminarHC", new { id = item })
+                    </td>
+                </tr>
+            }
+
+        </table>
+

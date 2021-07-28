@@ -152,13 +152,18 @@
     <Compile Include="ViewModels\comboEnfermero.cs" />
     <Compile Include="ViewModels\comboMedico.cs" />
     <Compile Include="ViewModels\comboPaciente.cs" />
+    <Compile Include="ViewModels\ConsultaxHistoria.cs" />
     <Compile Include="ViewModels\DatosHistoriaClinica.cs" />
+    <Compile Include="ViewModels\filtrado.cs" />
+    <Compile Include="ViewModels\historiaCta.cs" />
+    <Compile Include="ViewModels\InternacionxHistoria.cs" />
     <Compile Include="ViewModels\listado.cs" />
     <Compile Include="ViewModels\ListadoConsulta.cs" />
     <Compile Include="ViewModels\listadoHistoriaClinica.cs" />
     <Compile Include="ViewModels\listadoInternaciones.cs" />
     <Compile Include="ViewModels\listadoTurnos.cs" />
     <Compile Include="ViewModels\localidad.cs" />
+    <Compile Include="ViewModels\perfilHistoriaClinica.cs" />
     <Compile Include="ViewModels\Rol.cs" />
     <Compile Include="ViewModels\SacarTurno.cs" />
     <Compile Include="ViewModels\tipoDNI.cs" />
@@ -247,6 +252,7 @@
     <Content Include="Views\Transacciones\EditarHC.cshtml" />
     <Content Include="Views\Transacciones\EditarDetalle.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
+    <Content Include="Views\Transacciones\PerfilHC.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
