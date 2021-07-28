@@ -10,6 +10,8 @@ namespace Gysto.ViewModels
         public perfilHistoriaClinica perfil { get; set; }
         public List<ConsultaxHistoria> consulta { get; set; }
         public List<InternacionxHistoria> internacion { get; set; }
-       
+        public int paciente { get; set; }
+        public filtrado f { get; set;  }
+
     }
 }

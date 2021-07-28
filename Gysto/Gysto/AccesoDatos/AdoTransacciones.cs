@@ -1822,7 +1822,7 @@ namespace Gysto.AccesoDatos
                         resultado.direccion = dr["direccion"].ToString();
                         resultado.fecha = DateTime.Parse(dr["fecha_nac"].ToString());
                         resultado.nombre_c = dr["ciudad"].ToString();
-                        resultado.paciente = int.Parse(dr["id_paciente"].ToString());
+                        //resultado.paciente = int.Parse(dr["id_paciente"].ToString());
 
                     }
                 }
@@ -2001,6 +2001,53 @@ namespace Gysto.AccesoDatos
             }
 
             return resultado;
+        }
+        public static int ObtenerPacientexid(int id )
+        {
+            int pac = 0; 
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+
+                SqlCommand cmd = new SqlCommand();
+                string consulta = "select id_paciente from pacientes where id_paciente = @id";
+
+                cmd.Parameters.Clear();
+                cmd.Parameters.AddWithValue("@id", id);                           
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = consulta;
+                cn.Open();
+
+                cmd.Connection = cn;
+
+
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                if (dr != null)
+                {
+                    while (dr.Read())
+                    {
+                             pac = int.Parse(dr["id_paciente"].ToString()); 
+                    }
+          
+               
+                }
+
+            }
+            catch (Exception)
+            {
+                throw;
+
+            }
+            finally
+            {
+                cn.Close();
+            }
+
+            return pac;
         }
 
     }

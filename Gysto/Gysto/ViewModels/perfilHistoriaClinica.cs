@@ -17,10 +17,10 @@ namespace Gysto.ViewModels
         public DateTime fecha { get; set;  }
         public string nombre_c { get; set;}
 
-        [DisplayName("paciente")]
+        //[DisplayName("paciente")]
 
-        public int paciente { get; set;  }
-                                                                        
+        //public int paciente { get; set; }
+
     }
 
 
