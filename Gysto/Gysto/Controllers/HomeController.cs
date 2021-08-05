@@ -51,17 +51,20 @@ namespace Gysto.Controllers
             [HttpPost]
             public ActionResult Login(string nombreUsuario, string contraseña, int rol)
             {
-                if (ModelState.IsValid)
+                if (!string.IsNullOrEmpty(nombreUsuario) && !string.IsNullOrEmpty(contraseña))
                 {
-                bool exist = AdoUsuarios.AccederLogin(nombreUsuario, contraseña, rol);
+                bool u = AdoUsuarios.AccederLogin(nombreUsuario,contraseña, rol);
+               
 
-                    if(exist){
-                        FormsAuthentication.SetAuthCookie(nombreUsuario, true);
-                         return RedirectToAction("contact","home");
+                   if(u){
+               FormsAuthentication.SetAuthCookie(nombreUsuario, true);
+                 string id = User.Identity.Name;
+
+                    return RedirectToAction("contact","home");
                     }
                     else
                     {
-                    return RedirectToAction("Index","Home"); 
+                    return RedirectToAction("Login","Home"); 
                     }
                 }
                 else
@@ -77,5 +80,6 @@ namespace Gysto.Controllers
             FormsAuthentication.SignOut();
             return RedirectToAction("Index", "Home");  
         }
+      
     }
 }

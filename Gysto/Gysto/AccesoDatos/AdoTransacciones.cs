@@ -1946,6 +1946,7 @@ namespace Gysto.AccesoDatos
 
             return resultado;
         }
+
         public static List<ConsultaxHistoria> FiltroConsultaxFecha(int idPaciente, string fecha1, string fecha2)
         {
             List<ConsultaxHistoria> resultado = new List<ConsultaxHistoria>();
@@ -1956,12 +1957,12 @@ namespace Gysto.AccesoDatos
             {
 
                 SqlCommand cmd = new SqlCommand();
-                string consulta = "select apellido  + ' , ' + p.nombre nombremedico, diagnostico, fecha, hora, e.nombre especialidad from Consultas c join Medicos m on c.medico = m.id_medico join personas p on p.id_persona = m.id_persona join especialidades e on e.id_espe = m.id_espe where id_paciente = 1 and fecha between @fecha1 and @fecha2";
+                string consulta = "select apellido  + ' , ' + p.nombre nombremedico, diagnostico, fecha, hora, e.nombre especialidad from Consultas c join Medicos m on c.medico = m.id_medico join personas p on p.id_persona = m.id_persona join especialidades e on e.id_espe = m.id_espe where id_paciente = @id and fecha between @fecha1 and @fecha2";
 
                 cmd.Parameters.Clear();
-                cmd.Parameters.AddWithValue("@idpaciente", idPaciente);
+                cmd.Parameters.AddWithValue("@id", idPaciente);
                 cmd.Parameters.AddWithValue("@fecha1", fecha1);
-                                cmd.Parameters.AddWithValue("@fecha1", fecha1);
+                cmd.Parameters.AddWithValue("@fecha2", fecha2);
 
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = consulta;

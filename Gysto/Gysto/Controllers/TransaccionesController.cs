@@ -907,14 +907,8 @@ namespace Gysto.Controllers
         
         }
         [HttpPost]
-        public ActionResult PerfilHC(int paciente, filtrado model)
-        {
-          
-            //model.fecha2 = Request.Form["fecha1"].ToString();
-            //model.espe = int.Parse(Request.Form["id_espe"].ToString());
-            //model.medico = int.Parse(Request.Form["medico"].ToString());
-            if(model.medico != 0 )
-            {
+        public ActionResult PerfilHC(int paciente, int medico = 0 , int id_espe = 0 , string fecha1 = "", string fecha2 = "" )
+        {        
             List<comboMedico> listaRol = AdoRoles.ListadoMedico();
             List<SelectListItem> Items = listaRol.ConvertAll(d =>
             {
@@ -926,21 +920,41 @@ namespace Gysto.Controllers
 
                 };
             });
-            ViewBag.items = Items;
-            List<ConsultaxHistoria> lista = AdoTransacciones.FiltroConsultaxMedico(paciente, model.medico);
+            ViewBag.items = Items;  
+            List<Especialidad> listae = Ado.ListadoEspecialidad();
+            List<SelectListItem> Itemsespe = listae.ConvertAll(d =>
+            {
+                return new SelectListItem()
+                {
+                    Text = d.nombre,
+                    Value = d.id_especialidad.ToString(),
+                    Selected = false
+
+                };
+            });
+
+            ViewBag.itemsespe = Itemsespe;
+            List<ConsultaxHistoria> lista = null; 
+            if (medico != 0 && id_espe == 0 & fecha1 == "" && fecha2 == "")
+            {
+                lista = AdoTransacciones.FiltroConsultaxMedico(paciente, medico);
                 historiaCta c = new historiaCta();
                 c.consulta = lista;
-                return View(c); 
+                return View(c);
             }
-            else if (model.espe != 0)
+            else if (id_espe != 0 && medico == 0 && fecha1 == "" && fecha2 == "")
             {
-                List<ConsultaxHistoria> lista = AdoTransacciones.FiltroConsultaxEspe(paciente,model.espe);
-                return View(lista);
+             lista = AdoTransacciones.FiltroConsultaxEspe(paciente,id_espe);
+                historiaCta c = new historiaCta();
+                c.consulta = lista; 
+                return View(c);
             }
-            else if (model.fecha1 != null && model.fecha2 != null)
+            else if (fecha1 != "" && fecha2 != "" && id_espe == 0 && medico == 0)
             {
-                List<ConsultaxHistoria> lista = AdoTransacciones.FiltroConsultaxFecha(paciente, model.fecha1, model.fecha2);
-                return View(lista);
+             lista = AdoTransacciones.FiltroConsultaxFecha(paciente, fecha1, fecha2);
+                historiaCta c = new historiaCta();
+                c.consulta = lista; 
+                return View(c);
 
             }
 

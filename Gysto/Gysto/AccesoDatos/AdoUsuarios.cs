@@ -464,9 +464,61 @@ namespace Gysto.AccesoDatos
             return resultado;
         }
 
+        //public static bool AccederLogin(string usuario, string contra, int rol)
+        //{
+        //    bool resultado = false;
+        //    string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+        //    SqlConnection cn = new SqlConnection(cadenaConexion);
+
+        //    try
+        //    {
+
+        //        SqlCommand cmd = new SqlCommand();
+
+
+        //        string consulta = "select count(*) c from usuarios where nombre = '@1' and contraseña = '@2' and id_rol = @3 ";
+        //        cmd.Parameters.Clear();
+        //        cmd.Parameters.AddWithValue("@1", usuario);
+        //        cmd.Parameters.AddWithValue("@2", contra);
+        //        cmd.Parameters.AddWithValue("@3", rol);
+        //        cmd.CommandType = System.Data.CommandType.Text;
+        //        cmd.CommandText = consulta;
+
+        //        cn.Open();
+        //        cmd.Connection = cn;
+
+        //        SqlDataReader dr = cmd.ExecuteReader();
+
+        //        if (dr != null)
+        //        {
+        //            while (dr.Read())
+        //            {
+        //                int count = int.Parse(dr["c"].ToString());
+
+        //                if (count == 0)
+        //                    resultado = false;
+        //                else
+        //                    resultado = true;
+        //            }
+        //        }
+
+
+        //    }
+        //    catch (Exception)
+        //    {
+        //        throw;
+
+        //    }
+        //    finally
+        //    {
+        //        cn.Close();
+        //    }
+        //    return resultado;
+        //}
         public static bool AccederLogin(string usuario, string contra, int rol)
         {
             bool resultado = false;
+
             string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
             SqlConnection cn = new SqlConnection(cadenaConexion);
 
@@ -475,22 +527,31 @@ namespace Gysto.AccesoDatos
 
                 SqlCommand cmd = new SqlCommand();
 
-                string consulta = "select nombre, contraseña, id_rol from usuarios where nombre = '@1' and contraseña = '@2' and id_rol = @3 ";
+                string consulta = "select count(*) c from usuarios where nombre = @1 and contraseña = @2 and id_rol = @3 ";
                 cmd.Parameters.Clear();
                 cmd.Parameters.AddWithValue("@1", usuario);
                 cmd.Parameters.AddWithValue("@2", contra);
                 cmd.Parameters.AddWithValue("@3", rol);
+
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = consulta;
-
-
                 cn.Open();
                 cmd.Connection = cn;
-                cmd.ExecuteNonQuery();
+                SqlDataReader dr = cmd.ExecuteReader();
 
-                resultado = true;
+                if (dr != null)
+                {
+                    if (dr.Read())
+                    {
+                        int count = int.Parse(dr["c"].ToString());
 
+                        if (count == 0)
+                            resultado = false;
+                        else
+                            resultado = true;
 
+                    }
+                }
             }
             catch (Exception)
             {
