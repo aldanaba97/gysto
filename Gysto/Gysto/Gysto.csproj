@@ -118,6 +118,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AccesoDatos\Ado.cs" />
+    <Compile Include="AccesoDatos\AdoReporte.cs" />
     <Compile Include="AccesoDatos\AdoRoles.cs" />
     <Compile Include="AccesoDatos\AdoTransacciones.cs" />
     <Compile Include="AccesoDatos\AdoUsuarios.cs" />
@@ -126,6 +127,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AuxiliaresController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ReporteController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\TransaccionesController.cs" />
     <Compile Include="Controllers\UsuarioController.cs" />
@@ -154,7 +156,6 @@
     <Compile Include="ViewModels\comboPaciente.cs" />
     <Compile Include="ViewModels\ConsultaxHistoria.cs" />
     <Compile Include="ViewModels\DatosHistoriaClinica.cs" />
-    <Compile Include="ViewModels\filtrado.cs" />
     <Compile Include="ViewModels\historiaCta.cs" />
     <Compile Include="ViewModels\InternacionxHistoria.cs" />
     <Compile Include="ViewModels\listado.cs" />
@@ -164,6 +165,7 @@
     <Compile Include="ViewModels\listadoTurnos.cs" />
     <Compile Include="ViewModels\localidad.cs" />
     <Compile Include="ViewModels\perfilHistoriaClinica.cs" />
+    <Compile Include="ViewModels\reportesEnfermedad.cs" />
     <Compile Include="ViewModels\Rol.cs" />
     <Compile Include="ViewModels\SacarTurno.cs" />
     <Compile Include="ViewModels\tipoDNI.cs" />
@@ -253,6 +255,7 @@
     <Content Include="Views\Transacciones\EditarDetalle.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
     <Content Include="Views\Transacciones\PerfilHC.cshtml" />
+    <Content Include="Views\Reporte\Enfermedadxcantidad.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

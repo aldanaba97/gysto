@@ -1,0 +1,108 @@
+﻿@{ 
+    
+    var l = ViewBag.lista;
+
+   
+
+
+
+}
+
+@*<div class="container">
+    <br /><br /> <br />
+<h1>Enfermedades</h1>
+<canvas id="grafico" width="1200" height="600"></canvas>
+</div>
+@section Scripts {
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    
+    var cantida = @cantidad
+    var n = @nombre
+    var lista = @lista
+        $(document)
+        .ready(function () {
+            var ctx = $('#grafico');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: n,
+                    datasets: [{
+                        label: '# of Votes',
+                        data: lista,
+                        backgroundColor:
+                            'rgba(255, 99, 132, 0.2)',
+
+                        borderColor:
+                            'rgba(255, 99, 132, 1)',
+
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        
+        })
+</script>
+    }*@
+<html>
+  <head>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      
+
+            google.charts.load('current', { 'packages': ['corechart'] });
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+
+          var data = google.visualization.arrayToDataTable(@Html.Raw(ViewBag.lista));
+
+        var options = {
+          title: 'Enfermedades mas usuales en la zona'
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+        chart.draw(data, options);
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </script>
+  </head>
+  <body>
+    <div id="piechart" style="width: 900px; height: 500px;"></div>
+  </body>
+</html>

@@ -11,7 +11,7 @@ namespace Gysto.ViewModels
         public List<ConsultaxHistoria> consulta { get; set; }
         public List<InternacionxHistoria> internacion { get; set; }
         public int paciente { get; set; }
-        public filtrado f { get; set;  }
+        
 
     }
 }
