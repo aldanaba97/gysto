@@ -1,0 +1,78 @@
+﻿@model IEnumerable<Gysto.ViewModels.ListadoConsulta>
+@{
+    ViewBag.Title = "Listado de consulta";
+}
+<div class=" contenedor">
+
+
+<div class="row">
+    <div class="col-sm-12">
+        <div>
+            <h1>
+                Todas las consultas
+            </h1>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="row">
+    <div class="col-sm-6">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th class="text-center">
+                        Hora
+                    </th>
+                    <th class="text-center">
+                        Fecha
+                    </th>
+                    <th class="text-center">
+                        Paciente
+                    </th>
+                    <th class="text-center">
+                        Acciones
+                    </th>
+
+                </tr>
+
+            </thead>
+            <tbody>
+                @foreach (var i in Model)
+                {
+
+                    <tr class="text-center">
+                        <td>
+                            @i.hora
+
+                        </td>
+                        <td>
+                            @i.fecha
+
+                        </td>
+                   
+                        <td>
+                            @i.NombrePaciente
+                        </td>
+                        <td>
+ 
+                            | <a href="@Url.Action("ModificarConsultaDx", "Transacciones", new { idConsulta = i.id})">  Cerrar  </a>|
+
+
+
+
+                        </td>
+                    </tr>
+                }
+
+
+
+            </tbody>
+        </table>
+
+
+    </div>
+</div>
+
+</div>

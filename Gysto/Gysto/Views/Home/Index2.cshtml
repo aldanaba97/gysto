@@ -1,0 +1,158 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+@if (User.Identity.IsAuthenticated)
+{
+    if (Session["user"] != null)
+    {
+        string o = Session["Rol"].ToString();
+        switch (o)
+        {
+            case "1":
+    <div class="contenedor">
+        <div class="row">
+            <div class="col-md-4">
+                <h2>Consultas pendientes</h2>
+                <p>
+                    Se veran listadas todas las consultas sin su diagnistico final
+                </p>
+                <p><a class="btn btn-primary" href=@Url.Action("ListadoConsultasxMedico", "Transacciones", new { User.Identity.Name })> Ver &raquo;</a></p>
+            </div>
+            <div class="col-md-4">
+                <h2>Actualizar datos</h2>
+                <p>
+                    Actualizar datos personales
+                </p>
+                <p><a class="btn btn-primary" href=@Url.Action("PerfilUsuarioMedico", "Roles", new { User.Identity.Name })> Ver &raquo;</a></p>
+            </div>
+        </div>
+
+    </div>
+           
+
+
+
+                break;
+            case "2":
+                <div class="contenedor">            
+<div class="row">
+    <div class="col-md-4">
+        <h2>Reportes</h2>
+        <p>
+            Reportes de enfermedades
+        </p>
+        <p><a class="btn btn-primary" href=@Url.Action("Enfermedadxcantidad", "Reporte")> Ver &raquo;</a></p>
+    </div>
+    <div class="col-md-4">
+        <h2>Reportes</h2>
+        <p>
+            Reportes de consultas por año
+        </p>
+        <p><a class="btn btn-primary" href=@Url.Action("CantidadConsultasxaño", "Reporte")> Ver &raquo;</a></p>
+    </div>
+    <div class="col-md-4">
+        <h2>Actualizar datos</h2>
+        <p>
+            Actualizar datos personales
+        </p>
+        <p><a class="btn btn-primary" href=@Url.Action("PerfilUsuarioDirector", "Roles", new { User.Identity.Name })> Ver &raquo;</a></p>
+    </div>
+</div>
+                    </div>
+
+                break;
+            case "3":
+                <div class="contenedor">
+                <div class="row">
+                    <div class="col-md-4">
+                        <h2>Turnos</h2>
+                        <p>
+                            Administracion de turnos
+                        </p>
+                        <p><a class="btn btn-primary" href=@Url.Action("ListadoTurno", "Transacciones")> Ver &raquo;</a></p>
+                    </div>
+                    <div class="col-md-4">
+                        <h2>Historia clinica</h2>
+                        <p>
+                            Administracion de historias clinicas
+                        </p>
+                        <p><a class="btn btn-primary" href=@Url.Action("ListadoHC", "Transacciones")> Ver &raquo;</a></p>
+                    </div>
+                    <div class="col-md-4">
+                        <h2>Editar datos</h2>
+                        <p>
+                            Actualizar datos personales
+                        </p>
+                        <p><a class="btn btn-primary" href=@Url.Action("PerfilUsuarioAdministrativo", "Roles", new { User.Identity.Name })> Ver &raquo;</a></p>
+                    </div>
+                    <div class="col-md-4">
+                        <h2>Consultas</h2>
+                        <p>
+                            Administracion de consultas
+                        </p>
+                        <p><a class="btn btn-primary" href=@Url.Action("ListadoConsulta", "Transacciones")> Ver &raquo;</a></p>
+                    </div>
+                </div>
+                    </div>
+                break;
+            case "4":
+                <div class="contenedor">
+                <div class="row">
+                    <div class="col-md-4">
+                        <h2>Especialidad</h2>
+                        <p>
+                            Administracion de especialidad
+                        </p>
+                        <p><a class="btn btn-primary" href=@Url.Action("ListadoEspecialidad", "Auxiliares")> Ver &raquo;</a></p>
+                    </div>
+                    <div class="col-md-4">
+                        <h2>Tratamientos</h2>
+                        <p>
+                            Administracion de tratamientos
+                        </p>
+                        <p><a class="btn btn-primary" href=@Url.Action("ListadosTratamientos", "Auxiliares")> Ver &raquo;</a></p>
+                    </div>
+                    <div class="col-md-4">
+                        <h2>Enfermedad</h2>
+                        <p>
+                            Administracion de enfermedad
+                        </p>
+                        <p><a class="btn btn-primary" href=@Url.Action("listadoEnfermedad", "Auxiliares", new { User.Identity.Name })> Ver &raquo;</a></p>
+                    </div>
+                    <div class="col-md-4">
+                        <h2>Usuarios</h2>
+                        <p>
+                            Administracion de usuarios
+                        </p>
+                        <p><a class="btn btn-primary" href=@Url.Action("ListadoUsuario", "Usuario")> Ver &raquo;</a></p>
+                    </div>
+                </div>
+                    </div>
+                break;
+            case "5":
+                <div class="contenedor">
+                <div class="row">
+                    <div class="col-md-4">
+                        <h2>Internacion</h2>
+                        <p>
+                            Administracion de internaciones
+                        </p>
+                        <p><a class="btn btn-primary" href=@Url.Action("ListadoInternacion", "Transacciones")> Ver &raquo;</a></p>
+                    </div>
+                    <div class="col-md-4">
+                        <h2>Actualizar datos</h2>
+                        <p>
+                            Actualizar datos personales
+                        </p>
+                        <p><a class="btn btn-primary" href=@Url.Action("PerfiUsuarioEnfermero", "Roles", new { User.Identity.Name })> Ver &raquo;</a></p>
+                    </div>
+                </div>
+                    </div>
+                break;
+        }
+    }
+}
+
+
+
+

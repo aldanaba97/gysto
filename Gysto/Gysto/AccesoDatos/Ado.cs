@@ -464,8 +464,63 @@ namespace Gysto.AccesoDatos
             return resultado;
         }
 
-    //Tratamiento
-    public static bool InsertarTratamiento(Tratamiento t)
+        public static List<Enfermedad> listadoEnfermedad()
+        {
+            List<Enfermedad> resultado = new List<Enfermedad>();
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = "SELECT * FROM Enfermedades";
+                cmd.Parameters.Clear();
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = consulta;
+                cn.Open();
+
+                cmd.Connection = cn;
+
+
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                if (dr != null)
+                {
+                    while (dr.Read())
+                    {
+
+                        Enfermedad e = new Enfermedad();
+                 
+                            e.estado = Boolean.Parse(dr["estado"].ToString());
+                            e.id_enfe = int.Parse(dr["id_enfermedad"].ToString());
+                            e.nombreEnfermedad = dr["nombre"].ToString();
+                            resultado.Add(e);
+                        
+
+
+
+                    }
+                }
+
+            }
+            catch (Exception)
+            {
+                throw;
+
+            }
+            finally
+            {
+                cn.Close();
+            }
+
+            return resultado;
+        }
+
+        //Tratamiento
+        public static bool InsertarTratamiento(Tratamiento t)
     {
         bool resultado = false;
         string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();

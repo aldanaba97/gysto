@@ -444,10 +444,10 @@ namespace Gysto.AccesoDatos
 
         //                //resultado.id_turno = int.Parse(dr["id_turno"].ToString());  
         //                resultado.nombreC = dr["nombrec"].ToString();
-                       
+
         //                resultado.paciente= int.Parse(dr["id_paciente"].ToString());
         //                resultado.dni = int.Parse(dr["id_paciente"].ToString());
-                        
+
         //            }
         //        }
 
@@ -464,7 +464,470 @@ namespace Gysto.AccesoDatos
 
         //    return resultado;
         //}
+        public static Medico ObtenerMedico(int idDoc)
+        {
+            Medico resultado = new Medico();
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+            SqlConnection cn = new SqlConnection(cadenaConexion);
 
+            try
+            {
+
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = "select * from Medicos where id_medico = @id";
+                cmd.Parameters.Clear();
+                cmd.Parameters.AddWithValue("@id", idDoc);
+
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = consulta;
+                cn.Open();
+                cmd.Connection = cn;
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                if (dr != null)
+                {
+                    while (dr.Read())
+                    {
+                        resultado.id_medico = int.Parse(dr["id_medico"].ToString());
+                        resultado.id_espe = int.Parse(dr["id_espe"].ToString());
+                        resultado.matricula = dr["matricula"].ToString();
+                        resultado.id_persona = int.Parse(dr["id_persona"].ToString());
+
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+
+            }
+            finally
+            {
+                cn.Close();
+            }
+            return resultado;
+        }
+        public static bool ActualizarMedico(Medico i)
+        {
+            bool resultado = false;
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = "update medicos set id_espe = @1, matricula = @2 where id_medico = @id";
+                cmd.Parameters.Clear();
+
+                cmd.Parameters.AddWithValue("@1", i.id_espe);
+                cmd.Parameters.AddWithValue("@2", i.matricula);
+                cmd.Parameters.AddWithValue("@id", i.id_medico);
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = consulta;
+                cn.Open();
+
+                cmd.Connection = cn;
+                cmd.ExecuteNonQuery();
+                resultado = true;
+            }
+            catch (Exception)
+            {
+                throw;
+
+            }
+            finally
+            {
+                cn.Close();
+            }
+            return resultado;
+        }
+        public static Medico PerfilMedico(int usuario)
+        {
+            Medico resultado = new Medico();
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = "select Usuarios.nombre name, email, p.id_persona, direccion,telefono, p.nombre, apellido, fecha_nac, numero_dni, imagen, id_medico, id_espe, matricula from Medicos m inner join personas p on m.id_persona = p.id_persona inner join Usuarios on p.id_usuario = Usuarios.id_usuario where p.id_usuario = @id";
+                cmd.Parameters.Clear();
+                cmd.Parameters.AddWithValue("@id", usuario);
+
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = consulta;
+                cn.Open();
+                cmd.Connection = cn;
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                if (dr != null)
+                {
+                    while (dr.Read())
+                    {
+                        resultado.nombreUsuario = dr["name"].ToString();
+                        resultado.email = dr["email"].ToString();
+                        resultado.id_persona = int.Parse(dr["id_persona"].ToString());
+                        resultado.direccion = dr["direccion"].ToString();
+                        resultado.telefono = dr["telefono"].ToString();
+                        resultado.nombre = dr["nombre"].ToString();
+                        resultado.apellido= dr["apellido"].ToString();
+                        resultado.fecha_nac = DateTime.Parse(dr["fecha_nac"].ToString());
+                        resultado.dni = int.Parse(dr["numero_dni"].ToString());
+                        resultado.image = dr["imagen"].ToString();
+                        resultado.id_medico= int.Parse(dr["id_medico"].ToString());
+                        resultado.id_espe = int.Parse(dr["id_espe"].ToString());
+                        resultado.matricula = dr["matricula"].ToString();
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+
+            }
+            finally
+            {
+                cn.Close();
+            }
+            return resultado;
+        }
+        public static director_medico PerfilDirectorMedico(int usuario)
+        {
+            director_medico resultado = new director_medico();
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = "select Usuarios.nombre name, email, p.id_persona, direccion,telefono, p.nombre, apellido, fecha_nac, numero_dni, imagen, id_director, maestria, matricula from directores_medicos m inner join personas p on m.id_persona = p.id_persona inner join Usuarios on p.id_usuario = Usuarios.id_usuario where p.id_usuario = @id";
+                cmd.Parameters.Clear();
+                cmd.Parameters.AddWithValue("@id", usuario);
+
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = consulta;
+                cn.Open();
+                cmd.Connection = cn;
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                if (dr != null)
+                {
+                    while (dr.Read())
+                    {
+                        resultado.nombreUsuario = dr["name"].ToString();
+                        resultado.email = dr["email"].ToString();
+                        resultado.id_persona = int.Parse(dr["id_persona"].ToString());
+                        resultado.direccion = dr["direccion"].ToString();
+                        resultado.telefono = dr["telefono"].ToString();
+                        resultado.nombre = dr["nombre"].ToString();
+                        resultado.apellido = dr["apellido"].ToString();
+                        resultado.fecha_nac = DateTime.Parse(dr["fecha_nac"].ToString());
+                        resultado.dni = int.Parse(dr["numero_dni"].ToString());
+                        resultado.image = dr["imagen"].ToString();
+                        resultado.id_director = int.Parse(dr["id_director"].ToString());
+                        resultado.maestria= dr["maestria"].ToString();
+                        resultado.matricula = dr["matricula"].ToString();
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+
+            }
+            finally
+            {
+                cn.Close();
+            }
+            return resultado;
+        }
+        public static Administrador PerfilAdministrativo(int usuario)
+        {
+            Administrador resultado = new Administrador();
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = "select personas.id_persona, id_tipoDNI, direccion, localidad_id, telefono, personas.nombre name, apellido, fecha_nac, numero_dni, Usuarios.id_usuario, usuarios.contraseña, usuarios.nombre, id_rol, email  from personas join Usuarios on personas.id_usuario = Usuarios.id_usuario where Usuarios.id_usuario = @id";
+                cmd.Parameters.Clear();
+                cmd.Parameters.AddWithValue("@id", usuario);
+
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = consulta;
+                cn.Open();
+                cmd.Connection = cn;
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                if (dr != null)
+                {
+                    while (dr.Read())
+                    {
+
+                        resultado.id_persona = int.Parse(dr["id_persona"].ToString());
+                        resultado.id_dni = int.Parse(dr["id_tipoDNI"].ToString());
+                        resultado.direccion = dr["direccion"].ToString();
+                        resultado.localidad = int.Parse(dr["localidad_id"].ToString());
+                        resultado.telefono = dr["telefono"].ToString();
+                        resultado.nombre = dr["nombre"].ToString();
+                        resultado.apellido = dr["apellido"].ToString();
+                        resultado.fecha_nac = DateTime.Parse(dr["fecha_nac"].ToString());
+                        resultado.dni = int.Parse(dr["numero_dni"].ToString());
+                        resultado.id = int.Parse(dr["id_usuario"].ToString());
+                        resultado.contraseña = dr["contraseña"].ToString();
+                        resultado.nombreUsuario = dr["nombre"].ToString();
+                        resultado.rol = int.Parse(dr["id_rol"].ToString());
+                        resultado.email = dr["email"].ToString();
+
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+
+            }
+            finally
+            {
+                cn.Close();
+            }
+            return resultado;
+        }
+        public static Enfermero PerfilEnfermero(int usuario)
+        {
+            Enfermero resultado = new Enfermero();
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = "select Usuarios.nombre name, email, p.id_persona, direccion,telefono, p.nombre, apellido, fecha_nac, numero_dni, imagen, matricula, id_enfermero from Enfermeros m inner join personas p on m.id_persona = p.id_persona inner join Usuarios on p.id_usuario = Usuarios.id_usuario where p.id_usuario = @id";
+                cmd.Parameters.Clear();
+                cmd.Parameters.AddWithValue("@id", usuario);
+
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = consulta;
+                cn.Open();
+                cmd.Connection = cn;
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                if (dr != null)
+                {
+                    while (dr.Read())
+                    {
+                        resultado.nombreUsuario = dr["name"].ToString();
+                        resultado.email = dr["email"].ToString();
+                        resultado.id_persona = int.Parse(dr["id_persona"].ToString());
+                        resultado.direccion = dr["direccion"].ToString();
+                        resultado.telefono = dr["telefono"].ToString();
+                        resultado.nombre = dr["nombre"].ToString();
+                        resultado.apellido = dr["apellido"].ToString();
+                        resultado.fecha_nac = DateTime.Parse(dr["fecha_nac"].ToString());
+                        resultado.dni = int.Parse(dr["numero_dni"].ToString());
+                        resultado.image = dr["imagen"].ToString();             
+                        resultado.matricula = dr["matricula"].ToString();
+                        resultado.id_enfermero = int.Parse(dr["id_enfermero"].ToString());
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+
+            }
+            finally
+            {
+                cn.Close();
+            }
+            return resultado;
+        }
+        public static director_medico Obtenerdirector(int id)
+        {
+            director_medico resultado = new director_medico();
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = "select * from directores_medicos where id_director = @id";
+                cmd.Parameters.Clear();
+                cmd.Parameters.AddWithValue("@id", id);
+
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = consulta;
+                cn.Open();
+                cmd.Connection = cn;
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                if (dr != null)
+                {
+                    while (dr.Read())
+                    {
+                        resultado.id_director = int.Parse(dr["id_director"].ToString());
+                        resultado.maestria = dr["maestria"].ToString();
+                        resultado.matricula = dr["matricula"].ToString();
+                        resultado.id_persona = int.Parse(dr["id_persona"].ToString());
+
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+
+            }
+            finally
+            {
+                cn.Close();
+            }
+            return resultado;
+        }
+        public static bool ActualizarDirector(director_medico i)
+        {
+            bool resultado = false;
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = "update directores_medicos set maestria = @1, matricula = @2 where id_director = @id";
+                cmd.Parameters.Clear();
+
+                cmd.Parameters.AddWithValue("@1", i.maestria);
+                cmd.Parameters.AddWithValue("@2", i.matricula);
+                cmd.Parameters.AddWithValue("@id", i.id_director);
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = consulta;
+                cn.Open();
+
+                cmd.Connection = cn;
+                cmd.ExecuteNonQuery();
+                resultado = true;
+            }
+            catch (Exception)
+            {
+                throw;
+
+            }
+            finally
+            {
+                cn.Close();
+            }
+            return resultado;
+        }
+        public static Enfermero Obtenerenfermero(int id)
+        {
+            Enfermero resultado = new Enfermero();
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = "select * from enfermeros where id_enfermero = @id";
+                cmd.Parameters.Clear();
+                cmd.Parameters.AddWithValue("@id", id);
+
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = consulta;
+                cn.Open();
+                cmd.Connection = cn;
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                if (dr != null)
+                {
+                    while (dr.Read())
+                    {
+                        resultado.id_enfermero= int.Parse(dr["id_enfermero"].ToString());
+
+                        resultado.matricula = dr["matricula"].ToString();
+                        resultado.id_persona = int.Parse(dr["id_persona"].ToString());
+
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+
+            }
+            finally
+            {
+                cn.Close();
+            }
+            return resultado;
+        }
+        public static bool ActualizarEnfermero(Enfermero i)
+        {
+            bool resultado = false;
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = "update enfermeros set matricula = @2 where id_enfermero = @id";
+                cmd.Parameters.Clear();
+
+                
+                cmd.Parameters.AddWithValue("@2", i.matricula);
+                cmd.Parameters.AddWithValue("@id", i.id_enfermero);
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = consulta;
+                cn.Open();
+
+                cmd.Connection = cn;
+                cmd.ExecuteNonQuery();
+                resultado = true;
+            }
+            catch (Exception)
+            {
+                throw;
+
+            }
+            finally
+            {
+                cn.Close();
+            }
+            return resultado;
+        }
+    
     }
 
 }

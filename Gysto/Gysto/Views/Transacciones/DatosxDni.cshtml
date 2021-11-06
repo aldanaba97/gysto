@@ -4,7 +4,7 @@
 
 
 }
-
+<div class="contenedor">
     <div class="row">
         <div class="col-sm-12">
             <div>
@@ -44,7 +44,7 @@
 
                     </td>*@
                     <td>
-                        @Model.p.nombre + @Model.p.apellido
+                        @Model.p.nombre , @Model.p.apellido
                     </td>
                     <td>
                         @Model.p.telefono
@@ -64,7 +64,7 @@
         @using (Html.BeginForm("DatosxDni", "Transacciones", FormMethod.Post))
         {
             @Html.HiddenFor(model => model.turno.id_turno)
-            @Html.HiddenFor(model => model.turno.paciente)
+            @Html.HiddenFor(model => model.p.id_paciente)
             @*<div class="col-md-6">
                 @Html.TextBoxFor(model => model.p.dni, htmlAttributes: new { @class = "form control", @id = "txtNombre" @readonly = "readonly" })
             </div>*@
@@ -87,4 +87,5 @@
 
          
    </div>
+</div>
 </div>

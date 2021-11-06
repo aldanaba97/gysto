@@ -2,7 +2,7 @@
 @{
     ViewBag.Title = "Listado";
 }
-
+<div class=" contenedor">
 <div class="row">
     <div class="col-sm-12">
         <div>
@@ -36,7 +36,7 @@
                         @t.usuario
                     </td>
                     <td>
-                        | <a href="@Url.Action("ModificarUsuario", "Usuario", new { idPersona = t.id })">  Seleccionar  </a>|
+                        | <a href="@Url.Action("ModificarUsuario", "Usuario", new { idPersona = t.id })"> Eliminar </a>|
                         @*<a href="@Url.Action("BTratamientos", "Auxiliares", new { idTratamiento = t.id_tratamiento})"><ion-icon style="color: black; font-size: 20px"name="close-outline"></ion-icon></a>*@
 
 
@@ -53,5 +53,6 @@
 
     </div>
 </div>
+    </div>
 <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
 

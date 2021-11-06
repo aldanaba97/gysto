@@ -4,7 +4,7 @@
     ViewBag.Title = "Editar historia clinica";
     List<SelectListItem> ItemsPaciente = (List<SelectListItem>)ViewBag.items;
 }
-
+<div class=" contenedor">
 <h2>Editar historia clinica</h2>
 
 @using (Html.BeginForm("EditarHC", "Transacciones", FormMethod.Post))
@@ -91,8 +91,7 @@
         </tr>
     }
 </table>
-
-
+</div>
 
 <script>
     function jsDelete(id, idH) {

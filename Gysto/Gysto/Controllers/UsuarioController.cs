@@ -94,7 +94,7 @@ namespace Gysto.Controllers
                 return View(model);
             
         }
-        public ActionResult ModificarUsuario(int idPersona)
+        public ActionResult ModificarUsuario(int id)
         {
             List<Rol> listaRol = AdoUsuarios.ComboboxRol();
             List<SelectListItem> Items = listaRol.ConvertAll(d =>
@@ -132,7 +132,7 @@ namespace Gysto.Controllers
 
 
 
-            Persona resultado = AdoUsuarios.obtenerPersona(idPersona);
+            Persona resultado = AdoUsuarios.obtenerPersona(id);
 
             foreach (var item in Itemslocalidad)
             {
@@ -177,50 +177,48 @@ namespace Gysto.Controllers
         }
 
         [HttpPost]
-        public ActionResult ModificarUsuario(Persona model, string rol )
+        public ActionResult ModificarUsuario(Persona model)
         {
 
             if (ModelState.IsValid)
             {
-                string si_button = Request.Form["button"].ToString();
-                switch (si_button)
-                {
-                    case "Eliminar":
-                        bool resultado = AdoUsuarios.EliminarUsuario(model);
-                        if (resultado)
-                        {
-                            // TempData["del"] = "true"; 
-                            return RedirectToAction("ListadoUsuario", "Usuario");
-                        }
-                        break;
-                    case "actualizar":
-
                         bool resultado2 = AdoUsuarios.ActualizarDatosPersona(model);
-                        if (resultado2)
-                        {
-                                switch (rol)
-                                {
-                                    case "1":
-                                        return RedirectToAction("ModificarMedico", "Roles");
-                                    case "2":
-                                        return RedirectToAction("ModificarDirectorMedico", "Roles");
-                                    case "3":
-                                        return RedirectToAction("ModificarAdministrador", "Roles");
-                                    //case "4":
-                                    //    return RedirectToAction("ModificarTecnico", "Usuario");
-                                    case "5":
-                                        return RedirectToAction("ModificarEnfermero", "Roles");
-                                    case "1002":
-                                        return RedirectToAction("ModificarPaciente", "Roles");
-                                }
-                          
-                        }
-                        break;
+                      
 
+                    //switch (rol)
+                    //{
+                    //    case "1":
+                    //        return RedirectToAction("ModificarMedico", "Roles");
+                    //    case "2":
+                    //        return RedirectToAction("ModificarDirectorMedico", "Roles");
+                    //    case "3":
+                    //        return RedirectToAction("ModificarAdministrador", "Roles");
+                    //    //case "4":
+                    //    //    return RedirectToAction("ModificarTecnico", "Usuario");
+                    //    case "5":
+                    //        return RedirectToAction("ModificarEnfermero", "Roles");
+                    //    case "1002":
+                    //        return RedirectToAction("ModificarPaciente", "Roles");
+                    //}                         
+                    if (resultado2)
+                    {
+                        return RedirectToAction("Index2", "Home");
+                    }
+                    else
+                    {
+       
+                       return View(model);
+                    }
 
-                }
             }
-            return View();
+            else
+            {
+                return View(model);
+            }
+
+
+       
         }
+
     }
 }

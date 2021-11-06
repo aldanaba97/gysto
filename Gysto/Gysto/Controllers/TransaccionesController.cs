@@ -342,6 +342,12 @@ namespace Gysto.Controllers
             List<ListadoConsulta> lista = AdoTransacciones.ListadoConsultas();
             return View(lista);
         }
+        public ActionResult ListadoConsultasxMedico(int Name)
+        {
+            int idMedico = AdoTransacciones.obtenerIdMedico(Name);
+            List<ListadoConsulta> lista = AdoTransacciones.ListadoConsultaxMedico(idMedico);
+            return View(lista);
+        }
         public ActionResult obtenerConsulta(int idConsulta)
         {
             List<comboAdministrativo> listaRol = AdoRoles.ListadoAdministrativo();
@@ -450,6 +456,7 @@ namespace Gysto.Controllers
             return View();
 
         }
+       
         [HttpPost]
         public ActionResult ModificarConsultaDx(Consulta model)
         {
@@ -460,14 +467,15 @@ namespace Gysto.Controllers
                 bool resultado2 = AdoTransacciones.CerrarConsulta(model);
                 if (resultado2)
                 {
-                    return RedirectToAction("ConsultaCerradas", "Transacciones");
+                    return RedirectToAction("Index2", "Home");
                 }
                 else
                 {
                     return View();
                 }
             }
-            else { return View();
+            else { 
+                return View();
             }
                 
            
@@ -617,9 +625,12 @@ namespace Gysto.Controllers
             List<turno> lista = AdoTransacciones.ListadoxOrden(medico);
             return View(lista);
         }
-        public ActionResult TurnoSacado()
+        public ActionResult TurnoSacado(int idTurno)
         {
-            return View();
+            turno i = AdoTransacciones.listadoxDniTurno(idTurno);
+            SacarTurno s = new SacarTurno();
+            s.turno = i;
+            return View(s);
         }
         //[HttpPost]
         //public ActionResult TurnoSacado(string dni)
@@ -627,10 +638,11 @@ namespace Gysto.Controllers
         //    /*ist<turno> lista = AdoTransacciones.ListadoxOrden();*/
         //    return View();
         //}
-        public ActionResult Datosxdni(string dni)
+        public ActionResult Datosxdni(SacarTurno model)
         {
+            string dni = model.p.dni.ToString();
             paciente resultado = AdoTransacciones.listadoxDni(dni);
-            turno i  = AdoTransacciones.listadoxDniTurno(dni);
+            turno i  = AdoTransacciones.listadoxDniTurno(model.turno.id_turno);
 
 
             SacarTurno st = new SacarTurno();
@@ -639,11 +651,11 @@ namespace Gysto.Controllers
             return View(st);
         }
         [HttpPost]
-        public ActionResult Datosxdni(turno model )
+        public ActionResult Datosxdni(SacarTurno model, string dni)
         {
             if (ModelState.IsValid)
             {
-
+                
                 bool resultado2 = AdoTransacciones.ConfirmarTurno(model); 
                 if (resultado2)
                 {

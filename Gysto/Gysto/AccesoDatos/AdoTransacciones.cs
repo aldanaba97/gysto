@@ -809,7 +809,7 @@ namespace Gysto.AccesoDatos
 
                 SqlCommand cmd = new SqlCommand();
 
-                string consulta = "select nombre, apellido, telefono, id_paciente, numero_dni from Turnos join Pacientes on Turnos.paciente = Pacientes.id_paciente join personas p on Pacientes.id_persona = p.id_persona where numero_dni = @dni";
+                string consulta = "select nombre, apellido, telefono, id_paciente, numero_dni from Pacientes join personas p on Pacientes.id_persona = p.id_persona where numero_dni = @dni";
 
                 cmd.Parameters.Clear();
                 cmd.Parameters.AddWithValue("@dni", dni);
@@ -850,7 +850,7 @@ namespace Gysto.AccesoDatos
 
             return resultado;
         }
-        public static turno listadoxDniTurno(string dni)
+        public static turno listadoxDniTurno(int id )
         {
             turno resultado = new turno(); 
             string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
@@ -861,10 +861,10 @@ namespace Gysto.AccesoDatos
 
                 SqlCommand cmd = new SqlCommand();
 
-                string consulta = "select id_turno, paciente from Turnos join Pacientes on Turnos.paciente = Pacientes.id_paciente join personas p on Pacientes.id_persona = p.id_persona where numero_dni = @dni";
+                string consulta = "select id_turno from Turnos where id_turno = @id";
 
                 cmd.Parameters.Clear();
-                cmd.Parameters.AddWithValue("@dni", dni);
+                cmd.Parameters.AddWithValue("@id", id); 
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = consulta;
                 cn.Open();
@@ -880,7 +880,7 @@ namespace Gysto.AccesoDatos
                     {
                         
                         resultado.id_turno = int.Parse(dr["id_turno"].ToString());
-                        resultado.paciente = int.Parse(dr["paciente"].ToString());
+                     
                     }
                 }
 
@@ -897,7 +897,7 @@ namespace Gysto.AccesoDatos
 
             return resultado;
         }
-        public static bool ConfirmarTurno(turno t)
+        public static bool ConfirmarTurno(SacarTurno t)
         {
             bool resultado = false;
             string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
@@ -909,12 +909,12 @@ namespace Gysto.AccesoDatos
 
                 SqlCommand cmd = new SqlCommand();
 
-                string consulta = "update Turnos set paciente= @1 where id_turno = @id";
+                string consulta = "update Turnos set paciente= @1, disponibilidad = 1 where id_turno = @id";
                 cmd.Parameters.Clear();
 
 
-                cmd.Parameters.AddWithValue("@1", t.paciente);
-                cmd.Parameters.AddWithValue("@id", t.id_turno);
+                cmd.Parameters.AddWithValue("@1", t.p.id_paciente);
+                cmd.Parameters.AddWithValue("@id", t.turno.id_turno);
 
                 cmd.CommandType = System.Data.CommandType.Text;
 
@@ -949,7 +949,7 @@ namespace Gysto.AccesoDatos
 
                 SqlCommand cmd = new SqlCommand();
 
-                string consulta = "select hora, fecha,  pe.apellido +' , ' + pe.nombre nombreMedico, (select nombre + ', ' + apellido from pacientes join personas on pacientes.id_persona = personas.id_persona join consultas c on pacientes.id_paciente = c.id_paciente) nombrePaciente, id_consulta from consultas c inner join Medicos m on m.id_medico = c.medico inner join personas pe on pe.id_persona = m.id_persona inner join Administrativos a on a.id_administrativos = c.id_admnistrativo";
+                string consulta = "select hora, fecha,  p.apellido +' , ' + p.nombre NombreMedico, id_consulta, (select apellido + ' , ' + nombre from personas p join Pacientes pa on p.id_persona = pa.id_persona join Consultas con on pa.id_paciente = con.id_paciente where id_consulta = c.id_consulta) nombrePaciente from consultas c join Medicos a on a.id_medico = c.medico join personas p on p.id_persona = a.id_persona";
                 cmd.Parameters.Clear();
 
                 cmd.CommandType = System.Data.CommandType.Text;
@@ -988,6 +988,103 @@ namespace Gysto.AccesoDatos
 
             return resultado;
         }
+        public static int obtenerIdMedico (int idUsuario)
+        {
+            int idMedico = 0;
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = "select id_medico from Medicos m inner join personas p on m.id_persona = p.id_persona inner join Usuarios on p.id_usuario = Usuarios.id_usuario where p.id_usuario = @id";
+                cmd.Parameters.Clear();
+                cmd.Parameters.AddWithValue("@id", idUsuario);
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = consulta;
+                cn.Open();
+
+                cmd.Connection = cn;
+
+
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                if (dr != null)
+                {
+                    while (dr.Read())
+                    {
+                        idMedico = int.Parse(dr["id_medico"].ToString());
+                      
+                    }
+                }
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                cn.Close();
+            }
+
+            return idMedico;
+
+        }
+        public static List<ListadoConsulta> ListadoConsultaxMedico(int id)
+        {
+            List<ListadoConsulta> resultado = new List<ListadoConsulta>();
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = "select hora, fecha,  p.apellido +' , ' + p.nombre nombreadmi, id_consulta, (select apellido + ' , ' + nombre from personas p join Pacientes pa on p.id_persona = pa.id_persona join Consultas con on pa.id_paciente = con.id_paciente where id_consulta = c.id_consulta) nombrePaciente from consultas c join Administrativos a on a.id_administrativos = c.id_admnistrativo join personas p on p.id_persona = a.id_persona where medico = @id and diagnostico_final is null";
+                cmd.Parameters.Clear();
+                cmd.Parameters.AddWithValue("@id", id);
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = consulta;
+                cn.Open();
+
+                cmd.Connection = cn;
+
+
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                if (dr != null)
+                {
+                    while (dr.Read())
+                    {
+
+                        ListadoConsulta i = new ListadoConsulta();
+                        i.hora = dr["hora"].ToString();
+                        i.fecha = dr["fecha"].ToString();
+                        i.NombreMedico = dr["nombreadmi"].ToString();
+                        i.NombrePaciente = dr["nombrePaciente"].ToString();
+                        i.id = int.Parse(dr["id_consulta"].ToString());
+                        resultado.Add(i);
+                    }
+                }
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                cn.Close();
+            }
+
+            return resultado;
+        }
         public static List<ListadoConsulta> ListadoConsultasCerradas()
         {
             List<ListadoConsulta> resultado = new List<ListadoConsulta>();
@@ -999,7 +1096,7 @@ namespace Gysto.AccesoDatos
 
                 SqlCommand cmd = new SqlCommand();
 
-                string consulta = "select hora, fecha,  pe.apellido +' , ' + pe.nombre nombreMedico, (select nombre + ', ' + apellido from pacientes join personas on pacientes.id_persona = personas.id_persona) nombrePaciente,  diagnostico_final from consultas c inner join Medicos m on m.id_medico = c.medico inner join personas pe on pe.id_persona = m.id_persona inner join Administrativos a on a.id_administrativos = c.id_admnistrativo where diagnostico_final is not null";
+                string consulta = "select hora, fecha,  p.apellido +' , ' + p.nombre nombreadmi, id_consulta, (select apellido + ' , ' + nombre from personas p join Pacientes pa on p.id_persona = pa.id_persona join Consultas con on pa.id_paciente = con.id_paciente where id_consulta = c.id_consulta) nombrePaciente from consultas c join Medicos a on a.id_medico = c.medico join personas p on p.id_persona = a.id_persona where diagnostico_final is not null";
                 cmd.Parameters.Clear();
 
                 cmd.CommandType = System.Data.CommandType.Text;

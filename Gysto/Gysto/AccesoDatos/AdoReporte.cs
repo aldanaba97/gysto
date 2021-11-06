@@ -58,6 +58,104 @@ namespace Gysto.AccesoDatos
 
             return resultado;
         }
+        public static List<reporteConsultas> ListadoConsultasTodas()
+        {
+            List<reporteConsultas> resultado = new List<reporteConsultas>();
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+            SqlConnection cn = new SqlConnection(cadenaConexion);
 
+            try
+            {
+
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = "select count (*) cantidad, e.nombre from Consultas join Medicos on Consultas.medico = Medicos.id_medico join Especialidades e on e.id_espe = Medicos.id_espe group by e.nombre ";
+                cmd.Parameters.Clear();
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = consulta;
+                cn.Open();
+
+                cmd.Connection = cn;
+
+
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                if (dr != null)
+                {
+                    while (dr.Read())
+                    {
+
+                        reporteConsultas e = new reporteConsultas();
+                        e.nombre = dr["nombre"].ToString();
+                        e.cantidad = int.Parse(dr["cantidad"].ToString());
+
+                        resultado.Add(e);
+                    }
+                }
+
+            }
+            catch (Exception)
+            {
+                throw;
+
+            }
+            finally
+            {
+                cn.Close();
+            }
+
+            return resultado;
+        }
+        public static List<reporteConsultas> ListadoConsultasxaño(string año)
+        {
+            List<reporteConsultas> resultado = new List<reporteConsultas>();
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = "select count (*) cantidad, e.nombre from Consultas join Medicos on Consultas.medico = Medicos.id_medico join Especialidades e on e.id_espe = Medicos.id_espe where YEAR(fecha) = @año group by e.nombre ";
+                cmd.Parameters.Clear();
+                cmd.Parameters.AddWithValue("@año", año); 
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = consulta;
+                cn.Open();
+
+                cmd.Connection = cn;
+
+
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                if (dr != null)
+                {
+                    while (dr.Read())
+                    {
+
+                        reporteConsultas e = new reporteConsultas();
+                        e.nombre = dr["nombre"].ToString();
+                        e.cantidad = int.Parse(dr["cantidad"].ToString());
+
+                        resultado.Add(e);
+                    }
+                }
+
+            }
+            catch (Exception)
+            {
+                throw;
+
+            }
+            finally
+            {
+                cn.Close();
+            }
+
+            return resultado;
+        }
     }
 }

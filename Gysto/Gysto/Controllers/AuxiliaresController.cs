@@ -146,7 +146,7 @@ namespace Gysto.Controllers
         }
         public ActionResult ListadoEnfermedad()
         {
-            List<Enfermedad> lista = Ado.Combobox();
+            List<Enfermedad> lista = Ado.listadoEnfermedad(); 
             return View(lista);
         }
         public ActionResult BEnfermedad(int idEnfermedad)

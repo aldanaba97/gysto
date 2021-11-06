@@ -274,7 +274,7 @@ namespace Gysto.AccesoDatos
 
                 SqlCommand cmd = new SqlCommand();
 
-                string consulta = "exec ActualizarUsuario1 @contraseña, @usuario, @email, @dni, @direccion, @localidad, @telefono , @nombre , @apellido , @fecha_nac , @numero_dni , @id_usu , @id_perso ";
+                string consulta = "exec actualizarUsu @contraseña, @usuario, @email, @dni, @direccion, @localidad, @telefono , @nombre , @apellido , @fecha_nac , @numero_dni , @id_usu , @id_perso ";
                 cmd.Parameters.Clear();
                 cmd.Parameters.AddWithValue("@contraseña", p.contraseña);
                 cmd.Parameters.AddWithValue("@usuario", p.nombreUsuario);
@@ -317,7 +317,7 @@ namespace Gysto.AccesoDatos
             }
             return resultado;
         }
-        public static Persona obtenerPersona(int idPersona)
+        public static Persona obtenerPersona(int id)
         {
             Persona resultado = new Persona();
             string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
@@ -328,9 +328,9 @@ namespace Gysto.AccesoDatos
 
                 SqlCommand cmd = new SqlCommand();
 
-                string consulta = "select personas.id_persona, id_tipoDNI, direccion, localidad_id, telefono, personas.nombre name, apellido, fecha_nac, numero_dni, Usuarios.id_usuario, usuarios.contraseña, usuarios.nombre, id_rol, email  from personas join Usuarios on personas.id_usuario = Usuarios.id_usuario where id_persona = @id";
+                string consulta = "select personas.id_persona, id_tipoDNI, direccion, localidad_id, telefono, personas.nombre name, apellido, fecha_nac, numero_dni, Usuarios.id_usuario, usuarios.contraseña, usuarios.nombre, id_rol, email  from personas join Usuarios on personas.id_usuario = Usuarios.id_usuario where Usuarios.id_usuario = @id";
                 cmd.Parameters.Clear();
-                cmd.Parameters.AddWithValue("@id", idPersona);
+                cmd.Parameters.AddWithValue("@id", id);
 
 
                 cmd.CommandType = System.Data.CommandType.Text;
@@ -527,7 +527,7 @@ namespace Gysto.AccesoDatos
 
                 SqlCommand cmd = new SqlCommand();
 
-                string consulta = "select count(*) c from usuarios where nombre = @1 and contraseña = @2 and id_rol = @3 ";
+                string consulta = "select count(*) c, nombre, id_usuario, id_rol, email, contraseña from usuarios where nombre = @1 and contraseña = @2 and id_rol = @3  group by id_usuario, contraseña, nombre, id_rol, email";
                 cmd.Parameters.Clear();
                 cmd.Parameters.AddWithValue("@1", usuario);
                 cmd.Parameters.AddWithValue("@2", contra);
@@ -543,12 +543,126 @@ namespace Gysto.AccesoDatos
                 {
                     if (dr.Read())
                     {
+                        Usuario e = new Usuario(); 
                         int count = int.Parse(dr["c"].ToString());
+                        e.id = int.Parse(dr["id_usuario"].ToString());
+                        e.nombreUsuario = dr["nombre"].ToString();
+                        e.contraseña = dr["contraseña"].ToString();
+                        e.email = dr["email"].ToString();
+                        e.rol = int.Parse(dr["id_rol"].ToString());
 
                         if (count == 0)
                             resultado = false;
                         else
                             resultado = true;
+
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+
+            }
+            finally
+            {
+                cn.Close();
+            }
+            return resultado;
+        }
+        public static List<Usuario> ListadoUsuarioConPermiso(int permiso)
+        {
+            List<Usuario> resultado = new List<Usuario>();
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = "select Usuarios.nombre, id_usuario, contraseña, email, Roles.id_rol from Usuarios join Roles on Usuarios.id_rol = Roles.id_rol join permisoxroles on permisoxroles.id_rol = Roles.id_rol join permiso on permiso.id = permisoxroles.id_permiso where permisoxroles.id_permiso = @a";
+
+
+
+
+                cmd.Parameters.Clear();
+                cmd.Parameters.AddWithValue( "@a", permiso);
+
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = consulta;
+                cn.Open();
+
+                cmd.Connection = cn;
+
+
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                if (dr != null)
+                {
+                    while (dr.Read())
+                    {
+
+                        Usuario e = new Usuario();
+                        e.id = int.Parse(dr["id_usuario"].ToString()); 
+                        e.nombreUsuario = dr["nombre"].ToString();
+                        e.contraseña = dr["contraseña"].ToString();
+                        e.email = dr["email"].ToString();
+                        e.rol = int.Parse(dr["id_rol"].ToString());
+                    
+                        resultado.Add(e);
+                    }
+                }
+
+            }
+            catch (Exception)
+            {
+                throw;
+
+            }
+            finally
+            {
+                cn.Close();
+            }
+
+            return resultado;
+        }
+        public static Usuario obtenerusuario (string usuario, string contra, int rol)
+        {
+            Usuario resultado = new Usuario();
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+
+                SqlCommand cmd = new SqlCommand();
+
+
+                string consulta = "select count(*) c, nombre, id_usuario, id_rol, email, contraseña from usuarios where nombre = @1 and contraseña = @2 and id_rol = @3  group by id_usuario, contraseña, nombre, id_rol, email";
+                cmd.Parameters.Clear();
+                cmd.Parameters.AddWithValue("@1", usuario);
+                cmd.Parameters.AddWithValue("@2", contra);
+                cmd.Parameters.AddWithValue("@3", rol);
+
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = consulta;
+                cn.Open();
+                cmd.Connection = cn;
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                if (dr != null)
+                {
+                    while (dr.Read())
+                    {
+
+                        resultado.id = int.Parse(dr["id_usuario"].ToString());
+                        resultado.contraseña = dr["contraseña"].ToString();
+                        resultado.nombreUsuario = dr["nombre"].ToString();
+                        resultado.rol = int.Parse(dr["id_rol"].ToString());
+                        resultado.email = dr["email"].ToString();
 
                     }
                 }

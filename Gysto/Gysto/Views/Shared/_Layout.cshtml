@@ -1,42 +1,159 @@
 ﻿<!DOCTYPE html>
+    <html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>@ViewBag.Title - Mi aplicación ASP.NET</title>
+        @Styles.Render("~/Content/css")
+        @Scripts.Render("~/bundles/modernizr")
+       
+    </head>
+   
+    <body>
+        <div class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+            <div class="container ">
+                <a class="navbar-brand" href="">GYSTO</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        if (Session["user"] != null)
+                        {
+                            string o = Session["Rol"].ToString();
+
+                            switch (o)
+                            {
+                                case "1":
+                                    <ul class="navbar-nav ml-auto">
+
+
+                                        <li class="nav-item active"><a class="nav-link" href=@Url.Action("ListadoConsultasxMedico", "Transacciones", new { User.Identity.Name })>Consultas</a></li>
+
+                                        <li class="nav-item active"><a class="nav-link" href=@Url.Action("PerfilUsuarioMedico", "Roles", new { User.Identity.Name })>Ver perfil</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="@Url.Action("Logout", "Home")">Cerrar sesion</a></li>
+                                    </ul>
+                                    break;
+                                case "2":
+                                    <ul class="navbar-nav ml-auto">
+                                        <li class="nav-item"><a class="nav-link" href="@Url.Action("Enfermedadxcantidad", "Reporte")">Reportes</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="@Url.Action("ListadoHC", "Transacciones")">Historia clinica</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="@Url.Action("PerfilUsuarioDirector", "Roles" , new { User.Identity.Name })">Ver perfil</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="@Url.Action("Logout", "Home")">Cerrar sesion</a></li>
+                                    </ul>
+                                    break;
+                                case "3":
+                                    <ul class="navbar-nav ml-auto">
+                                        <li class="nav-item"><a class="nav-link" href="@Url.Action("ListadoTurno", "Transacciones")">Turnos</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="@Url.Action("ListadoConsultas", "Transacciones")">Consultas</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="@Url.Action("ListadoInternacion", "Transacciones")">Internaciones</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="@Url.Action("ListadoHC", "Transacciones")">Historia clinica</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="@Url.Action("PerfilUsuarioAdministrativo", "Roles" , new { User.Identity.Name })">Ver perfil</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="@Url.Action("Logout", "Home")">Cerrar sesion</a></li>
+
+
+                                    </ul>
+                                    break;
+                                case "4":
+                                    <ul class="navbar-nav ml-auto">
+                                        <li class="nav-item"><a class="nav-link" href="@Url.Action("ListadoUsuario", "Usuario")">Usuarios</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="@Url.Action("Especialidades", "ListadoEspecialidad", "Auxiliares")">Especialidades</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="@Url.Action("ListadoTratamientos", "Auxiliares")">Tratamientos</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="@Url.Action("listadoEnfermedad", "Auxiliares")">Enfermedades</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="@Url.Action("PerfilUsuario", "Usuario")">Ver perfil</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="@Url.Action( "Logout", "Home")">Cerrar Sesion</a></li>
+                                    </ul>
+                                    break;
+                                case "5":
+                                    <ul class="navbar-nav ml-auto">
+                                        <li class="nav-item"><a class="nav-link" href="@Url.Action("ListadoUsuario", "Usuario")">Internaciones</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="@Url.Action("PerfilUsuarioEnfermero", "Roles" , new { User.Identity.Name })">Ver perfil</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="@Url.Action("Logout", "Home")">Cerrar sesion</a></li>
+                                    </ul>
+                                    break;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        <ul class="navbar-nav ml-auto">
+
+                            <li class="nav-item"><a class="nav-link" href="@Url.Action("TodosTurnos", "Transacciones")">Turnos disponibles</a></li>
+                            <li class="nav-item"><a class="nav-link" href="@Url.Action("ListadoEspecialidad", "Auxiliares")">Especialidades</a></li>
+                            <li class="nav-item"><a class="nav-link" href="@Url.Action("Contact", "Home")">Contacto</a></li>
+                            <li class="nav-item"><a class="nav-link" href="@Url.Action("Terminos", "Home")">Terminos y condiciones</a></li>
+                            <li class="nav-item"><a class="nav-link" href="@Url.Action("Login", "Home")">Iniciar sesion</a></li>
+
+                        </ul>
+
+                    }
+
+
+
+                </div>
+            </div>
+        </div>
+        <div class="container body-content">
+            @RenderBody() 
+            <br />
+            <footer>
+                <p>&copy; @DateTime.Now.Year - Mi aplicación ASP.NET</p>
+            </footer>
+            <hr />
+
+        </div>
+       
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")
+        @RenderSection("scripts", required: false)
+    </body>
+    </html>
+@*<!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>@ViewBag.Title - Mi aplicación ASP.NET</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Nombre de la aplicación", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Inicio", "Index", "Home")</li>
-                    <li>@Html.ActionLink("Usuario", "Usuario", "Usuario")</li>
-                    <li>@Html.ActionLink("Especialidades", "ListadoEspecialidad", "Auxiliares")</li>
-                    <li>@Html.ActionLink("Enfermedades", "listadoEnfermedad", "Auxiliares")</li>
-                    <li>@Html.ActionLink("Tratamientos", "ListadoTratamientos", "Auxiliares")</li>
-                    <li>@Html.ActionLink("Internaciones", "ListadoInternacion", "Transacciones")</li>
-                    <li>@Html.ActionLink("Turnos", "TodosTurnos", "Transacciones")</li>
-                    <li>@Html.ActionLink("Usuarios", "ListadoUsuario", "Usuario")</li>
-                    @if (User.Identity.IsAuthenticated)
-            {
-                <li>@Html.ActionLink("Cerrar sesion", "Logout", "Home") </li>
-            }
-                    
-
-
+    <div class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Navbar</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Link</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Dropdown
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="#">Action</a></li>
+                            <li><a class="dropdown-item" href="#">Another action</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled">Disabled</a>
+                    </li>
                 </ul>
+                <form class="d-flex">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
             </div>
         </div>
     </div>
@@ -44,12 +161,11 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - Mi aplicación ASP.NET</p>
+            <p>&copy; @DateTime.Now.Year - Mi Aplicación ASP</p>
         </footer>
     </div>
-
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
 </body>
-</html>
+</html>*@

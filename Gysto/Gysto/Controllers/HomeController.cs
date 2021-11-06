@@ -1,4 +1,5 @@
 ﻿using Gysto.AccesoDatos;
+using Gysto.Filters;
 using Gysto.Models;
 using Gysto.ViewModels;
 using System;
@@ -8,6 +9,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 
+
 namespace Gysto.Controllers
 {
     public class HomeController : Controller
@@ -16,7 +18,7 @@ namespace Gysto.Controllers
         {
             return View();
         }
-
+        [AuthorizeUser(idOperacion: 2)]
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
@@ -24,7 +26,7 @@ namespace Gysto.Controllers
             return View();
         }
 
-        [Authorize]
+  
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";
@@ -33,53 +35,88 @@ namespace Gysto.Controllers
         }
         public ActionResult Login()
         {
-            List<Rol> listaRol = AdoUsuarios.ComboboxRol();
-            List<SelectListItem> Items = listaRol.ConvertAll(d =>
-            {
-                return new SelectListItem()
-                {
-                    Text = d.nombre,
-                    Value = d.id.ToString(),
-                    Selected = false
-
-                };
-            });
-            ViewBag.item = Items;
-
             return View();
         }
-            [HttpPost]
-            public ActionResult Login(string nombreUsuario, string contraseña, int rol)
+        [HttpPost]
+        public ActionResult Login(string nombreUsuario, string contraseña)
+        {
+            try
             {
-                if (!string.IsNullOrEmpty(nombreUsuario) && !string.IsNullOrEmpty(contraseña))
+                using (Models.GystoEntities5 g = new Models.GystoEntities5())
                 {
-                bool u = AdoUsuarios.AccederLogin(nombreUsuario,contraseña, rol);
-               
-
-                   if(u){
-               FormsAuthentication.SetAuthCookie(nombreUsuario, true);
-                 string id = User.Identity.Name;
-
-                    return RedirectToAction("contact","home");
-                    }
-                    else
+                    var oUser = (from d in g.Usuarios where d.nombre == nombreUsuario && d.contraseña == contraseña select d).FirstOrDefault();
+                    if (oUser == null)
                     {
-                    return RedirectToAction("Login","Home"); 
-                    }
-                }
-                else
-                {
-                return RedirectToAction("Index", "Home");
-                }
 
+                        ViewBag.Error = "Usuario Incorrecto"; 
+                        return View();
+                    }
+                    Session["user"] = oUser;
+                    Session["Rol"] = oUser.id_rol;
+                    string id = oUser.id_usuario.ToString(); 
+                    FormsAuthentication.SetAuthCookie(id, true);
+
+
+                    return RedirectToAction("index2", "home");
+
+
+                }
             }
 
+            catch (Exception)
+            {
+                return View();
+            }
+
+
+
+
+
+        
+        }
+        //public ActionResult Login(string nombreUsuario, string contraseña, int rol)
+        //{
+        //    if (!string.IsNullOrEmpty(nombreUsuario) && !string.IsNullOrEmpty(contraseña))
+        //    {
+        //        bool u = AdoUsuarios.AccederLogin(nombreUsuario, contraseña, rol);
+
+        //        if (u)
+        //        {
+        //            Usuario usu = AdoUsuarios.obtenerusuario(nombreUsuario, contraseña, rol);
+        //            Session["nombre"] = nombreUsuario;
+        //            //TempData["rol"] = usu.rol;
+        //            //int i = (int)Membership.GetUser().ProviderUserKey;
+        //            FormsAuthentication.SetAuthCookie(nombreUsuario, true);
+        //            //string id = User.Identity.Name;
+
+        //            return RedirectToAction("contact", "home");
+        //        }
+
+        //        else
+        //        {
+        //            return RedirectToAction("Login", "Home");
+        //        }
+
+        //    }
+        //    return View();
+
+
+
+        //}
+
         [Authorize]
-        public ActionResult Logout ()
+        public ActionResult Logout()
         {
             FormsAuthentication.SignOut();
-            return RedirectToAction("Index", "Home");  
+            return RedirectToAction("Index", "Home");
         }
-      
+        public ActionResult Terminos ()
+        {
+            return View(); 
+        }
+        public ActionResult Index2 ()
+        {
+            return View(); 
+        }
     }
 }

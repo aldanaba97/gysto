@@ -2,8 +2,8 @@
 @{
     ViewBag.Title = "ListadoEspecialidad";
 }
-
-<h2>ListadoEspecialidad</h2>
+<div class=" contenedor">
+<h2>Especialidades del hospital</h2>
 <div class="row">
     @foreach (var e in Model)
     {
@@ -13,15 +13,22 @@
         <h2>@e.nombre</h2>
         <p>
             <img src="~/imagenes/@e.imagen" width="300" height="150" />
-        <p>
-            <a class="btn btn-primary" href="@Url.Action("MEspecialidad", "Auxiliares", new {idEspecialidad = e.id_especialidad})">Modificar &raquo;</a>
-            <a class="btn btn-primary" onclick="return  alerta()" href="@Url.Action("BEspecialidad", "Auxiliares", new {idEspecialidad = e.id_especialidad})">Eliminar &raquo;</a>
         </p>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <p>
+                <a class="btn btn-primary" href="@Url.Action("MEspecialidad", "Auxiliares", new {idEspecialidad = e.id_especialidad})">Modificar &raquo;</a>
+                <a class="btn btn-primary" onclick="return  alerta()" href="@Url.Action("BEspecialidad", "Auxiliares", new {idEspecialidad = e.id_especialidad})">Eliminar &raquo;</a>
+            </p>
+        }
+
+
     </div>
                 }
          }
 
 
+    </div>
     </div>
 <script type="text/javascript">
     function alerta() {
