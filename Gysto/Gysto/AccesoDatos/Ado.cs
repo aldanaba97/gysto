@@ -113,10 +113,10 @@ namespace Gysto.AccesoDatos
 
                 SqlCommand cmd = new SqlCommand();
 
-                string consulta = "UPDATE Especialidades SET nombre = @nombre, imagen = @imagen WHERE id_espe = @id_espe";
+                string consulta = "UPDATE Especialidades SET nombre = @nombre WHERE id_espe = @id_espe";
                 cmd.Parameters.Clear();
                 cmd.Parameters.AddWithValue("@nombre", e.nombre);
-                cmd.Parameters.AddWithValue(@"imagen", e.imagen);
+          
                 cmd.Parameters.AddWithValue(@"id_espe", e.id_especialidad);
 
 
@@ -143,7 +143,7 @@ namespace Gysto.AccesoDatos
             }
             return resultado;
         }
-        public static bool EliminarEspe(Especialidad e)
+        public static bool EliminarEspe(int e)
         {
             bool resultado = false;
             string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
@@ -155,7 +155,7 @@ namespace Gysto.AccesoDatos
                 SqlCommand cmd = new SqlCommand();
                 string consulta = "Update Especialidades set estado = 0 WHERE id_espe = @id";
                 cmd.Parameters.Clear();
-                cmd.Parameters.AddWithValue(@"id", e.id_especialidad);
+                cmd.Parameters.AddWithValue(@"id", e);
 
 
                 cmd.CommandType = System.Data.CommandType.Text;
@@ -369,7 +369,7 @@ namespace Gysto.AccesoDatos
             }
             return resultado;
         }
-        public static bool EliminarEnfermedad(Enfermedad e)
+        public static bool EliminarEnfermedad(int e)
         {
             bool resultado = false;
             string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
@@ -381,7 +381,7 @@ namespace Gysto.AccesoDatos
                 SqlCommand cmd = new SqlCommand();
                 string consulta = "Update Enfermedades set estado = 0 WHERE id_enfermedad = @id";
                 cmd.Parameters.Clear();
-                cmd.Parameters.AddWithValue(@"id", e.id_enfe);
+                cmd.Parameters.AddWithValue(@"id", e);
 
 
                 cmd.CommandType = System.Data.CommandType.Text;
@@ -649,7 +649,7 @@ namespace Gysto.AccesoDatos
         }
         return resultado;
     }
-    public static bool EliminarTratamiento(Tratamiento t)
+    public static bool EliminarTratamiento(int t)
     {
         bool resultado = false;
         string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
@@ -661,7 +661,7 @@ namespace Gysto.AccesoDatos
             SqlCommand cmd = new SqlCommand();
             string consulta = "Update Tratamientos set estado = 0 WHERE id_tratamiento = @id";
             cmd.Parameters.Clear();
-            cmd.Parameters.AddWithValue(@"id", t.id_tratamiento);
+            cmd.Parameters.AddWithValue(@"id", t);
 
 
             cmd.CommandType = System.Data.CommandType.Text;

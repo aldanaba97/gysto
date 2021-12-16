@@ -22,11 +22,11 @@ namespace Gysto.AccesoDatos
 
                 SqlCommand cmd = new SqlCommand();
 
-                string consulta = "insert into Medicos (id_espe, matricula, id_persona) values (@id, @matri, IDENT_CURRENT('Personas'))";
+                string consulta = "insert into Medicos (id_espe, matricula, id_persona) values (2, 11111, IDENT_CURRENT('Personas'))";
                 cmd.Parameters.Clear();
 
-                cmd.Parameters.AddWithValue("@id", m.id_espe);
-                cmd.Parameters.AddWithValue("@matri", m.matricula);
+                //cmd.Parameters.AddWithValue("@id", m.id_espe);
+                //cmd.Parameters.AddWithValue("@matri", m.matricula);
  
 
 
@@ -175,7 +175,7 @@ namespace Gysto.AccesoDatos
 
             return resultado;
         }
-        public static bool Insertarpaciente(paciente p)
+        public static bool Insertarpaciente()
         {
             bool resultado = false;
             string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
@@ -190,7 +190,6 @@ namespace Gysto.AccesoDatos
                 string consulta = "insert into pacientes ( id_persona) values (IDENT_CURRENT('Personas'))";
                 cmd.Parameters.Clear();
 
-    
 
 
 
@@ -276,7 +275,7 @@ namespace Gysto.AccesoDatos
 
                 SqlCommand cmd = new SqlCommand();
 
-                string consulta = "select id_paciente,  apellido + ' , ' +  nombre nombrecto from personas p join Pacientes pa on p.id_persona = pa.id_persona";
+                string consulta = "select id_paciente,  apellido + ' , ' +  nombre nombrecto from personas p join Pacientes pa on p.id_persona = pa.id_persona order by apellido asc";
                 cmd.Parameters.Clear();
 
                 cmd.CommandType = System.Data.CommandType.Text;
@@ -325,7 +324,7 @@ namespace Gysto.AccesoDatos
 
                 SqlCommand cmd = new SqlCommand();
 
-                string consulta = "select apellido + ' , ' +  p.nombre nombrecto, id_medico from personas p join Medicos m on p.id_persona = m.id_persona";
+                string consulta = "select apellido + ' , ' +  p.nombre nombrecto, id_medico from personas p join Medicos m on p.id_persona = m.id_persona order by apellido asc";
                 cmd.Parameters.Clear();
 
                 cmd.CommandType = System.Data.CommandType.Text;
@@ -374,7 +373,7 @@ namespace Gysto.AccesoDatos
 
                 SqlCommand cmd = new SqlCommand();
 
-                string consulta = "select apellido + ' , ' +  p.nombre nombrecto, id_administrativos from personas p join Administrativos m on p.id_persona = m.id_persona";
+                string consulta = "select apellido + ' , ' +  p.nombre nombrecto, id_administrativos from personas p join Administrativos m on p.id_persona = m.id_persona order by apellido asc";
                 cmd.Parameters.Clear();
 
                 cmd.CommandType = System.Data.CommandType.Text;
@@ -464,9 +463,9 @@ namespace Gysto.AccesoDatos
 
         //    return resultado;
         //}
-        public static Medico ObtenerMedico(int idDoc)
+        public static MedicoValidar ObtenerMedico(int idDoc)
         {
-            Medico resultado = new Medico();
+            MedicoValidar resultado = new MedicoValidar();
             string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
             SqlConnection cn = new SqlConnection(cadenaConexion);
 
@@ -475,7 +474,7 @@ namespace Gysto.AccesoDatos
 
                 SqlCommand cmd = new SqlCommand();
 
-                string consulta = "select * from Medicos where id_medico = @id";
+                string consulta = "select * from Medicos m  join personas on m.id_persona = personas.id_persona where personas.id_usuario=  = @id";
                 cmd.Parameters.Clear();
                 cmd.Parameters.AddWithValue("@id", idDoc);
 
@@ -509,7 +508,7 @@ namespace Gysto.AccesoDatos
             }
             return resultado;
         }
-        public static bool ActualizarMedico(Medico i)
+        public static bool ActualizarMedico(MedicoValidar i)
         {
             bool resultado = false;
             string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
@@ -550,6 +549,7 @@ namespace Gysto.AccesoDatos
         public static Medico PerfilMedico(int usuario)
         {
             Medico resultado = new Medico();
+            
             string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
             SqlConnection cn = new SqlConnection(cadenaConexion);
 
@@ -558,7 +558,7 @@ namespace Gysto.AccesoDatos
 
                 SqlCommand cmd = new SqlCommand();
 
-                string consulta = "select Usuarios.nombre name, email, p.id_persona, direccion,telefono, p.nombre, apellido, fecha_nac, numero_dni, imagen, id_medico, id_espe, matricula from Medicos m inner join personas p on m.id_persona = p.id_persona inner join Usuarios on p.id_usuario = Usuarios.id_usuario where p.id_usuario = @id";
+                string consulta = "select e.id_espe, Usuarios.nombre name, email, p.id_persona, direccion,telefono, p.nombre, apellido, fecha_nac, numero_dni,Usuarios.imagen, id_medico, e.nombre espe, matricula from Medicos m inner join personas p on m.id_persona = p.id_persona inner join Usuarios on p.id_usuario = Usuarios.id_usuario join Especialidades e on e.id_espe = m.id_espe where p.id_usuario = @id";
                 cmd.Parameters.Clear();
                 cmd.Parameters.AddWithValue("@id", usuario);
 
@@ -586,6 +586,7 @@ namespace Gysto.AccesoDatos
                         resultado.id_medico= int.Parse(dr["id_medico"].ToString());
                         resultado.id_espe = int.Parse(dr["id_espe"].ToString());
                         resultado.matricula = dr["matricula"].ToString();
+                      
                     }
                 }
             }
@@ -664,7 +665,7 @@ namespace Gysto.AccesoDatos
 
                 SqlCommand cmd = new SqlCommand();
 
-                string consulta = "select personas.id_persona, id_tipoDNI, direccion, localidad_id, telefono, personas.nombre name, apellido, fecha_nac, numero_dni, Usuarios.id_usuario, usuarios.contraseña, usuarios.nombre, id_rol, email  from personas join Usuarios on personas.id_usuario = Usuarios.id_usuario where Usuarios.id_usuario = @id";
+                string consulta = "select personas.id_persona, id_tipoDNI, direccion, localidad_id, telefono, personas.nombre name, apellido, fecha_nac, numero_dni, Usuarios.id_usuario, usuarios.contraseña, usuarios.nombre, id_rol, email, imagen  from personas join Usuarios on personas.id_usuario = Usuarios.id_usuario where Usuarios.id_usuario = @id";
                 cmd.Parameters.Clear();
                 cmd.Parameters.AddWithValue("@id", usuario);
 
@@ -685,12 +686,13 @@ namespace Gysto.AccesoDatos
                         resultado.direccion = dr["direccion"].ToString();
                         resultado.localidad = int.Parse(dr["localidad_id"].ToString());
                         resultado.telefono = dr["telefono"].ToString();
-                        resultado.nombre = dr["nombre"].ToString();
+                        resultado.nombre = dr["name"].ToString();
                         resultado.apellido = dr["apellido"].ToString();
                         resultado.fecha_nac = DateTime.Parse(dr["fecha_nac"].ToString());
                         resultado.dni = int.Parse(dr["numero_dni"].ToString());
                         resultado.id = int.Parse(dr["id_usuario"].ToString());
                         resultado.contraseña = dr["contraseña"].ToString();
+                        resultado.image = dr["imagen"].ToString();
                         resultado.nombreUsuario = dr["nombre"].ToString();
                         resultado.rol = int.Parse(dr["id_rol"].ToString());
                         resultado.email = dr["email"].ToString();
@@ -772,7 +774,7 @@ namespace Gysto.AccesoDatos
 
                 SqlCommand cmd = new SqlCommand();
 
-                string consulta = "select * from directores_medicos where id_director = @id";
+                string consulta = "select * from directores_medicos join personas on directores_medicos.id_persona = personas.id_persona where personas.id_usuario= @id";
                 cmd.Parameters.Clear();
                 cmd.Parameters.AddWithValue("@id", id);
 

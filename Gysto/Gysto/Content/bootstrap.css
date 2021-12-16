@@ -42,7 +42,7 @@
 }
 
 html {
-    font-family: sans-serif;
+    font-family: Arial;
     line-height: 1.15;
     -webkit-text-size-adjust: 100%;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
@@ -53,19 +53,27 @@ html {
 article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
   display: block;
 }
+@media print {
+    .footer,
+    #non-printable {
+        display: none !important;
+    }
 
+    #printable {
+        display: block;
+    }
+}
 body {
     margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    font-family: 'Oswald', sans-serif;
     font-size: 1rem;
-    font-weight: 400;
+    font-weight: 200;
     line-height: 1.5;
     color: #212529;
     text-align: left;
-
-   
-    background: url("https://image.freepik.com/vector-gratis/diseno-plantilla-papel-tapiz-medica-abstracta_53876-61802.jpg");
-    /*background-size: cover;
+    background-color: #ced4da;
+    width: 100%;
+    /*background-size: cover
     background-repeat: no-repeat;*/
 }
 
@@ -557,7 +565,7 @@ pre code {
     padding-left: 15px;
     margin-right: auto;
     margin-left: auto;
-   
+
 }
 .contenedor {
     width: 100%;
@@ -565,7 +573,7 @@ pre code {
     padding-left: 15px;
     margin-right: auto;
     margin-left: auto;
-    background-color: #51D8C8;
+    background-color: #ced4da;
     background-size: 100% 100%;
 }
 
@@ -3234,6 +3242,8 @@ input[type="button"].btn-block {
   right: auto;
   bottom: auto;
 }
+
+¡
 
 .dropdown-divider {
   height: 0;

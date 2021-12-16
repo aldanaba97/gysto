@@ -32,9 +32,10 @@
     <Property Name="contraseña" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="nombre" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="id_rol" Type="Int32" Nullable="false" />
-    <Property Name="email" Type="String" MaxLength="30" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="imagen" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
     <NavigationProperty Name="Roles" Relationship="Self.FK_Usuarios_Roles" FromRole="Usuarios" ToRole="Roles" />
+    <Property Name="token" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
   </EntityType>
   <Association Name="FK_Usuarios_Roles">
     <End Role="Roles" Type="Self.Roles" Multiplicity="1" />

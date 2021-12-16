@@ -11,5 +11,12 @@ namespace Gysto.ViewModels
         public DateTime fecha { get; set;  }
         public string motivo { get; set;  }
         public int id { get; set;  }
+
+        public string fecha2()
+        {
+            string fechaformato = "";
+            fechaformato = fecha.ToString("dd/MM/yyyy");
+            return fechaformato;
+        }
     }
 }

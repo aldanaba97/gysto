@@ -12,7 +12,8 @@ namespace Gysto.Models
         public DateTime fecha { get; set; }
         public string grupo_sanguineo  { get; set;  }
         public int paciente { get; set;  } 
-        //public int enfermedad { get; set;  }        
+
+      
 
     }
 }

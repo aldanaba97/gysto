@@ -1,104 +1,107 @@
-﻿@model Gysto.Models.Consulta
+﻿@model Gysto.ViewModels.cerrarConsulta
 
 @{
-    ViewBag.Title = "ModificarConsultaDx"; 
-    List<SelectListItem> ItemsAdministracion = (List<SelectListItem>)ViewBag.itemsA;
+    ViewBag.Title = "ModificarConsultaDx";
+
     List<SelectListItem> ItemsTratamiento = (List<SelectListItem>)ViewBag.itemsT;
-    List<SelectListItem> ItemsPaciente = (List<SelectListItem>)ViewBag.itemsP;
-    List<SelectListItem> ItemsMedico = (List<SelectListItem>)ViewBag.itemsM;
+   
 }
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
 
 <div class=" contenedor">
-
-<div class="row">
-    <div class="col-sm-12">
-        <div>
-            <h1>Modificacion consulta</h1>
-        </div>
-    </div>
-</div>
-@using (Html.BeginForm())
-
-{
-    @Html.HiddenFor(model => model.id_consulta)
+    <br />
     <div class="row">
-        <div class="col-lg-6">
-            <div class="form-horizontal">
-                <div class="form-group">
-                    <label class="col-sm-6 control-label"> Administrativo:  </label>
-                    <div class="col-sm-6">
-                        @Html.DropDownList("id_administracion", ItemsAdministracion, "Seleccione administrativo", htmlAttributes: new { @class = "form-control", @readonly = "readonly" })
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-6 control-label"> Paciente:  </label>
-                    <div class="col-sm-6">
-                        @Html.DropDownList("id_paciente", ItemsPaciente, "Seleccione un rol", htmlAttributes: new { @class = "form-control"  , @readonly = "readonly" })
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-6 control-label">Prediagnostico: </label>
-                    <div class="col-sm-6">
-                        @Html.TextBoxFor(model => model.prediagnostico, new { htmlAttributes = new { @class = "form control", @id = "txtApellido", @readonly = "readonly" } })
-
-                    </div>
-                </div><div class="form-group">
-                    <label class="col-sm-6 control-label">Hora: </label>
-                    <div class="col-sm-6">
-                        @Html.TextBoxFor(model => model.hora, new { htmlAttributes = new { @class = "form control", @id = "txtApellido" , @readonly = "readonly"} })
-
-                    </div>
-                </div>
-                <div class="form-group">
-                        <label class="col-sm-6 control-label">Diagnostico: </label>
-                        <div class="col-sm-6">
-                            @Html.EditorFor(model => model.diagnostico, new { htmlAttributes = new { @class = "form control", @id = "txtApellido" } })
-
-                        </div>
-                    </div>
-                <div class="form-group">
-                        <label class="col-sm-6 control-label">Observacion: </label>
-                        <div class="col-sm-6">
-                            @Html.EditorFor(model => model.observaciones, new { htmlAttributes = new { @class = "form control", @id = "txtApellido" } })
-
-                        </div>
-                    </div>
-
-                <div class="form-group">
-                        <label class="col-sm-6 control-label"> Tratamiento:  </label>
-                        <div class="col-sm-6">
-                            @Html.DropDownList("tratamiento", ItemsTratamiento, "Seleccione un rol", htmlAttributes: new { @class = "form-control" })
-                        </div>
-                    </div>
-                <div class="form-group">
-                    <label class="col-sm-6 control-label"> Medico:  </label>
-                    <div class="col-sm-6">
-                        @Html.DropDownList("medico", ItemsMedico, "Seleccione un rol", htmlAttributes: new { @class = "form-control", @readonly = "readonly" })
-                    </div>
-                </div>
-
-                
-                <div class="form-group text-right">
-                    <div class="col-xs-12">
-                        <button class="btn btn-primary" type="submit" name="button">
-                            Actualizar
-                        </button>
-                    </div>
-
-                </div>
+        <div class="col-sm-12">
+            <div>
+                <h3>CERRAR LA CONSULTA</h3>
             </div>
         </div>
     </div>
+    @using (Html.BeginForm())
+
+    {
+        @Html.HiddenFor(model => model.id_consulta)
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-6 control-label"> Administrativo:  </label>
+                        <div class="col-sm-6">
+                            @Html.EditorFor(model => model.administrativo, new { htmlAttributes = new { @class = "form-control", @id = "txtApellido", @readonly = "readonly", @type = "text" } })
+                            @Html.ValidationMessageFor(model => model.administrativo, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-6 control-label"> Paciente:  </label>
+                        <div class="col-sm-6">
+                            @Html.EditorFor(model => model.paciente, new { htmlAttributes = new { @class = "form-control", @id = "txtApellido", @readonly = "readonly", @type = "text" } })
+                            @Html.ValidationMessageFor(model => model.paciente, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-6 control-label">Prediagnostico: </label>
+                        <div class="col-sm-6">
+                            @Html.EditorFor(model => model.prediagnostico, new { htmlAttributes = new { @class = "form-control", @id = "txtApellido", @readonly = "readonly", @type = "text" } })
+                            @Html.ValidationMessageFor(model => model.prediagnostico, "", new { @class = "text-danger" })
+
+                        </div>
+                    </div><div class="form-group">
+                        <label class="col-sm-6 control-label">Hora: </label>
+                        <div class="col-sm-6">
+                            @Html.EditorFor(model => model.hora, new { htmlAttributes = new { @class = "form-control", @id = "txtApellido", @readonly = "readonly" } })
+                            @Html.ValidationMessageFor(model => model.hora, "", new { @class = "text-danger" })
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-6 control-label">Diagnostico: </label>
+                        <div class="col-sm-6">
+                            @Html.EditorFor(model => model.diagnostico, new { htmlAttributes = new { @class = "form-control", @id = "txtApellido", @type = "text" } })
+                            @Html.ValidationMessageFor(model => model.diagnostico, "", new { @class = "text-danger" })
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-6 control-label">Observacion: </label>
+                        <div class="col-sm-6">
+                            @Html.EditorFor(model => model.observaciones, new { htmlAttributes = new { @class = "form-control", @id = "txtApellido", @type = "text" } })
+                            @Html.ValidationMessageFor(model => model.observaciones, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-6 control-label"> Tratamiento:  </label>
+                        <div class="col-sm-6">
+                            @Html.DropDownList("tratamiento", ItemsTratamiento, "Seleccione...", htmlAttributes: new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.tratamiento, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                  
 
 
-}
+                    <div class="form-group text-right">
+                        <div class="col-xs-12">
+                            <button class="btn btn-primary" type="submit" name="button">
+                                Actualizar
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    }
 
 
 
 
 
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+    <div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>
 </div>

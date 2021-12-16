@@ -5,10 +5,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using static Gysto.Models.Enum;
 
 namespace Gysto.Controllers
 {
-    public class AuxiliaresController : Controller
+    public class AuxiliaresController : BaseController
     {
         // GET: Auxiliares
         public ActionResult Especialidades()
@@ -48,7 +49,7 @@ namespace Gysto.Controllers
             {
                 return View(modelo);
             }
-            
+
 
         }
         public ActionResult ListadoEspecialidad()
@@ -56,52 +57,42 @@ namespace Gysto.Controllers
             List<Especialidad> lista = Ado.ListadoEspecialidad();
             return View(lista);
         }
-        public ActionResult BEspecialidad(int idEspecialidad)
+ 
+        public ActionResult BEspecialidad(int id)
         {
-            Especialidad resultado = Ado.obtenerEspe(idEspecialidad);
-            ViewBag.nombre = resultado.nombre;
+            bool resultado = Ado.EliminarEspe(id);
 
-            return View(resultado);
-        }
-        [HttpPost]
-        public ActionResult BEspecialidad(Especialidad model)
-        {
-            if (ModelState.IsValid)
+            if (resultado)
             {
-                bool resultado = Ado.EliminarEspe(model);
-                if (resultado)
-                {
-                    return RedirectToAction("ListadoEspecialidad", "auxiliares");
-                }
-                else
-                {
-                    return View(resultado);
-                }
+                Alert("ELIMINADO", "Registro eliminado correctamente", NotificationType.success);
+                return Content("1");
+
             }
 
-            return View();
+            return Content("1");
         }
+
 
         public ActionResult MEspecialidad(int idEspecialidad, HttpPostedFileBase imagen)
         {
-          
+
             Especialidad resultado = Ado.obtenerEspe(idEspecialidad);
             ViewBag.nombre = resultado.nombre;
-            ViewBag.imagen = resultado.imagen; 
+            ViewBag.imagen = resultado.imagen;
             return View(resultado);
         }
         [HttpPost]
         public ActionResult MEspecialidad(Especialidad model, HttpPostedFileBase imagen)
         {
-            
+
             if (ModelState.IsValid)
             {
-           
-            string ruta = Server.MapPath("~/imagenes/");
-            ruta += imagen.FileName;
-            model.SubirImagen(ruta, imagen);
-            model.imagen = imagen.FileName;
-            bool resultado = Ado.ActualizarDatosEspecialidad(model);
+
+                //string ruta = Server.MapPath("~/imagenes/");
+                //ruta += imagen.FileName;
+                //model.SubirImagen(ruta, imagen);
+                //model.imagen = imagen.FileName;
+                bool resultado = Ado.ActualizarDatosEspecialidad(model);
                 if (resultado)
                 {
                     return RedirectToAction("ListadoEspecialidad", "auxiliares");
@@ -146,34 +137,25 @@ namespace Gysto.Controllers
         }
         public ActionResult ListadoEnfermedad()
         {
-            List<Enfermedad> lista = Ado.listadoEnfermedad(); 
+            List<Enfermedad> lista = Ado.listadoEnfermedad();
             return View(lista);
         }
-        public ActionResult BEnfermedad(int idEnfermedad)
+     
+        public ActionResult BEnfermedad(int id)
         {
-            Enfermedad resultado = Ado.obtenerEnfermedad(idEnfermedad);
-            ViewBag.nombre = resultado.nombreEnfermedad;
-
-            return View(resultado);
-        }
-        [HttpPost]
-        public ActionResult BEnfermedad (Enfermedad model)
-        {
-            if (ModelState.IsValid)
+            bool resultado = Ado.EliminarEnfermedad(id);
+            if (resultado)
             {
-                bool resultado = Ado.EliminarEnfermedad(model);
-                if (resultado)
-                {
-                    return RedirectToAction("ListadoEnfermedad", "auxiliares");
-                }
-                else
-                {
-                    return View(resultado);
-                }
+                Alert("ELIMINADO", "Registro eliminado correctamente", NotificationType.success);
+                return Content("1");
+
             }
 
-            return View();
+            return Content("1");
         }
+
+       
+
 
         public ActionResult MEnfermedad(int idEnfermedad)
         {
@@ -205,26 +187,33 @@ namespace Gysto.Controllers
         //TRATAMIENTO
         public ActionResult Tratamiento()
         {
+
             return View();
+
+
         }
         [HttpPost]
         public ActionResult Tratamiento(Tratamiento modelo)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
+            {
+                return View(modelo);
+            }
+            else
             {
                 bool resultado = Ado.InsertarTratamiento(modelo);
                 if (resultado)
                 {
+                    Alert("Correcto", "El tratamiento se cargo correctamente", NotificationType.success);
                     return RedirectToAction("ListadoTratamientos", "auxiliares");
+                    ////ViewBag.showSuccessAlert = true;
+                    //return Content("<script language='javascript' type='text/javascript'>alert('Thanks for Feedback!');</script>"); 
+
                 }
                 else
                 {
                     return View(modelo);
                 }
-            }
-            else
-            {
-                return View(modelo);
             }
 
         }
@@ -233,9 +222,9 @@ namespace Gysto.Controllers
             List<Tratamiento> lista = Ado.ComboboxTratamiento();
             return View(lista);
         }
-       
+
         [HttpPost]
-        public ActionResult MTratamientos (Tratamiento t)
+        public ActionResult MTratamientos(Tratamiento t)
         {
             if (ModelState.IsValid)
             {
@@ -243,14 +232,14 @@ namespace Gysto.Controllers
                 string si_button = Request.Form["button"].ToString();
                 switch (si_button)
                 {
-                    case "Eliminar":
-                        bool resultado = Ado.EliminarTratamiento(t);
-                        if (resultado)
-                        {
-                            // TempData["del"] = "true"; 
-                            return RedirectToAction("ListadoTratamientos", "auxiliares");
-                        }
-                        break;
+                    //case "Eliminar":
+                    //    bool resultado = Ado.EliminarTratamiento(t);
+                    //    if (resultado)
+                    //    {
+                    //        // TempData["del"] = "true"; 
+                    //        return RedirectToAction("ListadoTratamientos", "auxiliares");
+                    //    }
+                    //    break;
                     case "Actualizar":
                         bool resultado2 = Ado.ActualizarDatosTratamiento(t);
                         if (resultado2)
@@ -258,11 +247,11 @@ namespace Gysto.Controllers
                             // TempData["del"] = "true"; 
                             return RedirectToAction("ListadoTratamientos", "auxiliares");
                         }
-                        break; 
+                        break;
 
                 }
             }
-   
+
             return View();
         }
 
@@ -272,6 +261,18 @@ namespace Gysto.Controllers
             ViewBag.nombre = resultado.nombre;
             return View(resultado);
         }
-       
+        public ActionResult BTratamientos(int id)
+        {
+            bool resultado = Ado.EliminarTratamiento(id);
+            if (resultado)
+            {
+                Alert("ELIMINADO", "Registro eliminado correctamente", NotificationType.success);
+                return Content("1");
+
+            }
+
+            return Content("1");
+        }
     }
 }
+

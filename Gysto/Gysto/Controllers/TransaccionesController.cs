@@ -1,17 +1,21 @@
 ﻿using Gysto.AccesoDatos;
 using Gysto.Models;
 using Gysto.ViewModels;
+using Rotativa;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
 using System.Web;
 using System.Web.Mvc;
+using static Gysto.Models.Enum;
 
 namespace Gysto.Controllers
 {
-    public class TransaccionesController : Controller
+    public class TransaccionesController : BaseController
     {
         // GET: Transacciones
+        string urlDomain = "https://localhost:44399/"; 
 
         public ActionResult Internacion()
         {
@@ -49,7 +53,8 @@ namespace Gysto.Controllers
                 bool resultado = AdoTransacciones.InsertarTransacciones(model);
                 if (resultado)
                 {
-                    return RedirectToAction("Index", "Home");
+                    Alert("Excelente", "Se ha creado una nueva internacion", NotificationType.success);
+                    return RedirectToAction("ListadoInternacion", "Transacciones");
                 }
                 else
                 {
@@ -120,7 +125,7 @@ namespace Gysto.Controllers
 
                 };
             });
-
+   
             internacion resultado = AdoTransacciones.ObtenerDatosInternacion(idInternacion);
             foreach (var item in Items)
             {
@@ -150,23 +155,16 @@ namespace Gysto.Controllers
             if (ModelState.IsValid)
             {
                 string si_button = Request.Form["button"].ToString();
-                switch (si_button)
-                {
-                    case "Eliminar":
-                        bool resultado = AdoTransacciones.eliminarInternacion(model);
-                        if (resultado)
-                        {
-                            return RedirectToAction("TodasInternaciones", "Transacciones");
-                        }
-                        break;
-                    case "Actualizar":
+            
+                  
+                   
                         bool resultado2 = AdoTransacciones.ActualizarInternacion(model);
                         if (resultado2)
                         {
                             return RedirectToAction("TodasInternaciones", "Transacciones");
                         }
-                        break;
-                }
+                  
+                
             }
             return View();
 
@@ -237,7 +235,8 @@ namespace Gysto.Controllers
                 bool resultado = AdoTransacciones.InsertarConsulta(model);
                 if (resultado)
                 {
-                    return RedirectToAction("ListadoConsultas", "Transacciones");
+                    Alert("Excelente", "Se ha creado una nueva consulta", NotificationType.success); 
+                    return RedirectToAction("ListadoConsulta", "Transacciones");
                 }
                 else
                 {
@@ -258,28 +257,28 @@ namespace Gysto.Controllers
         }
         public ActionResult ModificarConsultaDx (int idConsulta)
         {
-            List<comboAdministrativo> listaRol = AdoRoles.ListadoAdministrativo();
-            List<SelectListItem> Items = listaRol.ConvertAll(d =>
-            {
-                return new SelectListItem()
-                {
-                    Text = d.nombre,
-                    Value = d.id.ToString(),
-                    Selected = false
+            //List<comboAdministrativo> listaRol = AdoRoles.ListadoAdministrativo();
+            //List<SelectListItem> Items = listaRol.ConvertAll(d =>
+            //{
+            //    return new SelectListItem()
+            //    {
+            //        Text = d.nombre,
+            //        Value = d.id.ToString(),
+            //        Selected = false
 
-                };
-            });
-            List<comboPaciente> listaPacient = AdoRoles.ListadoPaciente();
-            List<SelectListItem> ItemsPaciente = listaPacient.ConvertAll(d =>
-            {
-                return new SelectListItem()
-                {
-                    Text = d.nombre,
-                    Value = d.id.ToString(),
-                    Selected = false
+            //    };
+            //});
+            //List<comboPaciente> listaPacient = AdoRoles.ListadoPaciente();
+            //List<SelectListItem> ItemsPaciente = listaPacient.ConvertAll(d =>
+            //{
+            //    return new SelectListItem()
+            //    {
+            //        Text = d.nombre,
+            //        Value = d.id.ToString(),
+            //        Selected = false
 
-                };
-            });
+            //    };
+            //});
             List<Tratamiento> trata = Ado.ComboboxTratamiento();
             List<SelectListItem> ItemsTratamiento = trata.ConvertAll(d =>
             {
@@ -291,49 +290,49 @@ namespace Gysto.Controllers
 
                 };
             });
-            List<comboMedico> listame = AdoRoles.ListadoMedico();
-            List<SelectListItem> ItemsM = listame.ConvertAll(d =>
-            {
-                return new SelectListItem()
-                {
-                    Text = d.nombreCompleto + " - " + d.espe,
-                    Value = d.id_med.ToString(),
-                    Selected = false
+            //List<comboMedico> listame = AdoRoles.ListadoMedico();
+            //List<SelectListItem> ItemsM = listame.ConvertAll(d =>
+            //{
+            //    return new SelectListItem()
+            //    {
+            //        Text = d.nombreCompleto + " - " + d.espe,
+            //        Value = d.id_med.ToString(),
+            //        Selected = false
 
-                };
-            });
+            //    };
+            //});
 
 
-            Consulta resultado = AdoTransacciones.ObtenerConsultaParaCerrar(idConsulta); 
+            cerrarConsulta resultado = AdoTransacciones.ObtenerConsultaParaCerrar(idConsulta); 
 
-            foreach (var item in Items)
-            {
-                if (item.Value.Equals(resultado.id_administracion.ToString()))
-                {
-                    item.Selected = true;
-                    break;
-                }
-            }
-            foreach (var item in ItemsPaciente)
-            {
-                if (item.Value.Equals(resultado.id_paciente.ToString()))
-                {
-                    item.Selected = true;
-                    break;
-                }
-            }
-            foreach (var item in ItemsM)
-            {
-                if (item.Value.Equals(resultado.medico.ToString()))
-                {
-                    item.Selected = true;
-                    break;
-                }
-            }
+            //foreach (var item in Items)
+            //{
+            //    if (item.Value.Equals(resultado.id_administracion.ToString()))
+            //    {
+            //        item.Selected = true;
+            //        break;
+            //    }
+            //}
+            //foreach (var item in ItemsPaciente)
+            //{
+            //    if (item.Value.Equals(resultado.id_paciente.ToString()))
+            //    {
+            //        item.Selected = true;
+            //        break;
+            //    }
+            //}
+            //foreach (var item in ItemsM)
+            //{
+            //    if (item.Value.Equals(resultado.medico.ToString()))
+            //    {
+            //        item.Selected = true;
+            //        break;
+            //    }
+            //}
             
-            ViewBag.itemsM = ItemsM;
-            ViewBag.itemsA = Items;
-            ViewBag.itemsP = ItemsPaciente;
+            //ViewBag.itemsM = ItemsM;
+            //ViewBag.itemsA = Items;
+            //ViewBag.itemsP = ItemsPaciente;
             ViewBag.itemsT = ItemsTratamiento;
             return View(resultado);
         }
@@ -434,39 +433,61 @@ namespace Gysto.Controllers
 
             if (ModelState.IsValid)
             {
-                string si_button = Request.Form["button"].ToString();
-                switch (si_button)
-                {
-                    case "Eliminar":
-                        bool resultado = AdoTransacciones.eliminarConsulta(model);
-                        if (resultado)
-                        {
-                            return RedirectToAction("ListadoConsulta", "Transacciones");
-                        }
-                        break;
-                    case "Actualizar":
+             
                         bool resultado2 = AdoTransacciones.ActualizarConsulta(model);
                         if (resultado2)
                         {
                             return RedirectToAction("ListadoConsulta", "Transacciones");
                         }
-                        break;
-                }
+                
             }
             return View();
 
         }
        
         [HttpPost]
-        public ActionResult ModificarConsultaDx(Consulta model)
+        public ActionResult ModificarConsultaDx(cerrarConsulta model)
         {
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
+                if (model.tratamiento == 0)
+                {
+                    List<Tratamiento> tratam = Ado.ComboboxTratamiento();
+                    List<SelectListItem> ItemsTratamientos = tratam.ConvertAll(d =>
+                    {
+                        return new SelectListItem()
+                        {
+                            Text = d.nombre,
+                            Value = d.id_tratamiento.ToString(),
+                            Selected = false
 
-                bool resultado2 = AdoTransacciones.CerrarConsulta(model);
+                        };
+                    });
+                    ViewBag.itemsT = ItemsTratamientos;
+                    ModelState.AddModelError("tratamiento", "Seleccione un estado"); 
+                   
+                }
+                List<Tratamiento> trata = Ado.ComboboxTratamiento();
+                List<SelectListItem> ItemsTratamiento = trata.ConvertAll(d =>
+                {
+                    return new SelectListItem()
+                    {
+                        Text = d.nombre,
+                        Value = d.id_tratamiento.ToString(),
+                        Selected = false
+
+                    };
+                });
+                ViewBag.itemsT = ItemsTratamiento;
+                return View(model);
+            }
+            else { 
+
+              bool resultado2 = AdoTransacciones.CerrarConsulta(model);
                 if (resultado2)
                 {
+                    Alert("Exitoso", "Consulta cerrada correctamente", NotificationType.success);
                     return RedirectToAction("Index2", "Home");
                 }
                 else
@@ -474,13 +495,46 @@ namespace Gysto.Controllers
                     return View();
                 }
             }
-            else { 
-                return View();
-            }
                 
            
             
 
+        }
+        public ActionResult eliminarTurno(int id)
+        {
+            bool resultado = AdoTransacciones.eliminarTurno(id);
+            if (resultado)
+            {
+                Alert("ELIMINADO", "Turno eliminado correctamente", NotificationType.success); 
+                return Content("1");
+                
+            }
+
+            return Content("1");
+        }
+        public ActionResult eliminarConsulta(int id)
+        {
+            bool resultado = AdoTransacciones.eliminarConsulta(id);
+            if (resultado)
+            {
+                Alert("ELIMINADO", "Turno eliminado correctamente", NotificationType.success);
+                return Content("1");
+
+            }
+
+            return Content("1");
+        }
+        public ActionResult eliminarInternacion(int id)
+        {
+            bool resultado = AdoTransacciones.eliminarInternacion(id);
+            if (resultado)
+            {
+                Alert("ELIMINADO", "Turno eliminado correctamente", NotificationType.success);
+                return Content("1");
+
+            }
+
+            return Content("1");
         }
         public ActionResult Turno()
         {
@@ -507,7 +561,8 @@ namespace Gysto.Controllers
                 bool resultado = AdoTransacciones.InsertarTurno(model);
                 if (resultado)
                 {
-                    return RedirectToAction("Index", "Home");
+                    Alert("Excelente", "Se ha creado un nuevo turno", NotificationType.success);
+                    return RedirectToAction("ListadoTurno", "Transacciones");
                 }
                 else
                 {
@@ -556,7 +611,7 @@ namespace Gysto.Controllers
             return View(resultado);
 
         }
-
+       
 
         [HttpPost]
         public ActionResult obtenerTurno(turno model)
@@ -564,65 +619,56 @@ namespace Gysto.Controllers
 
             if (ModelState.IsValid)
             {
-                string si_button = Request.Form["button"].ToString();
-                switch (si_button)
-                {
-                    case "eliminar":
-                        bool resultado = AdoTransacciones.eliminarTurno(model);
-                        if (resultado)
-                        {
-                            return RedirectToAction("ListadoTurno", "Transacciones");
-                        }
-                        break;
-                    case "actualizar":
+             
                         bool resultado2 = AdoTransacciones.ActualizarTurno(model);
                         if (resultado2)
                         {
                             return RedirectToAction("ListadoTurno", "Transacciones");
                         }
-                        break;
-                }
+
+                
             }
+           
             return View();
 
         }
 
         public ActionResult TodosTurnos()
         {
-            List<comboMedico> listaRol = AdoRoles.ListadoMedico();
-            List<SelectListItem> Items = listaRol.ConvertAll(d =>
+            List<Especialidad> listae = Ado.ListadoEspecialidad();
+            List<SelectListItem> Itemsespe = listae.ConvertAll(d =>
             {
                 return new SelectListItem()
                 {
-                    Text = d.nombreCompleto,
-                    Value = d.id_med.ToString(),
+                    Text = d.nombre,
+                    Value = d.id_especialidad.ToString(),
                     Selected = false
 
                 };
             });
-            ViewBag.items = Items;
+            ViewBag.itemsespe = Itemsespe;
 
-            List<turno> lista = AdoTransacciones.ListadoTurnosDisponibles();
+            List<TurnoMedico> lista = AdoTransacciones.ListadoTurnosDisponibles();
             return View(lista);
         }
 
         [HttpPost]
-        public ActionResult TodosTurnos(int medico)
+        public ActionResult TodosTurnos(int id_espe)
         {
-            List<comboMedico> listaRol = AdoRoles.ListadoMedico();
-            List<SelectListItem> Items = listaRol.ConvertAll(d =>
+            List<Especialidad> listae = Ado.ListadoEspecialidad();
+            List<SelectListItem> Itemsespe = listae.ConvertAll(d =>
             {
                 return new SelectListItem()
                 {
-                    Text = d.nombreCompleto,
-                    Value = d.id_med.ToString(),
+                    Text = d.nombre,
+                    Value = d.id_especialidad.ToString(),
                     Selected = false
 
                 };
             });
-            ViewBag.items = Items;
+            ViewBag.itemsespe = Itemsespe;
 
-            List<turno> lista = AdoTransacciones.ListadoxOrden(medico);
+            List<TurnoMedico> lista = AdoTransacciones.ListadoxOrden(id_espe);
             return View(lista);
         }
         public ActionResult TurnoSacado(int idTurno)
@@ -630,7 +676,9 @@ namespace Gysto.Controllers
             turno i = AdoTransacciones.listadoxDniTurno(idTurno);
             SacarTurno s = new SacarTurno();
             s.turno = i;
-            return View(s);
+         
+         return View(s);
+            
         }
         //[HttpPost]
         //public ActionResult TurnoSacado(string dni)
@@ -640,6 +688,7 @@ namespace Gysto.Controllers
         //}
         public ActionResult Datosxdni(SacarTurno model)
         {
+
             string dni = model.p.dni.ToString();
             paciente resultado = AdoTransacciones.listadoxDni(dni);
             turno i  = AdoTransacciones.listadoxDniTurno(model.turno.id_turno);
@@ -653,25 +702,27 @@ namespace Gysto.Controllers
         [HttpPost]
         public ActionResult Datosxdni(SacarTurno model, string dni)
         {
-            if (ModelState.IsValid)
-            {
-                
-                bool resultado2 = AdoTransacciones.ConfirmarTurno(model); 
-                if (resultado2)
-                {
-                    return RedirectToAction("TodosTurnos", "Transacciones");
-                }
+              
+                bool resultado2 = AdoTransacciones.ConfirmarTurno(model);
+                bool resultado3 = AdoTransacciones.ActualizarTurnoxemail(model.turno);
+                TurnoMedico tm = AdoTransacciones.obtenerTurnoxMed(model.turno.id_turno); 
 
+                if (resultado2 && resultado3)
+                {
+                    Alert("Felicitaciones", "Se envio un correo a" + model.turno.email, NotificationType.success);
+                    EnviarMail(model.turno.email, model.turno.id_turno, tm); 
+                    return RedirectToAction("TodosTurnos", "Transacciones");
+                   
+                }
+     
                 else
                 {
                     return View(model);
                 }
 
-            }
-            else
-            {
-                  return View(model);
-            }
+            
+      
+          
            
         }
        
@@ -701,6 +752,7 @@ namespace Gysto.Controllers
                 bool resultado = AdoTransacciones.InsertarHistoriaClinica(model);
                 if (resultado)
                 {
+                    Alert("Excelente", "Se ha creado una nueva historia clinica", NotificationType.success);
                     return RedirectToAction("DetalleHC", "Transacciones");
                 }
                 else
@@ -738,6 +790,7 @@ namespace Gysto.Controllers
                 bool resultado = AdoTransacciones.InsertarDetalleHistoria(model);
                 if (resultado)
                 {
+                    Alert("Excelente", "Se ha creado una nuevo detalle", NotificationType.success);
                     return RedirectToAction("DetalleHC", "Transacciones");
                 }
                 else
@@ -796,25 +849,16 @@ namespace Gysto.Controllers
 
             if (ModelState.IsValid)
             {
-                string si_button = Request.Form["button"].ToString();
-                switch (si_button)
-                {
-                    case "eliminar":
-                        bool resultado = AdoTransacciones.eliminarHC(model);
-                        if (resultado)
-                        {
-                            return RedirectToAction("ListadoHC", "Transacciones");
-                        }
-                        break;
-                    case "actualizar":
+              
                        
                         bool resultado2 = AdoTransacciones.ActualizarHC(model);
                         if (resultado2)
                         {
-                            return RedirectToAction("ListadoHC", "Transacciones");
+                    Alert("Excelente", "Se ha modificado la historia clinica", NotificationType.success);
+                    return RedirectToAction("ListadoHC", "Transacciones");
                         }
-                        break;
-                }
+                 
+                
             }
             return View();
 
@@ -850,7 +894,8 @@ namespace Gysto.Controllers
                         bool resultado2 = AdoTransacciones.ActualizarDetalle(model);
                         if (resultado2)
                         {
-                            return RedirectToAction("ListadoHC", "Transacciones");
+                    Alert("Excelente", "Se ha modificado un detalle", NotificationType.success);
+                    return RedirectToAction("ListadoHC", "Transacciones");
                         }
                 else
                 {
@@ -920,7 +965,7 @@ namespace Gysto.Controllers
         }
         [HttpPost]
         public ActionResult PerfilHC(int paciente, int medico = 0 , int id_espe = 0 , string fecha1 = "", string fecha2 = "" )
-        {        
+        {
             List<comboMedico> listaRol = AdoRoles.ListadoMedico();
             List<SelectListItem> Items = listaRol.ConvertAll(d =>
             {
@@ -932,7 +977,7 @@ namespace Gysto.Controllers
 
                 };
             });
-            ViewBag.items = Items;  
+
             List<Especialidad> listae = Ado.ListadoEspecialidad();
             List<SelectListItem> Itemsespe = listae.ConvertAll(d =>
             {
@@ -944,35 +989,121 @@ namespace Gysto.Controllers
 
                 };
             });
-
+           ViewBag.items = Items;
             ViewBag.itemsespe = Itemsespe;
+
             List<ConsultaxHistoria> lista = null; 
             if (medico != 0 && id_espe == 0 & fecha1 == "" && fecha2 == "")
             {
+               
                 lista = AdoTransacciones.FiltroConsultaxMedico(paciente, medico);
-                historiaCta c = new historiaCta();
-                c.consulta = lista;
-                return View(c);
+             
             }
             else if (id_espe != 0 && medico == 0 && fecha1 == "" && fecha2 == "")
             {
-             lista = AdoTransacciones.FiltroConsultaxEspe(paciente,id_espe);
-                historiaCta c = new historiaCta();
-                c.consulta = lista; 
-                return View(c);
+       
+
+                lista = AdoTransacciones.FiltroConsultaxEspe(paciente,id_espe);
+            
             }
             else if (fecha1 != "" && fecha2 != "" && id_espe == 0 && medico == 0)
             {
-             lista = AdoTransacciones.FiltroConsultaxFecha(paciente, fecha1, fecha2);
-                historiaCta c = new historiaCta();
-                c.consulta = lista; 
-                return View(c);
+                lista = AdoTransacciones.FiltroConsultaxFecha(paciente, fecha1, fecha2);
+            
+            }
+            else if (fecha1 != "" && fecha2 != "" && id_espe != 0 && medico != 0)
+            {
+                lista = AdoTransacciones.FiltroConsultaxTodos(paciente, fecha1, fecha2, id_espe, medico);
 
             }
+            List<InternacionxHistoria> listadoH = AdoTransacciones.ListadoInternacionxHistoria(paciente);
+            perfilHistoriaClinica resultado = AdoTransacciones.ObtenerPerfilHC(paciente);
+            int pac = AdoTransacciones.ObtenerPacientexid(paciente);
+            historiaCta c = new historiaCta();
+            c.perfil = resultado;
+            c.consulta = lista;
+            c.internacion = listadoH;
+            c.paciente = paciente;
 
+            return View(c);
+        
+        }
+        public ActionResult ModificarDisponibilidad(int id)
+        {
+            turno t = new turno();
+            t.id_turno = id; 
+            return View(t); 
+        }
+        [HttpPost]
+        public ActionResult ModificarDisponibilidad(turno model)
+        {
+            if (ModelState.IsValid)
+            {
+                bool resultado = AdoTransacciones.ActualizarTurnoxdispo(model);
+                if(resultado)
+                {
+ return RedirectToAction("TodosTurnos", "Transacciones");
+                }
+               
+            }
             return View(); 
         }
-        
+
+        public ActionResult print(int id)
+        {
+            return new ActionAsPdf("HCImprimir/" + id) { FileName = "HC.pdf" };
+        }
+        public ActionResult print2(int id)
+        {
+            return new ActionAsPdf("Comprobante/" + id) { FileName = "Turno.pdf" };
+        }
+        public ActionResult Comprobante (int id)
+        {
+            listadoTurnos l = AdoTransacciones.ListadoTurnoxid(id);
+            return View(l); 
+        }
+        public ActionResult HCImprimir (int id)
+        {
+            List<ConsultaxHistoria> listadoC = AdoTransacciones.listadoConsultaxHistoria(id);
+            List<InternacionxHistoria> listadoH = AdoTransacciones.ListadoInternacionxHistoria(id);
+            perfilHistoriaClinica resultado = AdoTransacciones.ObtenerPerfilHC(id);
+            int pac = AdoTransacciones.ObtenerPacientexid(id);
+            historiaCta c = new historiaCta();
+            c.perfil = resultado;
+            c.consulta = listadoC;
+            c.internacion = listadoH;
+            c.paciente = pac;
+
+            return View(c);
+         
+        }
+
+        #region HELPERS
+        private void EnviarMail(string emailDestino, int id, TurnoMedico model)
+        {
+            string emailOrigen = "hospitalvicenteaguero2021@gmail.com";
+            string contraseña = "123456aldana";
+            string url = urlDomain + "/Transacciones/ModificarDisponibilidad?id=" + id;
+            string url2 = urlDomain + "/Transacciones/print2?id=" + id;
+
+            MailMessage mandarMail = new MailMessage(emailOrigen, emailDestino, "Turno generado", "<h4>Usted ha sacado un turno en el Hospital regional de vicente aguero</h4><br/>"+
+                "<p>Detalles del turno</p><br/><ul><li>Hora de atencion: " + model.hora2() +"</li><br/><li>Fecha: "+ model.fecha2() + "</li><br/><li>Medico:  " + model.apellido +", "+ model.nombre + "</li></ul><br/>" 
+                + "<a href='" + url + "'>Click aqui si quiere cancelar turno</a>" + "<br/>" + 
+               "<a href='" + url2 + "'>Descargar comprobante</a>)");
+
+            mandarMail.IsBodyHtml = true;
+
+            SmtpClient cliente = new SmtpClient("smtp.gmail.com");
+            cliente.EnableSsl = true;
+            cliente.UseDefaultCredentials = false;
+            cliente.Port = 587;
+            cliente.Credentials = new System.Net.NetworkCredential(emailOrigen, contraseña);
+            cliente.Send(mandarMail);
+            cliente.Dispose();
+
+        }
+        #endregion
+
     }
 
 }

@@ -31,8 +31,9 @@
     <Property Name="contraseña" Type="varchar" MaxLength="30" Nullable="false" />
     <Property Name="nombre" Type="varchar" MaxLength="15" Nullable="false" />
     <Property Name="id_rol" Type="int" Nullable="false" />
-    <Property Name="email" Type="nchar" MaxLength="30" Nullable="false" />
+    <Property Name="email" Type="varchar" MaxLength="50" />
     <Property Name="imagen" Type="varchar" MaxLength="150" />
+    <Property Name="token" Type="varchar" MaxLength="200" />
   </EntityType>
   <Association Name="FK_Usuarios_Roles">
     <End Role="Roles" Type="Self.Roles" Multiplicity="1" />

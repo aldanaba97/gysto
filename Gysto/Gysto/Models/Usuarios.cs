@@ -20,6 +20,7 @@ namespace Gysto.Models
         public int id_rol { get; set; }
         public string email { get; set; }
         public string imagen { get; set; }
+        public string token { get; set; }
     
         public virtual Roles Roles { get; set; }
     }

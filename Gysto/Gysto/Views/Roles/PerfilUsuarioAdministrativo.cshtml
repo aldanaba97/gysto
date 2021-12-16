@@ -3,145 +3,134 @@
 @{
     ViewBag.Title = "PerfilUsuarioAdministrativo";
 }
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+
 <div class="contenedor">
-<h2>PerfilUsuarioAdministrativo</h2>
+    <br />
+    <h3>MODIFICAR PERFIIL</h3>
 
-<div>
-    <h4>Administrador</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.nombreUsuario)
-        </dt>
+    <div>
+        <div class="row">
+            <div class="col-lg-3"> <h4>Datos personales</h4>  </div>
+            <div class="col text-right"><a href="@Url.Action("ModificarUsuario", "Usuario", new { id = User.Identity.Name})" class="btn btn-secondary"><i class="bi bi-pencil-square"></i> </a> </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col">
+                <dl class="dl-horizontal">
+                    <dt>
+                        Nombre de usuario:
+                    </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.nombreUsuario)
-        </dd>
+                    <dd>
+                        @Html.DisplayFor(model => model.nombreUsuario)
+                    </dd>
+                    <dt>
+                        Email:
+                    </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.contraseña)
-        </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.email)
+                    </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.contraseña)
-        </dd>
+                    <dt>
+                        @Html.HiddenFor(model => model.id_persona)
+                    </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.rol)
-        </dt>
+                    <dd>
+                        @Html.HiddenFor(model => model.id_persona)
+                    </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.rol)
-        </dd>
+                    <dt>
+                        Direccion:
+                    </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.email)
-        </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.direccion)
+                    </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.email)
-        </dd>
+                    <dt>
+                        Localidad:
+                    </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.id_persona)
-        </dt>
+                    <dd>
+                        @Model.ciudad2(Model.localidad)
+                    </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.id_persona)
-        </dd>
+                    <dt>
+                        Telefono:
+                    </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.id_dni)
-        </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.telefono)
+                    </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.id_dni)
-        </dd>
+                    <dt>
+                        Nombre completo:
+                    </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.direccion)
-        </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.nombre)
+                    </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.direccion)
-        </dd>
+                    <dt>
+                        Apellido:
+                    </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.localidad)
-        </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.apellido)
+                    </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.localidad)
-        </dd>
+                    <dt>
+                        Fecha de nacimiento:
+                    </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.telefono)
-        </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.fecha_nac)
+                    </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.telefono)
-        </dd>
+                    <dt>
+                        Numero de DNI:
+                    </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.nombre)
-        </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.dni)
+                    </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.nombre)
-        </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.apellido)
-        </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.apellido)
-        </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.fecha_nac)
-        </dt>
+                    <dt>
+                        @Html.HiddenFor(model => model.id_admi)
+                    </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.fecha_nac)
-        </dd>
+                    <dd>
+                        @Html.HiddenFor(model => model.id_admi)
+                    </dd>
+                </dl>
+            </div>
+            <div class="col text-right">
+               
+                    <img src="~/imagenesUsuario/@Model.image" width="300" height="350" />
+                
+            </div>
+        </div>
+       
 
-        <dt>
-            @Html.DisplayNameFor(model => model.dni)
-        </dt>
+            @*<dt>
+                @Html.DisplayNameFor(model => model.fecha)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.dni)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.fecha)
+            </dd>*@
 
-        <dt>
-            @Html.DisplayNameFor(model => model.image)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.image)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.id_admi)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.id_admi)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.fecha)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.fecha)
-        </dd>
-
-    </dl>
-</div>
-<p>
-    <a href="@Url.Action("ModificarUsuario", "Usuario", new { id = User.Identity.Name})"> Editar  </a> ! 
-    @Html.ActionLink("Back to List", "Index")
-</p>
+       
+    </div>
+    <p>
+ 
+        @Html.ActionLink("Back to List", "Index")
+    </p>
 </div>

@@ -2,35 +2,41 @@
 using Gysto.Filters;
 using Gysto.Models;
 using Gysto.ViewModels;
+using Rotativa;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
-
+using static Gysto.Models.Enum;
 
 namespace Gysto.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         public ActionResult Index()
         {
+
             return View();
         }
-        [AuthorizeUser(idOperacion: 2)]
+     
         public ActionResult About()
         {
+           
             ViewBag.Message = "Your application description page.";
 
             return View();
+        }
+        public ActionResult print ()
+        {
+            return new ActionAsPdf("About") { FileName = "Tes.pdf" };
         }
 
   
         public ActionResult Contact()
         {
-            ViewBag.Message = "Your contact page.";
-
+            //swal("Good job!", "You clicked the button!", "success");
             return View();
         }
         public ActionResult Login()
@@ -113,6 +119,19 @@ namespace Gysto.Controllers
         public ActionResult Terminos ()
         {
             return View(); 
+        }
+        [HttpPost]
+        public ActionResult Terminos (string acepta)
+        {
+            if (acepta == "on")
+            {
+                return RedirectToAction("Index", "Home"); 
+            }
+            else
+            {
+                return View(); 
+            }
+
         }
         public ActionResult Index2 ()
         {

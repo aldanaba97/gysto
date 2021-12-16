@@ -3,44 +3,58 @@
 @{
     ViewBag.Title = "ListadoHC";
 }
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+
 <div class=" contenedor">
-<h2>ListadoHC</h2>
+    <br />
+    <div class="row">
 
-<p>
-    @Html.ActionLink("Nueva historia clinica", "HistoriaClinica")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.nombreC)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.dni)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.id_historia)
-        </th>
-        <th></th>
-    </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.nombreC)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.dni)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.id_historia)
-        </td>
-        <td>
-            @Html.ActionLink("Editar", "EditarHC", new { id = item.id_historia  }) |
-            @Html.ActionLink("Detalle", "PerfilHC", new {  id=item.paciente}) |
-            @Html.ActionLink("Eliminar", "EliminarHC", new { id=item.id_historia }) 
-        </td>
-    </tr>
-}
+        <div class="col">
+            <h3>
+                HISTORIAS CLINICAS
+            </h3>
+        </div>
+        <div class="col text-right">
+            <a href="@Url.Action("HistoriaClinica", "Transacciones")" class="btn bg-success text-white"> <i class="bi bi-plus-circle"></i></a>
+            <a href="@Url.Action("Index2", "Home")" class="btn btn-dark"><i class="bi bi-arrow-left-square"></i> Volver</a>
+        </div>
 
-</table>
+    </div>
+    <table class="table table-borderless">
+        <tr>
+            <th>
+                Nombre del paciente
+            </th>
+            <th>
+                DNI
+            </th>
+            <th>
+                Numero de historia
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.nombreC)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.dni)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.id_historia)
+                </td>
+                <td>
+                    <a href="@Url.Action("EditarHC","Transacciones", new { id = item.id_historia })" class="btn btn-warning"><i class="bi bi-pencil-square"></i></a>
+                    <a href="@Url.Action("PerfilHC","Transacciones", new { id = item.paciente })" class="btn btn-info"><i class="bi bi-file-earmark-medical"></i></a>
+
+            </tr>
+        }
+
+    </table>
 </div>

@@ -30,6 +30,7 @@
     <EntitySetMapping Name="Usuarios">
       <EntityTypeMapping TypeName="GystoModel.Usuarios">
         <MappingFragment StoreEntitySet="Usuarios">
+          <ScalarProperty Name="token" ColumnName="token" />
           <ScalarProperty Name="id_usuario" ColumnName="id_usuario" />
           <ScalarProperty Name="contraseña" ColumnName="contraseña" />
           <ScalarProperty Name="nombre" ColumnName="nombre" />

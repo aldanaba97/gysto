@@ -4,88 +4,95 @@
 
 
 }
+
 <div class="contenedor">
+
+
+
+
     <div class="row">
-        <div class="col-sm-12">
-            <div>
-                <h1>
-                    Confirmar el turno
-                </h1>
-            </div>
-        </div>
-    </div>
-@using (Html.BeginForm())
-{
-    @*@Html.HiddenFor(model => model.id_turno)*@
-    <div class="col-md-6">
-        @Html.TextBoxFor(model => model.p.dni, htmlAttributes: new { @class = "form control", @id = "txtNombre",  @readonly = "readonly" })
-    </div>
-    @*<div class="col-md-6">
-            <div class="col-lg-6">
-                <button class="btn btn-primary" type="submit">
-                    Buscar
-                </button>
-            </div>
-
-        </div>*@
-}
-
-<div class="row">
-    <div class="col-lg-3">
-        <table class="table table-dark table-striped">
-
-            <tbody>
-                <tr>
-                </tr>
-                <tr class="text-center" style="background-color:red">
-
-                    @*<td class="">
-                        @Model.p.id_paciente
-
-                    </td>*@
-                    <td>
-                        @Model.p.nombre , @Model.p.apellido
-                    </td>
-                    <td>
-                        @Model.p.telefono
-                    </td>
-                    @*<td>
-                        <a href="@Url.Action("SacarTurno", "Transacciones" , new { idTurno=Model.id_turno })">  Seleccionar  </a>|
-                        <button class="btn btn-primary" type="submit">
-                            Buscar
-                        </button>
-                    </td>*@
-
-                </tr>
 
 
-            </tbody>
-        </table>
-        @using (Html.BeginForm("DatosxDni", "Transacciones", FormMethod.Post))
+
+        @if (Model.p.nombre != null)
         {
-            @Html.HiddenFor(model => model.turno.id_turno)
-            @Html.HiddenFor(model => model.p.id_paciente)
-            @*<div class="col-md-6">
-                @Html.TextBoxFor(model => model.p.dni, htmlAttributes: new { @class = "form control", @id = "txtNombre" @readonly = "readonly" })
-            </div>*@
-            @*<div class="col-md-6">
-                <div class="col-lg-6">
-                    <button class="btn btn-primary" type="submit">
-                        Buscar
-                    </button>
+            <div class="col-lg-6">
+                <br />
+                <div class="col-sm-12">
+                    <div>
+                        <h4>
+                            ¿DESEA CONFIRMAR EL TURNO?
+                        </h4>
+                    </div>
                 </div>
 
-            </div>*@
-    <div class="form-group text-right">
-        <div class="col-xs-12">
-            <button class="btn btn-primary" type="submit">
-                Confirmar
-            </button>
-        </div>
-    </div>
-                }
 
-         
-   </div>
-</div>
-</div>
+                <table class="table table-striped">
+
+                    <tbody>
+                        <tr>
+                        </tr>
+                        <tr class="text-center bg-light">
+
+
+                            <td>
+                                @Model.p.apellido,  @Model.p.nombre
+                            </td>
+                            <td>
+                                @Model.p.telefono
+                            </td>
+
+
+                        </tr>
+
+
+                    </tbody>
+                </table>
+            </div>
+            using (Html.BeginForm("DatosxDni", "Transacciones", FormMethod.Post))
+            {
+
+                <div class="row g-2">
+                    <div class="col-auto">
+                        <div class="form-group text-center">
+                            <p>A continuacion coloque un email disponible donde sera enviada toda la informacion del turno y podra cancelarlo en caso de no poder asistir</p>
+                            <div class="input-group mb-3">
+                                @Html.EditorFor(model => model.turno.email, new { htmlAttributes = new { @class = "form-control" } })
+                                <button class="btn btn-dark" type="submit" id="button-addon1">Confirmar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @Html.HiddenFor(model => model.turno.id_turno)
+                @Html.HiddenFor(model => model.p.id_paciente)
+
+
+
+
+            }
+
+        }
+        else
+        {
+            <br />
+            <p>NO EXISTE EN LA BASE DE DATOS, COMUNIQUESE CON EL HOSPITAL VICENTE AGUERO</p>
+
+        }
+
+    </div>
+    <br />
+    <br />
+    <br />
+    </div>
+@*<script type="text/javascript">
+
+    function alertas() {
+        let emial = document.getElementById("turno_email");
+        swal("Se ha configurado correctamente", "Felicidades " + emial.value, "success");
+ 
+ 
+
+
+    }
+
+</script>*@

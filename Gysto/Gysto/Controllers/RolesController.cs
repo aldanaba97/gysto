@@ -1,5 +1,6 @@
 ﻿using Gysto.AccesoDatos;
 using Gysto.Models;
+using Gysto.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,51 +9,34 @@ using System.Web.Mvc;
 
 namespace Gysto.Controllers
 {
-    public class RolesController : Controller
+    public class RolesController : BaseController
     {
         // GET: Roles
-        public ActionResult Medico()
+        public ActionResult Medico ()
         {
-            List<Especialidad> listae = Ado.ListadoEspecialidad();
-            List<SelectListItem> Itemsespe = listae.ConvertAll(d =>
-            {
-                return new SelectListItem()
-                {
-                    Text = d.nombre,
-                    Value = d.id_especialidad.ToString(),
-                    Selected = false
-
-                };
-            });
-            ViewBag.itemsespe = Itemsespe;
-            return View();
+            return View(); 
         }
-        [HttpPost] 
-        public ActionResult Medico (Medico model)
+        [HttpPost]
+        public ActionResult Medico(Medico model)
         {
-            if (ModelState.IsValid)
+            bool resultado = AdoRoles.InsertarMedico(model);
+            if (resultado)
             {
-                bool resultado = AdoRoles.InsertarMedico(model);
-                if (resultado)
-                {
-                    return RedirectToAction("Index", "Home");
-                }
-                else
-                {
-                    return View(model);
-                }
-
+                return RedirectToAction("Index", "Home");
             }
             else
             {
-                return View(model);
-            }
+             return View();
+            }   
 
+            
         }
+       
         public ActionResult Administrador ()
         {
             return View(); 
         }
+        [HttpPost]
         public ActionResult Administrador(Administrador model)
         {
             if (ModelState.IsValid)
@@ -60,7 +44,7 @@ namespace Gysto.Controllers
                 bool resultado = AdoRoles.InsertarAdministrativo(model); 
                 if (resultado)
                 {
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("ListadoUsuario", "Usuario");
                 }
                 else
                 {
@@ -131,24 +115,25 @@ namespace Gysto.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult Paciente(paciente model)
+        public ActionResult Paciente(int id = 0)
         {
             if (ModelState.IsValid)
             {
-                bool resultado = AdoRoles.Insertarpaciente(model); 
+                bool resultado = AdoRoles.Insertarpaciente(); 
                 if (resultado)
                 {
-                    return RedirectToAction("Index", "Home");
+                    Alert("Excelente", "Se ha creado un nuevo paciente", Models.Enum.NotificationType.success);
+                    return RedirectToAction("Index2", "Home");
                 }
                 else
                 {
-                    return View(model);
+                    return View();
                 }
 
             }
             else
             {
-                return View(model);
+                return View();
             }
 
         }
@@ -158,29 +143,52 @@ namespace Gysto.Controllers
             return View(r);
         }
         [HttpPost]
-        public ActionResult ModificarMedico(Medico model)
+        public ActionResult ModificarMedico(MedicoValidar model)
         {
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                bool resultado2 = AdoRoles.ActualizarMedico(model);
-                //switch (rol)
-                //{
-                //    case "1":
-                //        return RedirectToAction("ModificarMedico", "Roles");
-                //    case "2":
-                //        return RedirectToAction("ModificarDirectorMedico", "Roles");
-                //    case "3":
-                //        return RedirectToAction("ModificarAdministrador", "Roles");
-                //    //case "4":
-                //    //    return RedirectToAction("ModificarTecnico", "Usuario");
-                //    case "5":
-                //        return RedirectToAction("ModificarEnfermero", "Roles");
-                //    case "1002":
-                //        return RedirectToAction("ModificarPaciente", "Roles");
-                //}                         
-                if (resultado2)
+                if(model.id_espe == 0)
                 {
+  List<Especialidad> listaew = Ado.ListadoEspecialidad();
+                List<SelectListItem> Itemsespew = listaew.ConvertAll(d =>
+                {
+                    return new SelectListItem()
+                    {
+                        Text = d.nombre,
+                        Value = d.id_especialidad.ToString(),
+                        Selected = false
+
+                    };
+                });
+                ViewBag.itemsespe = Itemsespew;
+                    ModelState.AddModelError("tratamiento", "Seleccione una especialidad");
+                }
+        
+                    List<Especialidad> listae = Ado.ListadoEspecialidad();
+                    List<SelectListItem> Itemsespe = listae.ConvertAll(d =>
+                    {
+                        return new SelectListItem()
+                        {
+                            Text = d.nombre,
+                            Value = d.id_especialidad.ToString(),
+                            Selected = false
+
+                        };
+                    });
+                    ViewBag.itemsespe = Itemsespe;
+                    return View(model);
+                    
+
+             
+
+            }
+            else
+            {  
+                bool resultado2 = AdoRoles.ActualizarMedico(model);
+                  if (resultado2)
+                {
+                    Alert("Exitoso", "Se guardaron sus datos", Models.Enum.NotificationType.success); 
                     return RedirectToAction("Index2", "Home");
                 }
                 else
@@ -188,11 +196,6 @@ namespace Gysto.Controllers
 
                     return View(model);
                 }
-
-            }
-            else
-            {
-                return View(model);
             }
         }
         public ActionResult ModificarMedico(int id)
@@ -209,7 +212,7 @@ namespace Gysto.Controllers
                 };
             });
             ViewBag.itemsespe = Itemsespe;
-            Medico resultado = AdoRoles.ObtenerMedico(id);
+            MedicoValidar resultado = AdoRoles.ObtenerMedico(id);
 
             foreach (var item in Itemsespe)
             {
@@ -225,6 +228,7 @@ namespace Gysto.Controllers
         {
 
             Medico resultado = AdoRoles.PerfilMedico(Name);
+            
             return View(resultado);
         }
 
@@ -245,6 +249,12 @@ namespace Gysto.Controllers
 
             Enfermero resultado = AdoRoles.PerfilEnfermero(Name);
             return View(resultado);
+        }  
+        public ActionResult ModificarDirectorMedico(int id)
+        {
+
+            director_medico resultado = AdoRoles.Obtenerdirector(id);
+            return View(resultado);
         }
         [HttpPost]
         public ActionResult ModificarDirectorMedico(director_medico model)
@@ -253,24 +263,13 @@ namespace Gysto.Controllers
             if (ModelState.IsValid)
             {
                 bool resultado2 = AdoRoles.ActualizarDirector(model);
-                //switch (rol)
-                //{
-                //    case "1":
-                //        return RedirectToAction("ModificarMedico", "Roles");
-                //    case "2":
-                //        return RedirectToAction("ModificarDirectorMedico", "Roles");
-                //    case "3":
-                //        return RedirectToAction("ModificarAdministrador", "Roles");
-                //    //case "4":
-                //    //    return RedirectToAction("ModificarTecnico", "Usuario");
-                //    case "5":
-                //        return RedirectToAction("ModificarEnfermero", "Roles");
-                //    case "1002":
-                //        return RedirectToAction("ModificarPaciente", "Roles");
-                //}                         
+               
                 if (resultado2)
                 {
-                    return RedirectToAction("Index2", "Home");
+                    return RedirectToAction("PerfilUsuarioDirector", "Roles", new { Name = model.id }); 
+                    
+
+
                 }
                 else
                 {
@@ -284,12 +283,7 @@ namespace Gysto.Controllers
                 return View(model);
             }
         }
-        public ActionResult ModificarDirectorMedico(int id)
-        {
-
-            director_medico resultado = AdoRoles.Obtenerdirector(id);
-            return View(resultado);
-        }
+      
         [HttpPost]
         public ActionResult ModificarEnfermero(Enfermero model)
         {

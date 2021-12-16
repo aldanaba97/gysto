@@ -1,7 +1,491 @@
 ﻿@{
     ViewBag.Title = "About";
 }
-<h2>@ViewBag.Title.</h2>
-<h3>@ViewBag.Message</h3>
+<div class="contenedor">
+<br />
+<h3>¿EN QUÉ PODEMOS AYUDARTE?</h3>
+    <div class="row">
+        <div class="col">
+            @if (User.Identity.IsAuthenticated)
+            {
+                if (Session["user"] != null)
+                {
+                    string o = Session["Rol"].ToString();
+                    switch (o)
+                    {
+                        case "1":
+                            <div class="accordion accordion-flush" id="accordionFlushExample">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="flush-headingOne">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                                            ¿Cómo cambiar la clave que viene por defecto?
+                                        </button>
+                                    </h2>
+                                    <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                                        <div class="accordion-body">
+                                            Para cambiar la clave que viene por defecto debe ingresar a <code>Mi perfil</code> y presionar <code>Editar</code>. En esa pestaña podra cambiar la contraseña y cualquier otro dato que desee modificar.Para finalizar el cambio debe presionar <CODE>Guardar los cambios</CODE>
 
-<p>Use this area to provide additional information.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="flush-headingTwo">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                                            ¿Cómo visualizar las consultas sin cerrar?
+                                        </button>
+                                    </h2>
+                                    <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
+                                        <div class="accordion-body collapsed">
+                                            Podrá visualizar las consultas presionando sobre <code>Consultas</code> en el navegador.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="flush-headingThree">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+                                            ¿Cómo cerrar una consulta?
+                                        </button>
+                                    </h2>
+
+                                    <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
+                                        <div class="accordion-body">
+                                            Para cerrar la consulta debe presionar el boton <i class="bi bi-pencil-square"></i>. Aparecera un formulario que solicitara un diagnostico y observaciones (en el caso que hubiera). Para finalizar presione el boton <code>Actualizar</code> y se aplicaran los cambios. La consulta no deberia visualizarse en el listado.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="flush-headingTwo">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseTwo">
+                                            ¿Cómo cerrar la sesion?
+                                        </button>
+                                    </h2>
+                                    <div id="flush-collapseFour" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
+                                        <div class="accordion-body collapsed">
+                                            Para cerrar sesion tendremos que presionar <code>Mi cuenta</code> y seleccionar la opcion de <code>Cerrar sesion</code>.
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            break;
+                        case "2":
+                            <div class="accordion accordion-flush" id="accordionFlushExample">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="flush-headingOne">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                                            ¿Cómo cambiar la clave que viene por defecto?
+                                        </button>
+                                    </h2>
+                                    <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                                        <div class="accordion-body">
+                                            Para cambiar la clave que viene por defecto debe ingresar a <code>Mi perfil</code> y presionar <code>Editar</code>. En esa pestaña podra cambiar la contraseña y cualquier otro dato que desee modificar.Para finalizar el cambio debe presionar <CODE>Guardar los cambios</CODE>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="flush-headingTwo">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                                            ¿Cómo visualizar los reportes?
+                                        </button>
+                                    </h2>
+                                    <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
+                                        <div class="accordion-body collapsed">
+                                            Podrá visualizar los reportes presionando sobre <code>Reportes</code> en el menu superior.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="flush-headingThree">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+                                            ¿Cómo imprimir los reportes?
+                                        </button>
+                                    </h2>
+                                    <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
+                                        <div class="accordion-body">
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="flush-headingThree">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseThree">
+                                            ¿Cómo acceder a las historias clinicas?
+                                        </button>
+                                    </h2>
+                                    <div id="flush-collapseFour" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
+                                        <div class="accordion-body">
+                                            Para acceder a las historias clinicas debera presionar el boton <code>Historias clinica</code> en el menu superior de la pantalla. A continuacion, apareceran todos los pacientes que forman parte de la institucion con la opcion <i class="bi bi-file-earmark-medical"></i>. Al presionar el boton apareceran todos los datos clinicos del paciente.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="flush-headingThree">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFive" aria-expanded="false" aria-controls="flush-collapseThree">
+                                            ¿Cómo imprimir la historia clinica?
+                                        </button>
+                                    </h2>
+                                    <div id="flush-collapseFive" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
+                                        <div class="accordion-body">
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="flush-headingTwo">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseSix" aria-expanded="false" aria-controls="flush-collapseTwo">
+                                            ¿Cómo cerrar la sesion?
+                                        </button>
+                                    </h2>
+                                    <div id="flush-collapseSix " class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
+                                        <div class="accordion-body collapsed">
+                                            Para cerrar sesion tendremos que presionar <code>Mi cuenta</code> y seleccionar la opcion de <code>Cerrar sesion</code>.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            break;
+                        case "3":
+                            <div class="accordion accordion-flush" id="accordionFlushExample">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="flush-headingOne">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                                            ¿Cómo cambiar la clave que viene por defecto?
+                                        </button>
+                                    </h2>
+                                    <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                                        <div class="accordion-body">
+                                            Para cambiar la clave que viene por defecto debe ingresar a <code>Mi perfil</code> y presionar <code>Editar</code>. En esa pestaña podra cambiar la contraseña y cualquier otro dato que desee modificar.Para finalizar el cambio debe presionar <CODE>Guardar los cambios</CODE>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="flush-headingTwo">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                                            ¿Cómo crear un turno?
+                                        </button>
+                                    </h2>
+                                    <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
+                                        <div class="accordion-body collapsed">
+                                            Podrá crear un turno presionando <code>Turnos</code> en el menu superior. Una vez que ingrese podra visualizar todos los turnos creados y en la esquina superior derecha aparecera el boton <code>Agregar</code> donde llevara a un formulario, debera cargar los datos y presionar <code>Guardar</code>.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="flush-headingThree">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+                                            ¿Cómo modificar un turno ?
+                                        </button>
+                                    </h2>
+                                    <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
+                                        <div class="accordion-body">
+                                            Para modificar el turno debe presionar el boton <i class="bi bi-pencil-square"></i>. Aparecera un formulario que solicitara un diagnostico y observaciones (en el caso que hubiera). Para finalizar presione el boton <code>Actualizar</code> y se aplicaran los cambios. Los cambios podran visualizarse en el listado de turnos.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="flush-headingThree">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseThree">
+                                            ¿Cómo eliminar un turno ?
+                                        </button>
+                                    </h2>
+                                    <div id="flush-collapseFour" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
+                                        <div class="accordion-body">
+                                            Para eliminar un turno debe presionar el boton <i class="bi bi-x-square"></i> . Aparecera un mensaje de alerta donde usted debera afirmar en el caso que desee eliminar. Una vez realizada la accion, el turno no se visualizara en el listado.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="flush-headingThree">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFive" aria-expanded="false" aria-controls="flush-collapseThree">
+                                            ¿Cómo crear una consulta?
+                                        </button>
+                                    </h2>
+                                    <div id="flush-collapseFive" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
+                                        <div class="accordion-body">
+                                            Podra crear una consulta presionando <code>Consultas</code> en el menu superior. Una vez que ingrese podra visualizar todos las consultas creadas y en la esquina superior derecha aparecera el boton <code>Agregar</code> donde llevara a un formulario, debera cargar los datos y presionar <code>Guardar</code>.
+                                        </div>
+                                    </div>
+                                </div><div class="accordion-item">
+                                    <h2 class="accordion-header" id="flush-headingThree">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseSix" aria-expanded="false" aria-controls="flush-collapseThree">
+                                            ¿Cómo modificar una consulta ?
+                                        </button>
+                                    </h2>
+                                    <div id="flush-collapseSix" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
+                                        <div class="accordion-body">
+                                            Para modificar una consulta debe presionar el boton <i class="bi bi-pencil-square"></i>. Aparecera un formulario con todos los datos de la consulta deseada. Para finalizar, una vez que modifico los datos presione el boton <code>Actualizar</code> y se aplicaran los cambios que podran visualizarse en el listado de consultas.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="flush-headingThree">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseSeven" aria-expanded="false" aria-controls="flush-collapseThree">
+                                            ¿Cómo eliminar una consulta?
+                                        </button>
+                                    </h2>
+                                    <div id="flush-collapseSeven" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
+                                        <div class="accordion-body">
+                                            Para eliminar una consulta debe presionar el boton <i class="bi bi-x-square"></i> . Aparecera un mensaje de alerta donde usted debera afirmar en el caso que desee eliminar. Una vez realizada la accion, la consulta no se visualizara en el listado.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="flush-headingThree">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseEight" aria-expanded="false" aria-controls="flush-collapseThree">
+                                            ¿Cómo crear una internacion?
+                                        </button>
+                                    </h2>
+                                    <div id="flush-collapseEight" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
+                                        <div class="accordion-body">
+                                            Podrá crear una internacion presionando <code>Internaciones</code> en el menu superior. Una vez que ingrese podra visualizar todos las internaciones creadas y en la esquina superior derecha aparecera el boton <code>Agregar</code> donde llevara a un formulario, debera cargar los datos y presionar <code>Guardar</code>.
+                                        </div>
+                                    </div>
+                                </div><div class="accordion-item">
+                                    <h2 class="accordion-header" id="flush-headingThree">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseNine" aria-expanded="false" aria-controls="flush-collapseThree">
+                                            ¿Cómo visualizar las internaciones?
+                                        </button>
+                                    </h2>
+                                    <div id="flush-collapseNine" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
+                                        <div class="accordion-body">
+                                            Podra visualizar las internaciones presionando <code>Internaciones</code> en el menu superior. Una vez que ingrese apareceran todos las internaciones de aquellos pacientes que aun permanecen internados.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="flush-headingThree">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTen" aria-expanded="false" aria-controls="flush-collapseThree">
+                                            ¿Cómo visualizar las internaciones?
+                                        </button>
+                                    </h2>
+                                    <div id="flush-collapseTen" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
+                                        <div class="accordion-body">
+                                            Podrá visualizar las internaciones presionando <code>Internaciones</code> en el menu superior. Una vez que ingrese apareceran todos las internaciones de aquellos pacientes que aun permanecen internados.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="flush-headingThree">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseEleven" aria-expanded="false" aria-controls="flush-collapseThree">
+                                            ¿Cómo hacer para crear un nuevo paciente?
+                                        </button>
+                                    </h2>
+                                    <div id="flush-collapseEleven" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
+                                        <div class="accordion-body">
+                                            Podrá crear un paciente presionando <code>Pacientes</code> en el menu superior. Una vez que ingrese podra visualizar todos los pacientes cargados y en la esquina superior derecha aparecera el boton <code>Agregar</code> donde llevara a un formulario, debera cargar los datos y presionar <code>Guardar</code>.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="flush-headingThree">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTween" aria-expanded="false" aria-controls="flush-collapseThree">
+                                            ¿Cómo modificar una consulta ?
+                                        </button>
+                                    </h2>
+                                    <div id="flush-collapseTween" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
+                                        <div class="accordion-body">
+                                            Para modificar los datos de un paciente debe presionar el boton <i class="bi bi-pencil-square"></i>. Aparecera un formulario con todos los datos de la consulta deseada. Para finalizar, una vez que modifico los datos presione el boton <code>Actualizar</code> y se aplicaran los cambios que podran visualizarse en el listado de pacientes.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="flush-headingThree">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapsetrece" aria-expanded="false" aria-controls="flush-collapseThree">
+                                            ¿Cómo visualizar la historia clinica de un paciente?
+                                        </button>
+                                    </h2>
+                                    <div id="flush-collapsetrece" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
+                                        <div class="accordion-body">
+                                            Para visualizar una historia clinica debera ingresar a la pestaña de <code>Pacientes</code>. En el listado habra una opcion <code>HC</code> donde aparecera toda la informacion del paciente.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="flush-headingThree">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapsecatorce" aria-expanded="false" aria-controls="flush-collapseThree">
+                                            ¿Cómo descargar la historia clinica de un paciente?
+                                        </button>
+                                    </h2>
+                                    <div id="flush-collapsecatorce" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
+                                        <div class="accordion-body">
+                                            Para visualizar una historia clinica debera ingresar a la pestaña de <code>Pacientes</code>. En el listado habra una opcion <code>HC</code> donde aparecera toda la informacion del paciente.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="flush-headingTwo">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseQuince" aria-expanded="false" aria-controls="flush-collapseTwo">
+                                            ¿Cómo cerrar la sesion?
+                                        </button>
+                                    </h2>
+                                    <div id="flush-collapseQuince" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
+                                        <div class="accordion-body collapsed">
+                                            Para cerrar sesion tendremos que presionar <code>Mi cuenta</code> y seleccionar la opcion de <code>Cerrar sesion</code>.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            break;
+                        case "5":
+                            <div class="accordion accordion-flush" id="accordionFlushExample">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="flush-headingOne">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                                            ¿Cómo cambiar la clave que viene por defecto?
+                                        </button>
+                                    </h2>
+                                    <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                                        <div class="accordion-body">
+                                            Para cambiar la clave que viene por defecto debe ingresar a <code>Mi perfil</code> y presionar <code>Editar</code>. En esa pestaña podra cambiar la contraseña y cualquier otro dato que desee modificar.Para finalizar el cambio debe presionar <CODE>Guardar los cambios</CODE>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="flush-headingTwo">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                                            ¿Cómo visualizar las internaciones sin cerrar?
+                                        </button>
+                                    </h2>
+                                    <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
+                                        <div class="accordion-body collapsed">
+                                            Podrá visualizar las consultas presionando sobre <code>Internaciones</code> en el navegador.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="flush-headingThree">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+                                            ¿Cómo modificar una internacion?
+                                        </button>
+                                    </h2>
+                                    <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
+                                        <div class="accordion-body">
+                                            Para modificar la internacion debe presionar el boton <i class="bi bi-pencil-square"></i>. Aparecera un formulario donde podra modificar los datos que usted desee. Para finalizar presione el boton <code>Actualizar</code> y se aplicaran los cambios. Los cambios podran apreciarse en el listado de las internaciones.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="flush-headingThree">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseThree">
+                                            ¿Cómo eliminar una internacion?
+                                        </button>
+                                    </h2>
+                                    <div id="flush-collapseFour" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
+                                        <div class="accordion-body">
+                                            Para eliminar una internacion debe presionar el boton <i class="bi bi-x-square"></i> .  Aparecera un mensaje de alerta donde usted debera afirmar en el caso que desee eliminar. Una vez realizada la accion, la consulta no se visualizara en el listado.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="flush-headingTwo">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFive" aria-expanded="false" aria-controls="flush-collapseTwo">
+                                            ¿Cómo cerrar la sesion?
+                                        </button>
+                                    </h2>
+                                    <div id="flush-collapse" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
+                                        <div class="accordion-body collapsed">
+                                            Para cerrar sesion tendremos que presionar <code>Mi cuenta</code> y seleccionar la opcion de <code>Cerrar sesion</code>.
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            break;
+                    }
+                }
+            }
+            else
+            {
+                <div class="accordion accordion-flush" id="accordionFlushExample">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="flush-headingThree">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse1" aria-expanded="false" aria-controls="flush-collapseThree">
+                                ¿Cómo sacar un turno?
+                            </button>
+                        </h2>
+                        <div id="flush-collapse1" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
+                            <div class="accordion-body">
+                                Para sacar un turno debera presionar <code>Turnos</code> en el menu superior.En la lista podra observar todos los turnos disponibes, puede buscar por especialidad y por fecha.Una vez que haya encontrado un turno debera hacer click en.En el siguiente paso debera colocar su DNI, el sistema le informara si se encuentra dentro de la base de datos del hospital; en el caso de que usted se encuentre registrado podra confirmar su turno colocando un email activo donde le llegara los detalles del turno y la posibilidad de cancelarlo en caso de no poder asistir.En el caso de que usted no aparezca registrado debera comunicarse al<adress> 4574432</adress>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="flush-headingThree">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse2" aria-expanded="false" aria-controls="flush-collapseThree">
+                                ¿Cómo cancelar un turno?
+                            </button>
+                        </h2>
+                        <div id="flush-collapse2" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
+                            <div class="accordion-body">
+                                Para cancelar un turno debera revisar su casilla de mensajes en su email.Dentro del mail se encuentra un link que le permitira cancelar el turno.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="flush-headingThree">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse3" aria-expanded="false" aria-controls="flush-collapseThree">
+                                ¿Cómo conocer todas las especialidades y los profesionales de cada una?
+                            </button>
+                        </h2>
+                        <div id="flush-collapse3" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
+                            <div class="accordion-body">
+                                Para visualizar las especialidades debera hacer click en <code>Especialidades</code> en el menu superior.En esa pestaña podra observar todas las especialidades de nuestra institucion y los profesionales que la integran.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="flush-headingThree">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse4" aria-expanded="false" aria-controls="flush-collapseThree">
+                                ¿Por qué no puedo acceder con una cuenta?
+                            </button>
+                        </h2>
+                        <div id="flush-collapse4" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
+                            <div class="accordion-body">
+                                Solo pueden acceder personas que sean parte del hospital regional Vicente Aguero.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                    }
+
+                </div>
+                <div class="col">
+                    
+                        <div class="card">
+                            <div class="card-body">
+                                <h3>Comunicate con nosotros</h3>
+                                <form>
+                                    <div class="mb-6">
+                                        <label for="formGroupExampleInput" class="form-label">Apellido y nombre:</label>
+                                        <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Farias Juan">
+                                    </div>
+                                    <div class="mb-6">
+                                        <label for="exampleFormControlInput1" class="form-label">Email:</label>
+                                        <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="n@gmail.com">
+                                    </div>
+                                    <div class="mb-6">
+                                        <label for="exampleFormControlTextarea1" class="form-label">Escriba su consulta</label>
+                                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                    </div>
+                                    <br />
+                                    <div class="mb-6 form-group">
+                                        <button type="submit" class="btn btn-success"> Enviar </button>
+                                    </div>
+                                </form>
+                                <br />
+                            </div>
+
+                        </div>
+                        <br />
+
+                </div>
+            </div>
+
+
+<br />
+
+</div>

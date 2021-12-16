@@ -109,7 +109,7 @@ namespace Gysto.AccesoDatos
             return resultado;
         }
 
-        public static bool InsertarPersonaUsuario(Persona p)
+        public static bool InsertarPersonaUsuario(CrearUsuario p)
         {
             bool resultado = false;
             string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
@@ -121,14 +121,65 @@ namespace Gysto.AccesoDatos
 
                 SqlCommand cmd = new SqlCommand();
 
-                string consulta = "exec InsertUsuario1 @contraseña, @usuario, @rol, @email, @imagen, @dni, @direccion, @localidad, @telefono, @nombre, @apellido, @fecha_nac, @numero_dni";
+                string consulta = "exec InsertUsuario4 @contraseña, @usuario, @rol, @email, @imagen, 3, '.', 3, '1', 'default', 'default' , '01/01/2000' , 0";
                 cmd.Parameters.Clear();
 
                 cmd.Parameters.AddWithValue("@contraseña", p.contraseña);
-                cmd.Parameters.AddWithValue("@usuario", p.nombreUsuario);
+                cmd.Parameters.AddWithValue("@usuario", p.usuario);
                 cmd.Parameters.AddWithValue("@rol", p.rol);
                 cmd.Parameters.AddWithValue("@email", p.email);
-                cmd.Parameters.AddWithValue("@imagen", p.image);
+                cmd.Parameters.AddWithValue("@imagen", p.imagen);
+                //cmd.Parameters.AddWithValue("@dni", p.id_dni);
+                //cmd.Parameters.AddWithValue("@direccion", p.direccion);
+                //cmd.Parameters.AddWithValue("@localidad", p.localidad);
+                //cmd.Parameters.AddWithValue("@telefono", p.telefono);
+                //cmd.Parameters.AddWithValue("@nombre", p.nombre);
+                //cmd.Parameters.AddWithValue("@apellido", p.apellido);
+                //cmd.Parameters.AddWithValue("@fecha_nac", p.fecha_nac);
+                //cmd.Parameters.AddWithValue("@numero_dni", p.dni);
+
+
+
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = consulta;
+                cn.Open();
+                cmd.Connection = cn;
+                cmd.ExecuteNonQuery();
+
+                resultado = true;
+
+            }
+            catch (Exception)
+            {
+                throw;
+
+            }
+            finally
+            {
+                cn.Close();
+            }
+
+            return resultado;
+        }
+        public static bool InsertarPersonaUsuarioxAdmin (CrearPaciente p)
+        {
+            bool resultado = false;
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = "exec InsertUsuario4 '1234', 'paciente', 1002, @email, 'default', @dni, @direccion, @localidad, @telefono, @nombre, @apellido , @fecha_nac  , @numero_dni";
+                cmd.Parameters.Clear();
+
+               
+                cmd.Parameters.AddWithValue("@email", p.email);
+
                 cmd.Parameters.AddWithValue("@dni", p.id_dni);
                 cmd.Parameters.AddWithValue("@direccion", p.direccion);
                 cmd.Parameters.AddWithValue("@localidad", p.localidad);
@@ -148,6 +199,54 @@ namespace Gysto.AccesoDatos
                 cmd.ExecuteNonQuery();
 
                 resultado = true;
+
+            }
+            catch (Exception)
+            {
+                throw;
+
+            }
+            finally
+            {
+                cn.Close();
+            }
+
+            return resultado;
+        }
+        public static int UltimoId ()
+        {
+            int resultado = 0;
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = "select max(id_persona) id from personas";
+                cmd.Parameters.Clear();
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = consulta;
+
+                cn.Open();
+
+                cmd.Connection = cn;
+                SqlDataReader dr = cmd.ExecuteReader();
+
+
+                if (dr != null)
+                {
+                    while (dr.Read())
+                    {
+                       resultado = int.Parse(dr["id"].ToString());
+           
+
+
+                    }
+                }
 
             }
             catch (Exception)
@@ -349,7 +448,7 @@ namespace Gysto.AccesoDatos
                         resultado.direccion = dr["direccion"].ToString();
                         resultado.localidad = int.Parse(dr["localidad_id"].ToString());
                         resultado.telefono = dr["telefono"].ToString();
-                        resultado.nombre = dr["nombre"].ToString();
+                        resultado.nombre = dr["name"].ToString();
                         resultado.apellido = dr["apellido"].ToString();
                         resultado.fecha_nac = DateTime.Parse(dr["fecha_nac"].ToString());
                         resultado.dni = int.Parse(dr["numero_dni"].ToString());
@@ -384,8 +483,9 @@ namespace Gysto.AccesoDatos
 
                 SqlCommand cmd = new SqlCommand();
 
-                string consulta = "select id_persona, personas.nombre + ' ' +  personas.apellido nombreCompleto, email, Usuarios.nombre name from personas join Usuarios on personas.id_usuario = Usuarios.id_usuario";
+                string consulta = "select id_persona, personas.nombre + ' ' +  personas.apellido nombreCompleto, email, Usuarios.nombre name, estado from personas join Usuarios on personas.id_usuario = Usuarios.id_usuario";
                 cmd.Parameters.Clear();
+     
 
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = consulta;
@@ -406,7 +506,7 @@ namespace Gysto.AccesoDatos
                         e.nombreCompleto = dr["nombreCompleto"].ToString();
                         e.email = dr["email"].ToString();
                         e.usuario = dr["name"].ToString();
-
+                        e.estado = Boolean.Parse(dr["estado"].ToString());
                         resultado.Add(e);
                     }
                 }
@@ -424,6 +524,61 @@ namespace Gysto.AccesoDatos
 
             return resultado;
         }
+        public static List<listado> FiltrarxPErsona(string nombre)
+        {
+            List<listado> resultado = new List<listado>();
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+
+                SqlCommand cmd = new SqlCommand();
+                string consulta = "select id_persona, personas.nombre + ' ' +  personas.apellido nombreCompleto, email, Usuarios.nombre name, estado from personas join Usuarios on personas.id_usuario = Usuarios.id_usuario where Usuarios.nombre like '%@nombre%'";
+
+                cmd.Parameters.Clear();
+                cmd.Parameters.AddWithValue("@nombre", nombre);
+          
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = consulta;
+                cn.Open();
+
+                cmd.Connection = cn;
+
+
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                if (dr != null)
+                {
+                    while (dr.Read())
+                    {
+                        listado e = new listado();
+                        e.id = int.Parse(dr["id_persona"].ToString());
+                        e.nombreCompleto = dr["nombreCompleto"].ToString();
+                        e.email = dr["email"].ToString();
+                        e.usuario = dr["name"].ToString();
+                        e.estado = Boolean.Parse(dr["estado"].ToString());
+                        resultado.Add(e);
+
+                     
+
+                    }
+                }
+
+            }
+            catch (Exception)
+            {
+                throw;
+
+            }
+            finally
+            {
+                cn.Close();
+            }
+
+            return resultado;
+        }
+        
         public static bool EliminarUsuario(Persona p)
         {
             bool resultado = false;
@@ -463,7 +618,45 @@ namespace Gysto.AccesoDatos
 
             return resultado;
         }
+        public static bool BUsuario(int p)
+        {
+            bool resultado = false;
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+            SqlConnection cn = new SqlConnection(cadenaConexion);
 
+            try
+            {
+
+                SqlCommand cmd = new SqlCommand();
+                string consulta = "Update Usuarios set estado = 0 where id_usuario = @id";
+                cmd.Parameters.Clear();
+                cmd.Parameters.AddWithValue(@"id", p);
+
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = consulta;
+
+
+                cn.Open();
+                cmd.Connection = cn;
+                cmd.ExecuteNonQuery();
+
+                resultado = true;
+
+
+            }
+            catch (Exception)
+            {
+                throw;
+
+            }
+            finally
+            {
+                cn.Close();
+            }
+
+            return resultado;
+        }
         //public static bool AccederLogin(string usuario, string contra, int rol)
         //{
         //    bool resultado = false;
@@ -676,6 +869,55 @@ namespace Gysto.AccesoDatos
             {
                 cn.Close();
             }
+            return resultado;
+        }
+        public static Usuario buscarEmailBD(string email)
+        {
+            Usuario resultado = new Usuario();
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = "select contraseña, id_usuario, email from Usuarios where email like '@e'";
+
+                cmd.Parameters.Clear();
+                cmd.Parameters.AddWithValue("@e",email);
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = consulta;
+                cn.Open();
+
+                cmd.Connection = cn;
+
+
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                if (dr != null)
+                {
+                    while (dr.Read())
+                    {
+
+                        resultado.contraseña = dr["contraseña"].ToString();
+                        resultado.id = int.Parse(dr["id_usuario"].ToString());
+                        resultado.email = dr["email"].ToString();
+                  
+                    }
+                }
+
+            }
+            catch (Exception)
+            {
+                throw;
+
+            }
+            finally
+            {
+                cn.Close();
+            }
+
             return resultado;
         }
     }

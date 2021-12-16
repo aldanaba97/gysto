@@ -6,193 +6,285 @@
     List<SelectListItem> Itemsespe = (List<SelectListItem>)ViewBag.itemsespe;
     //int paciente = ViewBag.paciente;
 }
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+
 <div class=" contenedor">
-<h2>View</h2>
-
-<div>
-    <h4> Historia clinica</h4>
+    <br />
+    <h2 class="text-center">HISTORIA CLINICA</h2>
+    <a href="@Url.Action("Index2", "Home")" class="btn btn-dark"><i class="bi bi-arrow-left-square"></i> Volver</a>
+    <a href="@Url.Action("Print", "Transacciones", new { id = Model.perfil.idHC })" class="btn btn-dark"><i class="bi bi-file-earmark-pdf"></i></a>
     <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.perfil.nombreCto)
-        </dt>
+    <div class="text-center">
+        <div class="row">
+            <div class="col">
 
-        <dd>
-            @Html.DisplayFor(model => model.perfil.nombreCto)
-        </dd>
+                <div class="card">
+                    <div class="card-header">
+                        DATOS PERSONALES
+                    </div>
+                    <div class="card-body">
+                        <dl class="dl-horizontal">
+                            <dt>
+                                Nombre completo
+                            </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.perfil.telefono)
-        </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.perfil.nombreCto)
+                            </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.perfil.telefono)
-        </dd>
+                            <dt>
+                                Telefono
+                            </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.perfil.dni)
-        </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.perfil.telefono)
+                            </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.perfil.dni)
-        </dd>
+                            <dt>
+                                DNI
+                            </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.perfil.direccion)
-        </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.perfil.dni)
+                            </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.perfil.direccion)
-        </dd>
+                            <dt>
+                                Direccion
+                            </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.perfil.fecha)
-        </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.perfil.direccion)
+                            </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.perfil.fecha)
-        </dd>
+                            <dt>
+                                Fecha de nacimiento
+                            </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.perfil.nombre_c)
-        </dt>
+                            <dd>
+                                @Model.perfil.fecha2()
+                            </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.perfil.nombre_c)
-        </dd>
-        <dd>
-            @Html.HiddenFor(model => model.paciente)
-        </dd>
+                            <dt>
+                                Ciudad
+                            </dt>
 
-    </dl>
-</div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
-@using (Html.BeginForm())
-{
-    @Html.HiddenFor(x => x.paciente)
-    <div class="col-md-6">
-        @Html.DropDownList("medico", ItemsMedico, "Seleccione un medico", htmlAttributes: new { @class = "form-control" })
-    </div>
-    <div class="col-sm-6">
-        @Html.DropDownList("id_espe", Itemsespe, "Seleccione especialidad", htmlAttributes: new { @class = "form-control" })
-    </div>
-    <div class="col-md-6">
-        <label class="col-sm-6 control-label">Ingrese fecha: </label>
-        <div class="col-sm-6">
-         <input type="date" data-date-format="DD MMMM YYYY" name="fecha1"/>
-         </div>
-    </div>
-    <div class="col-md-6">
-        <label class="col-sm-6 control-label">Hasta: </label>
-        <input name="fecha2" type="date" data-date-format="DD MMMM YYYY"/>
-    </div>
-    <div class="col-md-6">
-        <div class="col-lg-6">
-            <button class="btn btn-primary" type="submit">
-                Buscar
-            </button>
+                            <dd>
+                                @Html.DisplayFor(model => model.perfil.nombre_c)
+                            </dd>
+                            <dd>
+                                @Html.HiddenFor(model => model.paciente)
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col">
+                <div class="card">
+                    <div class="card-header">
+                        DATOS CLINICOS
+                    </div>
+                    <div class="card-body">
+                        <dl class="dl-horizontal">
+                            <dt>
+                                Fecha de alta
+                            </dt>
+
+                            <dd>
+                                @Model.perfil.fecha3()
+                            </dd>
+                            <dt>
+                                Medicacion
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.perfil.medicacion)
+                            </dd>
+
+                            <dt>
+                                Grupo sanguineo
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.perfil.grupoS)
+                            </dd>
+                            <dt>
+                                Enfermedad cronica
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.perfil.enfermedad)
+                            </dd>
+                            <dt>
+                                Observaciones
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.perfil.observaciones)
+                            </dd>
+                            <dt>
+                                Alergias
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.perfil.detalle_alergia)
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+
         </div>
+        <br />
 
+
+
+
+        @*<p>
+                @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+                @Html.ActionLink("Back to List", "Index")
+            </p>*@
     </div>
-}
-
-<h2 class="">Todas las consultas</h2>
-
-
-<table class="table">
-    <tr>
-        <th>
-            Medico
-        </th>
-        <th>
-            Diagnostico
-        </th>
-        <th>
-            Fecha
-        </th>
-        <th>
-            Hora
-        </th>
-        <th>
-            Especialidad
-        </th>
-        <th>
-
-        </th>
-    </tr>
-
-    @foreach (var item in Model.consulta)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.medico)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.diagnostico)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.fecha)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.hora)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.especialidad)
-            </td>
-            <td>
-                @Html.ActionLink("Editar", "EditarHC", new { id = item }) |
-                @Html.ActionLink("Detalle", "DetalleHC", new { id = item }) |
-                @Html.ActionLink("Eliminar", "EliminarHC", new { id = item })
-            </td>
-        </tr>
-    }
-
-</table>
-
-<h2>Todas las internaciones</h2>
-
-<table class="table">
-    <tr>
-        <th>
-            Fecha ingreso
-        </th>
-        <th>
-            Fecha de alta
-        </th>
-
-        <th>
-            Enfermero
-        </th>
-
-        <th>
-
-        </th>
-    </tr>
-
-    @*@foreach (var item in Model.internacion)
+    <div class="card">
+        <div class="card-header text-center">
+            CONSULTAS E INTERNACIONES
+        </div>
+        <div class="card-body">
+            <h6>Filtros de busqueda:</h6>
+            @using (Html.BeginForm())
             {
+                @Html.HiddenFor(x => x.paciente)
+                <div class="row">
+                    <div class="col-lg-3">
+
+                        @Html.DropDownList("medico", ItemsMedico, "Seleccione un medico", htmlAttributes: new { @class = "form-control" })
+
+                    </div>
+                    <div class="col-lg-3">
+                        @Html.DropDownList("id_espe", Itemsespe, "Seleccione especialidad", htmlAttributes: new { @class = "form-control" })
+                    </div>
+                    <div class="col-lg-2">
+                        <input type="date" data-date-format="DD MMMM YYYY" name="fecha1" class="form-control" />
+                    </div>
+                    <div class="col-sm-1">
+                        <label class="form-label">Hasta: </label>
+                    </div>
+                    <div class=" col-lg-2">
+
+                        <input name="fecha2" type="date" data-date-format="DD MMMM YYYY" class="form-control" />
+
+                    </div>
+
+
+
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col">
+
+                        <button class="btn btn-success" type="submit">
+                            Buscar
+                        </button>
+                    </div>
+                </div>
+
+
+            }
+
+
+
+            <h3 class="text-center">CONSULTAS</h3>
+
+
+            <table class="table">
                 <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.fecha_ingreso)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.fecha_alta)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.enfermero)
-                    </td>
+                    <th>
+                        Medico
+                    </th>
+                    <th>
+                        Diagnostico
+                    </th>
+                    <th>
+                        Fecha
+                    </th>
+                    <th>
+                        Hora
+                    </th>
+                    <th>
+                        Especialidad
+                    </th>
+                    <th>
 
-                    <td>
-                        @Html.ActionLink("Editar", "EditarHC", new { id = item }) |
-                        @Html.ActionLink("Detalle", "DetalleHC", new { id = item }) |
-                        @Html.ActionLink("Eliminar", "EliminarHC", new { id = item })
-                    </td>
+                    </th>
                 </tr>
-            }*@
 
-        </table>
+                @foreach (var item in Model.consulta)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.medico)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.diagnostico)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.fecha)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.hora)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.especialidad)
+                        </td>
+                        @*<td>
+                                @Html.ActionLink("Editar", "EditarHC", new { id = item }) |
+                                @Html.ActionLink("Detalle", "DetalleHC", new { id = item }) |
+                                @Html.ActionLink("Eliminar", "EliminarHC", new { id = item })
+                            </td>*@
+                    </tr>
+                }
 
+            </table>
+
+            <h3 class="text-center">INTERNACIONES</h3>
+
+            <table class="table">
+                <tr>
+                    <th>
+                        Fecha ingreso
+                    </th>
+                    <th>
+                        Fecha de alta
+                    </th>
+
+                    <th>
+                        Enfermero
+                    </th>
+
+                </tr>
+
+                @foreach (var item in Model.internacion)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.fecha_ingreso)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.fecha_alta)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.enfermero)
+                        </td>
+
+
+                    </tr>
+                }
+
+            </table>
+
+        </div>
+    </div>
+    <br />
+    @*<i class="bi bi-file-earmark-pdf text-right">Imprimir</i>*@
 </div>

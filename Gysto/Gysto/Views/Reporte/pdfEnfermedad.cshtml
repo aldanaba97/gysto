@@ -1,0 +1,46 @@
+﻿@{
+    Layout = null;
+
+}
+<html>
+<head>
+
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+
+
+            google.charts.load('current', { 'packages': ['corechart'] });
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+
+          var data = google.visualization.arrayToDataTable(@Html.Raw(ViewBag.lista));
+
+        var options = {
+          title: 'ENFERMEDADES'
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+        chart.draw(data, options);
+        }
+
+    </script>
+</head>
+<body>
+    <div class="contenedor">
+        <br />
+        <h3>ENFERMEDADES MAS USUALES EN NUESTRA ZONA</h3>
+      
+            <div id="piechart" style="width: 650px; height: 400px; text-align:center;">
+            </div>
+
+        
+    <br />
+    </div>
+
+</body>
+</html>

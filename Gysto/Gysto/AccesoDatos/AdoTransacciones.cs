@@ -72,10 +72,10 @@ namespace Gysto.AccesoDatos
                 string consulta = "insert into HistoriaClinica (medicacion, id_paciente, fecha_creacion, grupo_sanguineo) values ( @1, @2, getdate(), @4)";
                 cmd.Parameters.Clear();
 
-                cmd.Parameters.AddWithValue("@1", i.Medicacion);              
+                cmd.Parameters.AddWithValue("@1", i.Medicacion);
                 cmd.Parameters.AddWithValue("@2", i.paciente);
                 cmd.Parameters.AddWithValue("@4", i.grupo_sanguineo);
-                
+
 
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = consulta;
@@ -110,13 +110,13 @@ namespace Gysto.AccesoDatos
 
                 SqlCommand cmd = new SqlCommand();
 
-                string consulta = "insert into Consultas (id_admnistrativo, diagnostico , observaciones, id_tratamiento, id_paciente, diagnostico_final, hora, fecha, medico) values ( @1, @2, null, null, @3, null, null, getdate(), @5)";
+                string consulta = "insert into Consultas (id_admnistrativo, diagnostico , observaciones, id_tratamiento, id_paciente, diagnostico_final, hora, fecha, medico) values ( @1, @2, null, null, @3, null, getdate(), getdate(), @5)";
                 cmd.Parameters.Clear();
 
                 cmd.Parameters.AddWithValue("@1", i.id_administracion);
                 cmd.Parameters.AddWithValue("@2", i.prediagnostico);
                 cmd.Parameters.AddWithValue("@3", i.id_paciente);
-               
+
                 cmd.Parameters.AddWithValue("@5", i.medico);
 
 
@@ -170,8 +170,8 @@ namespace Gysto.AccesoDatos
                     {
 
                         resultado.id_internacion = int.Parse(dr["id_internacion"].ToString());
-                       
-                      
+
+
 
 
                     }
@@ -238,7 +238,7 @@ namespace Gysto.AccesoDatos
 
             return resultado;
         }
-        public static bool ActualizarFecha(internacion i )
+        public static bool ActualizarFecha(internacion i)
         {
             bool resultado = false;
             string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
@@ -252,7 +252,7 @@ namespace Gysto.AccesoDatos
 
                 string consulta = " update Internaciones set Fecha_egreso = @fecha where id_internacion = @id";
                 cmd.Parameters.Clear();
-                
+
                 cmd.Parameters.AddWithValue("@fecha", i.fecha_egreso);
                 cmd.Parameters.AddWithValue("@id", i.id_internacion);
 
@@ -310,8 +310,8 @@ namespace Gysto.AccesoDatos
 
                         resultado.id_internacion = int.Parse(dr["id_internacion"].ToString());
                         resultado.motivo = dr["motivo"].ToString();
-                        resultado.fecha_ingreso = DateTime.Parse(dr["fecha_ingreso"].ToString());
-                        resultado.fecha_egreso = DateTime.Parse(dr["fecha_egreso"].ToString());
+
+                        resultado.fecha_ingreso = DateTime.Parse(dr["Fecha_ingreso"].ToString());
                         resultado.temperatura = float.Parse(dr["temperatura"].ToString());
                         resultado.tension = float.Parse(dr["tension"].ToString());
                         resultado.frecuencia_c = float.Parse(dr["frecuencia_cardiaca"].ToString());
@@ -324,7 +324,7 @@ namespace Gysto.AccesoDatos
             }
             catch (Exception)
             {
-                throw;
+            throw;
 
             }
             finally
@@ -357,8 +357,8 @@ namespace Gysto.AccesoDatos
                 cmd.Parameters.AddWithValue("@6", i.frecuencia_c);
                 cmd.Parameters.AddWithValue("@7", i.frecuencia_respiratoria);
                 cmd.Parameters.AddWithValue("@8", i.enfermero);
-                cmd.Parameters.AddWithValue("@9", i.paciente);                
-                cmd.Parameters.AddWithValue("@id",i.id_internacion);
+                cmd.Parameters.AddWithValue("@9", i.paciente);
+                cmd.Parameters.AddWithValue("@id", i.id_internacion);
 
                 cmd.CommandType = System.Data.CommandType.Text;
 
@@ -432,7 +432,7 @@ namespace Gysto.AccesoDatos
 
             return resultado;
         }
-        public static bool eliminarInternacion(internacion i)
+        public static bool eliminarInternacion(int id)
         {
             bool resultado = false;
             string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
@@ -444,10 +444,10 @@ namespace Gysto.AccesoDatos
 
                 SqlCommand cmd = new SqlCommand();
 
-                string consulta = "update Internaciones set estado= false where id_internacion = @id";
+                string consulta = "update Internaciones set estado= 0 where id_internacion = @id";
                 cmd.Parameters.Clear();
 
-                cmd.Parameters.AddWithValue("@id", i.id_internacion);
+                cmd.Parameters.AddWithValue("@id", id);
 
                 cmd.CommandType = System.Data.CommandType.Text;
 
@@ -483,7 +483,7 @@ namespace Gysto.AccesoDatos
 
                 SqlCommand cmd = new SqlCommand();
 
-                string consulta = "insert into Turnos (fecha , hora, id_medico, paciente, disponibilidad) values ( @1, @2,@3, null, 1)";
+                string consulta = "insert into Turnos (fecha , hora, id_medico, paciente, disponibilidad,email) values ( @1, @2,@3, null, 1, null)";
                 cmd.Parameters.Clear();
 
                 cmd.Parameters.AddWithValue("@1", i.fecha);
@@ -544,10 +544,60 @@ namespace Gysto.AccesoDatos
 
                         listadoTurnos i = new listadoTurnos();
                         i.id = int.Parse(dr["id_turno"].ToString());
-                        i.hora = dr["hora"].ToString();
-                        i.fecha = dr["fecha"].ToString();
+                        i.hora = DateTime.Parse(dr["hora"].ToString());
+                        i.fecha =DateTime.Parse(dr["fecha"].ToString());
                         i.medico = dr["medico"].ToString();
                         resultado.Add(i);
+                    }
+                }
+
+            }
+            catch (Exception)
+            {
+                throw;
+
+            }
+            finally
+            {
+                cn.Close();
+            }
+
+            return resultado;
+        }
+        public static listadoTurnos ListadoTurnoxid(int id)
+        {
+            listadoTurnos resultado = new listadoTurnos();
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = "select id_turno,  hora, fecha, apellido + ' , '  + nombre medico from Turnos join Medicos on Turnos.id_medico = Medicos.id_medico join personas on personas.id_persona = Medicos.id_persona where id_turno = @id";
+
+                cmd.Parameters.Clear();
+                cmd.Parameters.AddWithValue("@id", id);
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = consulta;
+                cn.Open();
+
+                cmd.Connection = cn;
+
+
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                if (dr != null)
+                {
+                    while (dr.Read())
+                    {
+
+                        resultado.id = int.Parse(dr["id_turno"].ToString());
+                        resultado.hora = DateTime.Parse(dr["hora"].ToString());
+                        resultado.fecha = DateTime.Parse(dr["fecha"].ToString());
+                        resultado.medico = dr["medico"].ToString();
+                   
                     }
                 }
 
@@ -653,7 +703,7 @@ namespace Gysto.AccesoDatos
             }
             return resultado;
         }
-        public static bool eliminarTurno(turno i)
+        public static bool eliminarTurno(int id)
         {
             bool resultado = false;
             string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
@@ -665,10 +715,10 @@ namespace Gysto.AccesoDatos
 
                 SqlCommand cmd = new SqlCommand();
 
-                string consulta = "delete Turno where id_turno = @id";
+                string consulta = "delete TurnoS where id_turno = @id";
                 cmd.Parameters.Clear();
 
-                cmd.Parameters.AddWithValue("@id", i.id_turno);
+                cmd.Parameters.AddWithValue("@id", id);
 
                 cmd.CommandType = System.Data.CommandType.Text;
 
@@ -692,9 +742,9 @@ namespace Gysto.AccesoDatos
             }
             return resultado;
         }
-        public static List<turno> ListadoTurnosDisponibles()
+        public static List<TurnoMedico> ListadoTurnosDisponibles()
         {
-            List<turno> resultado = new List<turno>();
+            List<TurnoMedico> resultado = new List<TurnoMedico>();
             string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
             SqlConnection cn = new SqlConnection(cadenaConexion);
 
@@ -703,7 +753,7 @@ namespace Gysto.AccesoDatos
 
                 SqlCommand cmd = new SqlCommand();
 
-                string consulta = "select hora, fecha, id_turno, disponibilidad from Turnos";
+                string consulta = "select hora, fecha, id_turno, disponibilidad, personas.nombre , personas.apellido from Turnos join Medicos on turnos.id_medico = Medicos.id_medico join personas on personas.id_persona = Medicos.id_persona ";
 
                 cmd.Parameters.Clear();
                 //cmd.Parameters.AddWithValue("@id", id);
@@ -720,15 +770,16 @@ namespace Gysto.AccesoDatos
                 {
                     while (dr.Read())
                     {
-
-                        turno i = new turno();
+                        TurnoMedico i = new TurnoMedico();
                         //  i.id_turno = int.Parse(dr["id_turno"].ToString());
-                        i.hora = TimeSpan.Parse(dr["hora"].ToString());
+                        i.hora = DateTime.Parse(dr["hora"].ToString());
                         i.fecha = DateTime.Parse(dr["fecha"].ToString());
                         i.id_turno = int.Parse(dr["id_turno"].ToString());
                         i.disponibilidad = Boolean.Parse(dr["disponibilidad"].ToString());
-
+                        i.nombre = dr["nombre"].ToString();
+                        i.apellido = dr["apellido"].ToString();
                         resultado.Add(i);
+
                     }
                 }
 
@@ -745,9 +796,9 @@ namespace Gysto.AccesoDatos
 
             return resultado;
         }
-        public static List<turno> ListadoxOrden(int id)
+        public static List<TurnoMedico> ListadoxOrden(int id)
         {
-            List<turno> resultado = new List<turno>();
+            List<TurnoMedico> resultado = new List<TurnoMedico>();
             string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
             SqlConnection cn = new SqlConnection(cadenaConexion);
 
@@ -756,7 +807,7 @@ namespace Gysto.AccesoDatos
 
                 SqlCommand cmd = new SqlCommand();
 
-                string consulta = "select hora, fecha, id_turno, disponibilidad from Turnos where id_medico = @id";
+                string consulta = "select hora, fecha, id_turno, disponibilidad, personas.nombre , personas.apellido from Turnos join Medicos on turnos.id_medico = Medicos.id_medico join personas on personas.id_persona = Medicos.id_persona join Especialidades on Especialidades.id_espe = Medicos.id_espe where Especialidades.id_espe =  @id";
 
                 cmd.Parameters.Clear();
                 cmd.Parameters.AddWithValue("@id", id);
@@ -774,13 +825,14 @@ namespace Gysto.AccesoDatos
                     while (dr.Read())
                     {
 
-                        turno i = new turno();
+                        TurnoMedico i = new TurnoMedico();
                         //  i.id_turno = int.Parse(dr["id_turno"].ToString());
-                        i.hora = TimeSpan.Parse(dr["hora"].ToString());
+                        i.hora = DateTime.Parse(dr["hora"].ToString());
                         i.fecha = DateTime.Parse(dr["fecha"].ToString());
                         i.id_turno = int.Parse(dr["id_turno"].ToString());
                         i.disponibilidad = Boolean.Parse(dr["disponibilidad"].ToString());
-
+                        i.nombre = dr["nombre"].ToString();
+                        i.apellido = dr["apellido"].ToString();
                         resultado.Add(i);
                     }
                 }
@@ -798,7 +850,7 @@ namespace Gysto.AccesoDatos
 
             return resultado;
         }
-        public static paciente listadoxDni (string dni)
+        public static paciente listadoxDni(string dni)
         {
             paciente resultado = new paciente();
             string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
@@ -827,13 +879,15 @@ namespace Gysto.AccesoDatos
                     while (dr.Read())
                     {
 
-                     
+
                         //resultado.id_turno = int.Parse(dr["id_turno"].ToString());  
                         resultado.nombre = dr["nombre"].ToString();
-                        resultado.apellido = dr["apellido"].ToString();                 
+                        resultado.apellido = dr["apellido"].ToString();
                         resultado.telefono = dr["telefono"].ToString();
-                        resultado.id_paciente= int.Parse(dr["id_paciente"].ToString());
+                        resultado.id_paciente = int.Parse(dr["id_paciente"].ToString());
                         resultado.dni = int.Parse(dr["numero_dni"].ToString());
+
+
                     }
                 }
 
@@ -850,9 +904,9 @@ namespace Gysto.AccesoDatos
 
             return resultado;
         }
-        public static turno listadoxDniTurno(int id )
+        public static turno listadoxDniTurno(int id)
         {
-            turno resultado = new turno(); 
+            turno resultado = new turno();
             string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
             SqlConnection cn = new SqlConnection(cadenaConexion);
 
@@ -864,7 +918,7 @@ namespace Gysto.AccesoDatos
                 string consulta = "select id_turno from Turnos where id_turno = @id";
 
                 cmd.Parameters.Clear();
-                cmd.Parameters.AddWithValue("@id", id); 
+                cmd.Parameters.AddWithValue("@id", id);
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = consulta;
                 cn.Open();
@@ -878,9 +932,10 @@ namespace Gysto.AccesoDatos
                 {
                     while (dr.Read())
                     {
-                        
+
                         resultado.id_turno = int.Parse(dr["id_turno"].ToString());
-                     
+
+
                     }
                 }
 
@@ -949,7 +1004,7 @@ namespace Gysto.AccesoDatos
 
                 SqlCommand cmd = new SqlCommand();
 
-                string consulta = "select hora, fecha,  p.apellido +' , ' + p.nombre NombreMedico, id_consulta, (select apellido + ' , ' + nombre from personas p join Pacientes pa on p.id_persona = pa.id_persona join Consultas con on pa.id_paciente = con.id_paciente where id_consulta = c.id_consulta) nombrePaciente from consultas c join Medicos a on a.id_medico = c.medico join personas p on p.id_persona = a.id_persona";
+                string consulta = "select diagnostico_final, hora, fecha,  p.apellido +' '+ p.nombre NombreMedico, id_consulta, (select apellido + ' ' + nombre from personas p join Pacientes pa on p.id_persona = pa.id_persona join Consultas con on pa.id_paciente = con.id_paciente where id_consulta = c.id_consulta) nombrePaciente from consultas c join Medicos a on a.id_medico = c.medico join personas p on p.id_persona = a.id_persona order by fecha desc, hora asc";
                 cmd.Parameters.Clear();
 
                 cmd.CommandType = System.Data.CommandType.Text;
@@ -967,11 +1022,12 @@ namespace Gysto.AccesoDatos
                     {
 
                         ListadoConsulta i = new ListadoConsulta();
-                        i.hora = dr["hora"].ToString();
-                        i.fecha = dr["fecha"].ToString();
+                        i.hora =DateTime.Parse( dr["hora"].ToString());
+                        i.fecha =DateTime.Parse( dr["fecha"].ToString());
                         i.NombreMedico = dr["NombreMedico"].ToString();
                         i.NombrePaciente = dr["nombrePaciente"].ToString();
                         i.id = int.Parse(dr["id_consulta"].ToString());
+                        i.diagnostico = dr["diagnostico_final"].ToString(); 
                         resultado.Add(i);
                     }
                 }
@@ -988,7 +1044,7 @@ namespace Gysto.AccesoDatos
 
             return resultado;
         }
-        public static int obtenerIdMedico (int idUsuario)
+        public static int obtenerIdMedico(int idUsuario)
         {
             int idMedico = 0;
             string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
@@ -1017,7 +1073,7 @@ namespace Gysto.AccesoDatos
                     while (dr.Read())
                     {
                         idMedico = int.Parse(dr["id_medico"].ToString());
-                      
+
                     }
                 }
 
@@ -1064,8 +1120,8 @@ namespace Gysto.AccesoDatos
                     {
 
                         ListadoConsulta i = new ListadoConsulta();
-                        i.hora = dr["hora"].ToString();
-                        i.fecha = dr["fecha"].ToString();
+                        i.hora = DateTime.Parse(dr["hora"].ToString());
+                        i.fecha = DateTime.Parse(dr["fecha"].ToString());
                         i.NombreMedico = dr["nombreadmi"].ToString();
                         i.NombrePaciente = dr["nombrePaciente"].ToString();
                         i.id = int.Parse(dr["id_consulta"].ToString());
@@ -1114,8 +1170,8 @@ namespace Gysto.AccesoDatos
                     {
 
                         ListadoConsulta i = new ListadoConsulta();
-                        i.hora = dr["hora"].ToString();
-                        i.fecha = dr["fecha"].ToString();
+                        i.hora = DateTime.Parse(dr["hora"].ToString());
+                        i.fecha = DateTime.Parse(dr["fecha"].ToString());
                         i.NombreMedico = dr["NombreMedico"].ToString();
                         i.NombrePaciente = dr["nombrePaciente"].ToString();
                         i.diagnostico = dr["diagnostico_final"].ToString();
@@ -1162,15 +1218,15 @@ namespace Gysto.AccesoDatos
                     while (dr.Read())
                     {
 
-                        resultado.hora = TimeSpan.Parse(dr["hora"].ToString());
+                        resultado.hora = DateTime.Parse(dr["hora"].ToString());
                         resultado.id_consulta = int.Parse(dr["id_consulta"].ToString());
                         resultado.medico = int.Parse(dr["medico"].ToString());
                         resultado.id_paciente = int.Parse(dr["id_paciente"].ToString());
                         resultado.id_administracion = int.Parse(dr["id_admnistrativo"].ToString());
                         resultado.prediagnostico = dr["diagnostico"].ToString();
 
-                    
-                        
+
+
                     }
                 }
             }
@@ -1202,7 +1258,7 @@ namespace Gysto.AccesoDatos
 
                 cmd.Parameters.AddWithValue("@hora", i.hora);
                 cmd.Parameters.AddWithValue("@medico", i.medico);
-                cmd.Parameters.AddWithValue("@id_paciente", i.id_paciente); 
+                cmd.Parameters.AddWithValue("@id_paciente", i.id_paciente);
                 cmd.Parameters.AddWithValue("@id_administrativo", i.id_administracion);
                 cmd.Parameters.AddWithValue("@diag", i.prediagnostico);
                 cmd.Parameters.AddWithValue("@consulta", i.id_consulta);
@@ -1232,7 +1288,7 @@ namespace Gysto.AccesoDatos
             }
             return resultado;
         }
-        public static bool eliminarConsulta(Consulta i)
+        public static bool eliminarConsulta(int id)
         {
             bool resultado = false;
             string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
@@ -1247,7 +1303,7 @@ namespace Gysto.AccesoDatos
                 string consulta = "delete Consultas where id_consulta = @id";
                 cmd.Parameters.Clear();
 
-                cmd.Parameters.AddWithValue("@id", i.id_consulta);
+                cmd.Parameters.AddWithValue("@id", id);
 
                 cmd.CommandType = System.Data.CommandType.Text;
 
@@ -1271,7 +1327,7 @@ namespace Gysto.AccesoDatos
             }
             return resultado;
         }
-        public static bool CerrarConsulta(Consulta i)
+        public static bool CerrarConsulta(cerrarConsulta i)
         {
             bool resultado = false;
             string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
@@ -1316,9 +1372,9 @@ namespace Gysto.AccesoDatos
             }
             return resultado;
         }
-        public static Consulta ObtenerConsultaParaCerrar(int idConsulta)
+        public static cerrarConsulta ObtenerConsultaParaCerrar(int idConsulta)
         {
-            Consulta resultado = new Consulta();
+            cerrarConsulta resultado = new cerrarConsulta();
             string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
             SqlConnection cn = new SqlConnection(cadenaConexion);
 
@@ -1327,7 +1383,7 @@ namespace Gysto.AccesoDatos
 
                 SqlCommand cmd = new SqlCommand();
 
-                string consulta = "select hora, id_consulta, medico, id_paciente, id_admnistrativo, diagnostico from Consultas where id_consulta = @id";
+                string consulta = "select hora, id_consulta, apellido + ', ' +nombre nombreCto, (select apellido + ', ' + nombre from Administrativos join personas on Administrativos.id_persona = personas.id_persona join Consultas on Consultas.id_admnistrativo = Administrativos.id_administrativos where id_consulta = @id )admini, diagnostico from Consultas join Pacientes on Consultas.id_paciente = Pacientes.id_paciente join personas p on p.id_persona = Pacientes.id_persona join Administrativos on Administrativos.id_administrativos = Consultas.id_admnistrativo where id_consulta = @id";
                 cmd.Parameters.Clear();
                 cmd.Parameters.AddWithValue("@id", idConsulta);
 
@@ -1342,16 +1398,14 @@ namespace Gysto.AccesoDatos
                 {
                     while (dr.Read())
                     {
-                        resultado.hora = TimeSpan.Parse(dr["hora"].ToString());
+                        resultado.hora = DateTime.Parse(dr["hora"].ToString());
                         resultado.id_consulta = int.Parse(dr["id_consulta"].ToString());
-                        resultado.medico = int.Parse(dr["medico"].ToString());
-                        resultado.id_paciente = int.Parse(dr["id_paciente"].ToString());
-                        resultado.id_administracion = int.Parse(dr["id_admnistrativo"].ToString());
+                     
+                        resultado.paciente = dr["nombreCto"].ToString();
+                        resultado.administrativo = dr["admini"].ToString();
                         resultado.prediagnostico = dr["diagnostico"].ToString();
-                        //resultado.observaciones = dr["observaciones"].ToString();
-                        //resultado.tratamiento = int.Parse(dr["id_tratamiento"].ToString());
-                        //resultado.diagnostico = dr["diagnostico_final"].ToString();
-                        
+                      
+
 
 
                     }
@@ -1464,7 +1518,7 @@ namespace Gysto.AccesoDatos
         }
         public static historiaClinica ObtenerHC(int idHistoriaClinica)
         {
-            historiaClinica resultado = new historiaClinica(); 
+            historiaClinica resultado = new historiaClinica();
             string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
             SqlConnection cn = new SqlConnection(cadenaConexion);
 
@@ -1493,7 +1547,7 @@ namespace Gysto.AccesoDatos
                         resultado.Medicacion = dr["medicacion"].ToString();
                         resultado.paciente = int.Parse(dr["id_paciente"].ToString());
                         resultado.grupo_sanguineo = dr["grupo_sanguineo"].ToString();
-                        
+
 
                     }
                 }
@@ -1538,8 +1592,8 @@ namespace Gysto.AccesoDatos
                     while (dr.Read())
                     {
 
-                        detalleHistoriaClinica i = new detalleHistoriaClinica();                       
-                        i.id_detalle= int.Parse(dr["id_detalle"].ToString());
+                        detalleHistoriaClinica i = new detalleHistoriaClinica();
+                        i.id_detalle = int.Parse(dr["id_detalle"].ToString());
                         i.enfermedades = int.Parse(dr["id_enfermedad"].ToString());
                         i.hc = int.Parse(dr["id_hc"].ToString());
                         i.observaciones = dr["observaciones"].ToString();
@@ -1563,7 +1617,7 @@ namespace Gysto.AccesoDatos
 
             return resultado;
         }
-        public static bool eliminarDetalle(int id )
+        public static bool eliminarDetalle(int id)
         {
             bool resultado = false;
             string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
@@ -1622,8 +1676,8 @@ namespace Gysto.AccesoDatos
                 cmd.Parameters.AddWithValue("@2", i.hc.paciente);
                 cmd.Parameters.AddWithValue("@3", i.hc.grupo_sanguineo);
                 cmd.Parameters.AddWithValue("@id", i.hc.id_hc);
-                
-                
+
+
 
 
 
@@ -1721,7 +1775,7 @@ namespace Gysto.AccesoDatos
                         resultado.alergia = Boolean.Parse(dr["alergia"].ToString());
                         resultado.detalle_alergia = dr["detalles_alergia"].ToString();
                         resultado.id_detalle = int.Parse(dr["id_detalle"].ToString());
-                        resultado.hc= int.Parse(dr["id_hc"].ToString());
+                        resultado.hc = int.Parse(dr["id_hc"].ToString());
 
 
 
@@ -1811,9 +1865,9 @@ namespace Gysto.AccesoDatos
                         i.medico = dr["nombremedico"].ToString();
                         i.diagnostico = dr["diagnostico"].ToString();
                         i.fecha = DateTime.Parse(dr["fecha"].ToString());
-                        //i.hora = TimeSpan.Parse(dr["hora"].ToString());
+                        i.hora = DateTime.Parse(dr["hora"].ToString());
                         i.especialidad = dr["especialidad"].ToString();
-                        
+
 
                         resultado.Add(i);
                     }
@@ -1843,7 +1897,7 @@ namespace Gysto.AccesoDatos
 
                 SqlCommand cmd = new SqlCommand();
 
-                string consulta = "select fecha_ingreso, Fecha_egreso, nombre + ' , ' + apellido nombreEnfermero from Internaciones i join Enfermeros enfe on i.id_enfermero = enfe.id_enfermero join personas perso on enfe.id_persona = perso.id_persona where paciente = @id";
+                string consulta = "select fecha_ingreso, Fecha_egreso, apellido + ' , ' + nombre nombreEnfermero from Internaciones i join Enfermeros enfe on i.id_enfermero = enfe.id_enfermero join personas perso on enfe.id_persona = perso.id_persona where paciente = @id";
 
                 cmd.Parameters.Clear();
                 cmd.Parameters.AddWithValue("@id", id);
@@ -1864,9 +1918,9 @@ namespace Gysto.AccesoDatos
                         InternacionxHistoria i = new InternacionxHistoria();
                         i.fecha_ingreso = dr["fecha_ingreso"].ToString();
                         i.fecha_alta = dr["fecha_egreso"].ToString();
-                   
+
                         i.enfermero = dr["nombreEnfermero"].ToString();
-                        
+
 
                         resultado.Add(i);
                     }
@@ -1897,7 +1951,7 @@ namespace Gysto.AccesoDatos
 
                 SqlCommand cmd = new SqlCommand();
 
-                string consulta = "select pe.apellido + ' , ' + pe.nombre nombrecompleto , telefono, pe.numero_dni, pe.direccion, pe.fecha_nac, c.nombre ciudad, hc.id_paciente from HistoriaClinica hc join Pacientes pa on hc.id_paciente = pa.id_paciente join personas pe on pa.id_persona = pe.id_persona join Ciudades c on c.id_ciudad = pe.localidad_id where hc.id_paciente = @id";
+                string consulta = "select pe.apellido + ' , ' + pe.nombre nombrecompleto , telefono, pe.numero_dni, pe.direccion, pe.fecha_nac, c.nombre ciudad, hc.id_paciente, medicacion, fecha_creacion, grupo_sanguineo, e.nombre, observaciones, detalles_alergia, id_historia from HistoriaClinica hc join Pacientes pa on hc.id_paciente = pa.id_paciente join personas pe on pa.id_persona = pe.id_persona join Ciudades c on c.id_ciudad = pe.localidad_id join detalle_hc d on hc.id_historia = d.id_hc join Enfermedades e on d.id_enfermedad = e.id_enfermedad where hc.id_paciente = @id";
                 cmd.Parameters.Clear();
                 cmd.Parameters.AddWithValue("@id", id);
 
@@ -1919,6 +1973,13 @@ namespace Gysto.AccesoDatos
                         resultado.direccion = dr["direccion"].ToString();
                         resultado.fecha = DateTime.Parse(dr["fecha_nac"].ToString());
                         resultado.nombre_c = dr["ciudad"].ToString();
+                        resultado.medicacion = dr["medicacion"].ToString();
+                        resultado.fecha_alta =DateTime.Parse( dr["fecha_creacion"].ToString());
+                        resultado.grupoS = dr["grupo_sanguineo"].ToString();
+                        resultado.enfermedad = dr["nombre"].ToString();
+                        resultado.observaciones = dr["observaciones"].ToString();
+                        resultado.detalle_alergia = dr["detalles_alergia"].ToString(); 
+                        resultado.idHC = int.Parse(dr["id_historia"].ToString());
                         //resultado.paciente = int.Parse(dr["id_paciente"].ToString());
 
                     }
@@ -1945,7 +2006,7 @@ namespace Gysto.AccesoDatos
             {
 
                 SqlCommand cmd = new SqlCommand();
-               string consulta = "select apellido  + ' , ' + p.nombre nombremedico, diagnostico, fecha, hora, e.nombre especialidad  from Consultas c join Medicos m on c.medico = m.id_medico join personas p on p.id_persona = m.id_persona join especialidades e on e.id_espe = m.id_espe where id_paciente = @idpaciente and c.medico = @idmedico";
+                string consulta = "select apellido  + ' , ' + p.nombre nombremedico, diagnostico, fecha, hora, e.nombre especialidad  from Consultas c join Medicos m on c.medico = m.id_medico join personas p on p.id_persona = m.id_persona join especialidades e on e.id_espe = m.id_espe where id_paciente = @idpaciente and c.medico = @idmedico";
 
                 cmd.Parameters.Clear();
                 cmd.Parameters.AddWithValue("@idpaciente", idPaciente);
@@ -2037,13 +2098,71 @@ namespace Gysto.AccesoDatos
 
             }
             finally
-           {
+            {
                 cn.Close();
             }
 
             return resultado;
         }
 
+        public static List<ConsultaxHistoria> FiltroConsultaxTodos(int idPaciente, string fecha1, string fecha2, int espe, int medico)
+        {
+            List<ConsultaxHistoria> resultado = new List<ConsultaxHistoria>();
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+
+                SqlCommand cmd = new SqlCommand();
+                string consulta = "select apellido  + ' , ' + p.nombre nombremedico, diagnostico, fecha, hora, e.nombre especialidad from Consultas c join Medicos m on c.medico = m.id_medico join personas p on p.id_persona = m.id_persona join especialidades e on e.id_espe = m.id_espe where id_paciente = @id and fecha between @fecha1 and @fecha2 and e.id_espe = @espe and id_medico = @medico";
+
+                cmd.Parameters.Clear();
+                cmd.Parameters.AddWithValue("@id", idPaciente);
+                cmd.Parameters.AddWithValue("@fecha1", fecha1);
+                cmd.Parameters.AddWithValue("@fecha2", fecha2);
+                cmd.Parameters.AddWithValue("@espe", espe);
+                cmd.Parameters.AddWithValue("@medico", medico);
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = consulta;
+                cn.Open();
+
+                cmd.Connection = cn;
+
+
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                if (dr != null)
+                {
+                    while (dr.Read())
+                    {
+                        ConsultaxHistoria i = new ConsultaxHistoria();
+                        i.medico = dr["nombremedico"].ToString();
+                        i.diagnostico = dr["diagnostico"].ToString();
+                        i.fecha = DateTime.Parse(dr["fecha"].ToString());
+                        i.hora = DateTime.Parse(dr["hora"].ToString());
+                        i.especialidad = dr["especialidad"].ToString();
+
+
+                        resultado.Add(i);
+
+                    }
+                }
+
+            }
+            catch (Exception)
+            {
+                throw;
+
+            }
+            finally
+            {
+                cn.Close();
+            }
+
+            return resultado;
+        }
         public static List<ConsultaxHistoria> FiltroConsultaxFecha(int idPaciente, string fecha1, string fecha2)
         {
             List<ConsultaxHistoria> resultado = new List<ConsultaxHistoria>();
@@ -2078,7 +2197,7 @@ namespace Gysto.AccesoDatos
                         i.medico = dr["nombremedico"].ToString();
                         i.diagnostico = dr["diagnostico"].ToString();
                         i.fecha = DateTime.Parse(dr["fecha"].ToString());
-                        //i.hora = TimeSpan.Parse(dr["hora"].ToString());
+                        i.hora = DateTime.Parse(dr["hora"].ToString());
                         i.especialidad = dr["especialidad"].ToString();
 
 
@@ -2100,9 +2219,9 @@ namespace Gysto.AccesoDatos
 
             return resultado;
         }
-        public static int ObtenerPacientexid(int id )
+        public static int ObtenerPacientexid(int id)
         {
-            int pac = 0; 
+            int pac = 0;
             string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
             SqlConnection cn = new SqlConnection(cadenaConexion);
 
@@ -2113,7 +2232,7 @@ namespace Gysto.AccesoDatos
                 string consulta = "select id_paciente from pacientes where id_paciente = @id";
 
                 cmd.Parameters.Clear();
-                cmd.Parameters.AddWithValue("@id", id);                           
+                cmd.Parameters.AddWithValue("@id", id);
 
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = consulta;
@@ -2128,10 +2247,10 @@ namespace Gysto.AccesoDatos
                 {
                     while (dr.Read())
                     {
-                             pac = int.Parse(dr["id_paciente"].ToString()); 
+                        pac = int.Parse(dr["id_paciente"].ToString());
                     }
-          
-               
+
+
                 }
 
             }
@@ -2148,5 +2267,141 @@ namespace Gysto.AccesoDatos
             return pac;
         }
 
+
+        public static bool ActualizarTurnoxemail(turno t)
+        {
+            bool resultado = false;
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = "update Turnos set email= @1 where id_turno = @id";
+                cmd.Parameters.Clear();
+
+
+                cmd.Parameters.AddWithValue("@1", t.email);                              
+                cmd.Parameters.AddWithValue("@id", t.id_turno);
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                cmd.CommandText = consulta;
+
+
+                cn.Open();
+
+                cmd.Connection = cn;
+                cmd.ExecuteNonQuery();
+                resultado = true;
+            }
+            catch (Exception)
+            {
+                throw;
+
+            }
+            finally
+            {
+                cn.Close();
+            }
+            return resultado;
+        }
+        public static TurnoMedico obtenerTurnoxMed( int id)
+        {
+            TurnoMedico resultado = new TurnoMedico();
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = "select hora, fecha, id_turno, disponibilidad, personas.nombre , personas.apellido from Turnos join Medicos on turnos.id_medico = Medicos.id_medico join personas on personas.id_persona = Medicos.id_persona where id_turno = @id";
+
+                cmd.Parameters.Clear();
+                cmd.Parameters.AddWithValue("@id", id);
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = consulta;
+                cn.Open();
+
+                cmd.Connection = cn;
+
+
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                if (dr != null)
+                {
+                    while (dr.Read())
+                    {
+                        
+                        //  i.id_turno = int.Parse(dr["id_turno"].ToString());
+                        resultado.hora = DateTime.Parse(dr["hora"].ToString());
+                        resultado.fecha = DateTime.Parse(dr["fecha"].ToString());
+                        resultado.id_turno = int.Parse(dr["id_turno"].ToString());
+                        resultado.disponibilidad = Boolean.Parse(dr["disponibilidad"].ToString());
+                        resultado.nombre = dr["nombre"].ToString();
+                        resultado.apellido = dr["apellido"].ToString();
+
+                    }
+
+                    
+                }
+
+            }
+            catch (Exception)
+            {
+                throw;
+
+            }
+            finally
+            {
+                cn.Close();
+            }
+
+            return resultado;
+        }
+        public static bool ActualizarTurnoxdispo(turno t)
+        {
+            bool resultado = false;
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+
+            try
+            {
+
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = "update Turnos set disponibilidad= 0, email = null where id_turno = @id";
+                cmd.Parameters.Clear();
+
+                
+                cmd.Parameters.AddWithValue("@id", t.id_turno);
+
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                cmd.CommandText = consulta;
+
+
+                cn.Open();
+
+                cmd.Connection = cn;
+                cmd.ExecuteNonQuery();
+                resultado = true;
+            }
+            catch (Exception)
+            {
+                throw;
+
+            }
+            finally
+            {
+                cn.Close();
+            }
+            return resultado;
+        }
     }
 }

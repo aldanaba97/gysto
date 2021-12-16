@@ -1,0 +1,65 @@
+﻿@model Gysto.Models.Usuarios
+@{
+    ViewBag.Title = "Datos";
+
+
+}
+<div class="contenedor">
+    <div class="row">
+
+        @using (Html.BeginForm())
+        {<br />
+            <br />
+            <h3>PODRAS CAMBIAR LA CONTRASEÑA DE TU USUARIO @ViewBag.nombre</h3>
+            @Html.HiddenFor(model => model.id_usuario)
+            <div class="col-md-6">
+                @ViewBag.email
+            </div>
+
+
+
+
+            <div class="col-lg-6">
+                <table class="table  table-striped">
+
+                    <tbody>
+                        <tr>
+                        </tr>
+                        <tr class="text-center bg-light">
+
+
+                            <td>
+                                @ViewBag.Messege
+                            </td>
+
+                        </tr>
+
+
+                    </tbody>
+                </table>
+
+                <div class="form-group text-right">
+                    <div class="col-xs-12">
+                        <button class="btn btn-primary" type="submit">
+                            Cambiar la contraseña
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+        }
+    </div>
+        @*@using (Html.BeginForm("RecuperarContraxEmail", "Usuario", FormMethod.Post))
+                {
+                    @Html.HiddenFor(model => model.id)
+
+
+                }
+
+
+            </div>
+        </div>*@
+
+    </div>
+    

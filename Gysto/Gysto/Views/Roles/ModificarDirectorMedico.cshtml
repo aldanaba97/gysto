@@ -3,21 +3,24 @@
 @{
     ViewBag.Title = "ModificarDirectorMedico";
 }
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
 
-<h2>ModificarDirectorMedico</h2>
 <div class="contenedor">
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>director_medico</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.id_director)
+    <br />
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
 
+        <div class="form-horizontal">
+            <h4>MODIFICAR DATOS</h4>
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.id_director)
+           @Html.HiddenFor(model => model.id_persona)
         <div class="form-group">
-            @Html.LabelFor(model => model.maestria, htmlAttributes: new { @class = "control-label col-md-2" })
+            <label class="col-sm-12 control-label ">Maestria: </label>
             <div class="col-md-10">
                 @Html.EditorFor(model => model.maestria, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.maestria, "", new { @class = "text-danger" })
@@ -25,22 +28,20 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.matricula, htmlAttributes: new { @class = "control-label col-md-2" })
+            <label class="col-sm-12 control-label ">Matricula: </label>
             <div class="col-md-10">
                 @Html.EditorFor(model => model.matricula, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.matricula, "", new { @class = "text-danger" })
             </div>
         </div>
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Guardar" class="btn btn-default" />
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Guardar" class="btn btn-dark" />
+                </div>
             </div>
         </div>
-    </div>
-}
-    </div>
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
+    }
+    <br />
 </div>
+
